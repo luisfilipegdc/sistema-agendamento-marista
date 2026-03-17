@@ -40,6 +40,8 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
     startTime: '',
     endTime: '',
     type: 'ONE_OFF',
+    repeatUntil: '',
+    daysOfWeek: [] as number[],
     airConditioning: true,
     microphones: 0,
     wirelessMic: false,
@@ -49,10 +51,23 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
     audioSupport: false
   })
 
+  const toggleDay = (day: number) => {
+    setFormData(prev => ({
+      ...prev,
+      daysOfWeek: prev.daysOfWeek.includes(day) 
+        ? prev.daysOfWeek.filter(d => d !== day)
+        : [...prev.daysOfWeek, day]
+    }))
+  }
+
   const nextStep = () => {
     if (step === 1) {
       if (!formData.title || !formData.date || !formData.startTime || !formData.endTime) {
         setError('Por favor, preencha todos os campos obrigatórios.')
+        return
+      }
+      if (formData.type === 'FIXED' && (!formData.repeatUntil || formData.daysOfWeek.length === 0)) {
+        setError('Para horários fixos, selecione os dias da semana e a data limite.')
         return
       }
       setError(null)
@@ -88,12 +103,13 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
 
     try {
       const res = await fetch('/api/bookings', {
-        method: 'POST',
+        method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
           start,
           end,
+          repeatUntil: formData.repeatUntil ? new Date(`${formData.repeatUntil}T23:59:59`) : null,
           spaceId,
         }),
       })
@@ -279,13 +295,70 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
               </label>
               <select
                 value={formData.type}
-                onChange={e => setFormData({ ...formData, type: e.target.value })}
+                onChange={e => {
+                  const val = e.target.value
+                  setFormData({ 
+                    ...formData, 
+                    type: val,
+                    // Se mudar para FIXED, tenta pré-selecionar o dia da data já escolhida
+                    daysOfWeek: val === 'FIXED' && formData.date 
+                      ? [new Date(`${formData.date}T12:00:00`).getDay()] 
+                      : formData.daysOfWeek
+                  })
+                }}
                 className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all appearance-none cursor-pointer"
               >
                 <option value="ONE_OFF">Evento Único</option>
                 <option value="FIXED">Horário Fixo (Recorrente)</option>
               </select>
             </div>
+
+            {/* Recurrence Details */}
+            {formData.type === 'FIXED' && (
+              <div className="space-y-5 p-6 bg-blue-50/50 rounded-[2rem] border border-blue-100 animate-in slide-in-from-top-4 duration-500">
+                <div className="space-y-3">
+                  <label className="block text-[10px] font-black text-[#003399] uppercase tracking-widest ml-1">
+                    Repetir nos dias:
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { l: 'D', v: 0 }, { l: 'S', v: 1 }, { l: 'T', v: 2 }, 
+                      { l: 'Q', v: 3 }, { l: 'Q', v: 4 }, { l: 'S', v: 5 }, { l: 'S', v: 6 }
+                    ].map((day) => (
+                      <button
+                        key={day.v}
+                        type="button"
+                        onClick={() => toggleDay(day.v)}
+                        className={`w-10 h-10 rounded-xl font-black text-xs transition-all ${
+                          formData.daysOfWeek.includes(day.v)
+                            ? 'bg-[#003399] text-white shadow-lg shadow-blue-900/20'
+                            : 'bg-white text-gray-400 border border-gray-100 hover:border-blue-200'
+                        }`}
+                      >
+                        {day.l}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-[10px] font-black text-[#003399] uppercase tracking-widest ml-1">
+                    Até quando repetir?
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    min={formData.date || new Date().toISOString().split('T')[0]}
+                    value={formData.repeatUntil}
+                    onChange={e => setFormData({ ...formData, repeatUntil: e.target.value })}
+                    className="w-full px-5 py-4 bg-white border border-blue-100 rounded-2xl text-sm text-slate-800 font-bold focus:ring-2 focus:ring-[#003399] outline-none transition-all"
+                  />
+                  <p className="text-[9px] text-blue-400 font-bold italic ml-1">
+                    * A reserva será criada para cada dia selecionado até esta data.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         )}
 

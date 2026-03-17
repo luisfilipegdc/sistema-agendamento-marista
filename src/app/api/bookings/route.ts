@@ -20,6 +20,8 @@ export async function POST(req: Request) {
       end, 
       spaceId, 
       type,
+      repeatUntil,
+      daysOfWeek,
       airConditioning,
       microphones,
       wirelessMic,
@@ -44,11 +46,7 @@ export async function POST(req: Request) {
       )
     }
 
-    // 2. Validar Duração (Sugerir 45 min)
-    // Se o usuário não definiu o fim, ou se queremos forçar 45 min:
-    // const forcedEndTime = new Date(startTime.getTime() + 45 * 60 * 1000)
-
-    // 3. Buscar o usuário pelo e-mail da sessão
+    // 2. Buscar o usuário
     const user = await prisma.user.findUnique({
       where: { email: session.user.email }
     })
@@ -57,30 +55,42 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Usuário não encontrado' }, { status: 404 })
     }
 
-    // 4. Verificar conflitos de horário exatos
-    const conflict = await prisma.booking.findFirst({
-      where: {
-        spaceId,
-        status: 'CONFIRMED',
-        OR: [
-          {
-            start: { lt: endTime },
-            end: { gt: startTime },
-          }
-        ]
+    // 3. Lógica de Recorrência
+    const bookingsToCreate = []
+    const recurrenceId = type === 'FIXED' ? Math.random().toString(36).substring(7) : null
+
+    if (type === 'FIXED' && repeatUntil && daysOfWeek) {
+      const limitDate = new Date(repeatUntil)
+      limitDate.setHours(23, 59, 59, 999)
+      
+      let currentStart = new Date(startTime)
+      let currentEnd = new Date(endTime)
+
+      while (currentStart <= limitDate) {
+        if (daysOfWeek.includes(currentStart.getDay())) {
+          bookingsToCreate.push({
+            title,
+            start: new Date(currentStart),
+            end: new Date(currentEnd),
+            spaceId,
+            userId: user.id,
+            type,
+            recurrenceId,
+            repeatUntil: limitDate,
+            airConditioning,
+            microphones,
+            wirelessMic,
+            projection,
+            schoolComputer,
+            externalComputer,
+            audioSupport
+          })
+        }
+        currentStart.setDate(currentStart.getDate() + 1)
+        currentEnd.setDate(currentEnd.getDate() + 1)
       }
-    })
-
-    if (conflict) {
-      return NextResponse.json(
-        { message: 'Conflito de horário! Já existe uma reserva para este período.' },
-        { status: 400 }
-      )
-    }
-
-    // 5. Criar o agendamento
-    const booking = await prisma.booking.create({
-      data: {
+    } else {
+      bookingsToCreate.push({
         title,
         start: startTime,
         end: endTime,
@@ -94,17 +104,52 @@ export async function POST(req: Request) {
         schoolComputer,
         externalComputer,
         audioSupport
-      },
-      include: {
-        space: {
-          include: {
-            unit: true
-          }
-        }
-      }
-    })
+      })
+    }
 
-    // 4. Enviar e-mail de confirmação para o professor
+    // 4. Verificar conflitos para todas as reservas geradas
+    for (const b of bookingsToCreate) {
+      const conflict = await prisma.booking.findFirst({
+        where: {
+          spaceId,
+          status: 'CONFIRMED',
+          OR: [
+            {
+              start: { lt: b.end },
+              end: { gt: b.start },
+            }
+          ]
+        }
+      })
+
+      if (conflict) {
+        const conflictDate = b.start.toLocaleDateString('pt-BR')
+        return NextResponse.json(
+          { message: `Conflito de horário detectado em ${conflictDate}! Já existe uma reserva para este período.` },
+          { status: 400 }
+        )
+      }
+    }
+
+    // 5. Criar as reservas
+    const createdBookings = await prisma.$transaction(
+      bookingsToCreate.map(data => 
+        prisma.booking.create({
+          data,
+          include: {
+            space: {
+              include: {
+                unit: true
+              }
+            }
+          }
+        })
+      )
+    )
+
+    const booking = createdBookings[0]
+
+    // 6. Enviar e-mail de confirmação para o professor
     const formattedDate = format(startTime, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
     const startStr = format(startTime, "HH:mm")
     const endStr = format(endTime, "HH:mm")

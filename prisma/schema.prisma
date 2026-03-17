@@ -73,6 +73,10 @@ model Booking {
   type        BookingType   @default(ONE_OFF)
   status      BookingStatus @default(CONFIRMED)
   
+  // Recorrência
+  recurrenceId    String?   // Para agrupar reservas da mesma série
+  repeatUntil     DateTime? // Data limite da recorrência
+  
   // Requisitos Técnicos
   airConditioning   Boolean @default(true)
   microphones       Int     @default(0)
