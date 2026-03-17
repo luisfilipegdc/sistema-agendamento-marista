@@ -1,12 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Mail, Lock, Loader2, CheckCircle } from 'lucide-react'
-
 import { signIn } from 'next-auth/react'
-import { Suspense } from 'react'
 
 function LoginForm() {
   const router = useRouter()
@@ -16,7 +14,8 @@ function LoginForm() {
   const [success, setSuccess] = useState<string | null>(null)
 
   useEffect(() => {
-    if (searchParams.get('registered')) {
+    const registered = searchParams.get('registered')
+    if (registered) {
       setSuccess('Conta criada com sucesso! Faça login para continuar.')
     }
   }, [searchParams])
@@ -28,8 +27,8 @@ function LoginForm() {
     setSuccess(null)
 
     const formData = new FormData(e.currentTarget)
-    const email = formData.get('email')
-    const password = formData.get('password')
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
 
     try {
       const result = await signIn('credentials', {
@@ -154,6 +153,8 @@ function LoginForm() {
   )
 }
 
+export const dynamic = 'force-dynamic'
+
 export default function LoginPage() {
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50"><Loader2 className="animate-spin text-blue-600" size={40} /></div>}>
@@ -161,3 +162,4 @@ export default function LoginPage() {
     </Suspense>
   )
 }
+

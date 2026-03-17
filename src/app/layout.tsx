@@ -18,12 +18,6 @@ export const metadata: Metadata = {
 };
 
 import { Providers } from '@/components/Providers'
-import { initCron } from '@/lib/cron'
-
-// Iniciar o sistema de lembretes (apenas no servidor)
-if (typeof window === 'undefined') {
-  initCron()
-}
 
 export default function RootLayout({
   children,
