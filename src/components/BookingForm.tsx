@@ -61,7 +61,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
         throw new Error(data.message || 'Erro ao realizar agendamento')
       }
 
-      router.refresh();
+      ;(router as any).refresh();
       // Limpar formulário ou mostrar sucesso
       (e.target as HTMLFormElement).reset()
       alert('Agendamento realizado com sucesso!')
