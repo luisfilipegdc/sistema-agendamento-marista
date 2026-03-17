@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  PROFESSOR
+  COLLABORATOR
+  AV
+}
+
+enum BookingType {
+  FIXED
+  ONE_OFF
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+  PENDING
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  password      String
+  role          Role      @default(PROFESSOR)
+  unitId        String?   // Para vincular responsáveis de AV a uma unidade
+  unit          Unit?     @relation(fields: [unitId], references: [id])
+  bookings      Booking[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Unit {
+  id          String   @id @default(cuid())
+  name        String   @unique // Maristão, Maristinha, Pio XII
+  slug        String   @unique // maristao, maristinha, pio-xii
+  spaces      Space[]
+  users       User[]   // Equipe de AV vinculada à unidade
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Space {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique // Identificador para o QR Code (ex: maristao-teatro)
+  unitId      String
+  unit        Unit      @relation(fields: [unitId], references: [id])
+  bookings    Booking[]
+  capacity    Int?
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([name, unitId])
+}
+
+model Booking {
+  id          String        @id @default(cuid())
+  title       String
+  description String?
+  start       DateTime
+  end         DateTime
+  type        BookingType   @default(ONE_OFF)
+  status      BookingStatus @default(CONFIRMED)
+  
+  spaceId     String
+  space       Space         @relation(fields: [spaceId], references: [id])
+  
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
