@@ -12,36 +12,38 @@ export default async function Header() {
   }
 
   return (
-    <header className="bg-[#003399] border-b border-[#002266] sticky top-0 z-40 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-[#003399] font-bold group-hover:scale-105 transition-all shadow-sm">
+    <header className="bg-[#003399] border-b border-white/10 sticky top-0 z-50 backdrop-blur-md bg-opacity-95">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-4 group transition-transform active:scale-95">
+          <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-[#003399] font-black text-xl group-hover:rotate-6 transition-all shadow-xl shadow-blue-900/20">
             M
           </div>
           <div className="flex flex-col">
-            <h1 className="text-lg font-bold text-white leading-tight">Agendamento</h1>
-            <span className="text-[10px] font-bold text-[#FFCC00] uppercase tracking-[0.2em]">Marista Brasil</span>
+            <h1 className="text-xl font-black text-white leading-none tracking-tight italic">Agendamento</h1>
+            <span className="text-[10px] font-black text-[#FFCC00] uppercase tracking-[0.3em] mt-1">Marista Brasil</span>
           </div>
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           {session ? (
-            <UserMenu user={session.user as any} />
+            <div className="flex items-center gap-4">
+              <UserMenu user={session.user as any} />
+            </div>
           ) : (
-            <>
+            <div className="flex items-center gap-3">
               <Link 
                 href="/login" 
-                className="text-sm font-bold text-white hover:text-[#FFCC00] transition-colors"
+                className="text-xs font-black text-white/80 hover:text-[#FFCC00] uppercase tracking-widest transition-all px-4 py-2 rounded-xl hover:bg-white/5"
               >
                 Entrar
               </Link>
               <Link 
                 href="/register" 
-                className="px-4 py-2 bg-[#FFCC00] text-[#003399] text-sm font-bold rounded-md hover:bg-[#e6b800] transition-colors shadow-sm"
+                className="px-6 py-3 bg-[#FFCC00] text-[#003399] text-xs font-black uppercase tracking-widest rounded-xl hover:bg-white hover:shadow-xl hover:shadow-yellow-500/10 transition-all active:scale-95 shadow-lg shadow-yellow-500/5"
               >
                 Criar Conta
               </Link>
-            </>
+            </div>
           )}
         </div>
       </div>

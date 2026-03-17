@@ -90,32 +90,34 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white overflow-hidden">
       {/* Header do Calendário */}
-      <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-        <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 capitalize">
-          <CalendarIcon size={20} className="text-blue-600" />
+      <div className="p-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
+        <h2 className="text-xl font-black text-[#003399] flex items-center gap-3 capitalize italic tracking-tight">
+          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-100">
+            <CalendarIcon size={20} className="text-[#FFCC00]" />
+          </div>
           {format(currentMonth, 'MMMM yyyy', { locale: ptBR })}
         </h2>
         <div className="flex items-center gap-2">
           <button 
             onClick={prevMonth}
-            className="p-2 hover:bg-white rounded-lg border border-transparent hover:border-gray-200 transition-all"
+            className="p-3 hover:bg-white rounded-xl border border-transparent hover:border-slate-200 transition-all shadow-sm active:scale-90"
           >
-            <ChevronLeft size={20} />
+            <ChevronLeft size={20} className="text-slate-400" />
           </button>
           <button 
             onClick={nextMonth}
-            className="p-2 hover:bg-white rounded-lg border border-transparent hover:border-gray-200 transition-all"
+            className="p-3 hover:bg-white rounded-xl border border-transparent hover:border-slate-200 transition-all shadow-sm active:scale-90"
           >
-            <ChevronRight size={20} />
+            <ChevronRight size={20} className="text-slate-400" />
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-7 border-b border-gray-100 bg-gray-50/30">
+      <div className="grid grid-cols-7 border-b border-slate-50 bg-slate-50/10">
         {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(day => (
-          <div key={day} className="py-2 text-center text-xs font-bold text-gray-400 uppercase tracking-wider">
+          <div key={day} className="py-4 text-center text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">
             {day}
           </div>
         ))}
@@ -133,23 +135,24 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
               key={idx}
               onClick={() => setSelectedDate(day)}
               className={`
-                relative h-14 sm:h-20 border-r border-b border-gray-50 flex flex-col items-center justify-center transition-all
-                ${!isCurrentMonth ? 'bg-gray-50/40 text-gray-300' : 'text-gray-700 hover:bg-blue-50/30'}
-                ${isSelected ? 'bg-blue-50 text-blue-600 ring-1 ring-inset ring-blue-200' : ''}
+                relative h-16 sm:h-24 border-r border-b border-slate-50 flex flex-col items-center justify-center transition-all group
+                ${!isCurrentMonth ? 'bg-slate-50/20 text-slate-200' : 'text-slate-600 hover:bg-blue-50/50'}
+                ${isSelected ? 'bg-blue-50/80 text-[#003399] z-10' : ''}
               `}
             >
               <span className={`
-                text-sm font-semibold mb-1
-                ${isCurrentDay && !isSelected ? 'w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-sm' : ''}
+                text-sm font-black mb-2 transition-all
+                ${isCurrentDay && !isSelected ? 'w-8 h-8 bg-[#003399] text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20 rotate-3' : ''}
+                ${isSelected ? 'scale-125' : 'group-hover:scale-110'}
               `}>
                 {format(day, 'd')}
               </span>
               
               {hasBooking && (
-                <div className="flex gap-0.5">
-                  <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-blue-600' : 'bg-blue-400'}`} />
+                <div className="flex gap-1">
+                  <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-[#003399]' : 'bg-[#FFCC00]'} animate-pulse`} />
                   {bookings.filter(b => isSameDay(new Date(b.start), day)).length > 1 && (
-                    <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-blue-600' : 'bg-blue-400'}`} />
+                    <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-[#003399]' : 'bg-[#FFCC00]'} opacity-50`} />
                   )}
                 </div>
               )}
@@ -159,91 +162,101 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
       </div>
 
       {/* Lista de agendamentos do dia selecionado */}
-      <div className="p-6 bg-gray-50/30 border-t border-gray-100">
-        <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-          Agendamentos em {format(selectedDate, "d 'de' MMMM", { locale: ptBR })}
-        </h3>
+      <div className="p-8 bg-slate-50/30">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xs font-black text-[#003399] uppercase tracking-[0.2em] flex items-center gap-3 italic">
+            <div className="w-1.5 h-6 bg-[#FFCC00] rounded-full" />
+            Agenda: {format(selectedDate, "d 'de' MMMM", { locale: ptBR })}
+          </h3>
+          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-white px-3 py-1 rounded-full border border-slate-100 shadow-sm">
+            {selectedDayBookings.length} Atividades
+          </span>
+        </div>
         
-        <div className="space-y-3">
+        <div className="space-y-4">
           {selectedDayBookings.length === 0 ? (
-            <p className="text-sm text-gray-500 italic">Nenhum agendamento para este dia.</p>
+            <div className="bg-white p-10 rounded-3xl border border-slate-100 border-dashed text-center">
+              <p className="text-sm text-slate-400 font-medium italic">Nenhum agendamento para este dia.</p>
+            </div>
           ) : (
             selectedDayBookings.map((booking) => (
-              <div key={booking.id} className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 shrink-0">
-                    <Clock size={20} />
+              <div key={booking.id} className="group bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-blue-900/5 transition-all duration-500 flex flex-col sm:flex-row sm:items-center justify-between gap-6 relative overflow-hidden">
+                <div className="absolute left-0 top-0 w-1.5 h-full bg-[#003399] opacity-0 group-hover:opacity-100 transition-opacity" />
+                
+                <div className="flex items-start gap-5 relative z-10">
+                  <div className="w-14 h-14 bg-slate-50 text-[#003399] rounded-2xl flex items-center justify-center shrink-0 shadow-inner group-hover:bg-[#003399] group-hover:text-white transition-all duration-500">
+                    <Clock size={24} />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-gray-900">{booking.title}</h4>
-                    <div className="flex items-center gap-3 mt-1">
-                      <span className="text-xs text-gray-500 flex items-center gap-1">
+                    <h4 className="text-lg font-black text-[#003399] tracking-tight italic group-hover:translate-x-1 transition-transform">{booking.title}</h4>
+                    <div className="flex flex-wrap items-center gap-4 mt-2">
+                      <span className="text-xs text-slate-500 font-black uppercase tracking-widest flex items-center gap-1.5">
+                        <Clock size={14} className="text-[#FFCC00]" />
                         {format(new Date(booking.start), 'HH:mm')} - {format(new Date(booking.end), 'HH:mm')}
                       </span>
-                      <span className="text-xs text-gray-300">•</span>
-                      <span className="text-xs text-gray-500 flex items-center gap-1">
-                        <User size={12} />
+                      <span className="text-xs text-slate-300 hidden sm:inline">•</span>
+                      <span className="text-xs text-slate-500 font-bold flex items-center gap-1.5">
+                        <User size={14} className="text-[#FFCC00]" />
                         {booking.user.name || 'Professor'}
                       </span>
                     </div>
                     
-                    {/* Detalhes Técnicos - Visíveis para Admin/AV ou Dono */}
+                    {/* Detalhes Técnicos */}
                     {(isAdmin || isAV || booking.userId === userId) && (
-                      <div className="mt-3 flex flex-wrap gap-2">
+                      <div className="mt-4 flex flex-wrap gap-2">
                         {booking.airConditioning && (
-                          <span className="flex items-center gap-1 px-2 py-0.5 bg-blue-50 text-blue-600 rounded-md text-[9px] font-black uppercase tracking-tighter border border-blue-100">
+                          <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-[#003399] rounded-full text-[9px] font-black uppercase tracking-widest border border-blue-100 shadow-sm">
                             <Wind size={10} /> Ar
                           </span>
                         )}
                         {booking.microphones > 0 && (
-                          <span className="flex items-center gap-1 px-2 py-0.5 bg-yellow-50 text-yellow-700 rounded-md text-[9px] font-black uppercase tracking-tighter border border-yellow-100">
+                          <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-yellow-100 shadow-sm">
                             <Mic size={10} /> {booking.microphones} Mic {booking.wirelessMic ? '(S/Fio)' : ''}
                           </span>
                         )}
                         {booking.projection && (
-                          <span className="flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 rounded-md text-[9px] font-black uppercase tracking-tighter border border-green-100">
+                          <span className="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-green-100 shadow-sm">
                             <Monitor size={10} /> Projeção
                           </span>
                         )}
                         {booking.audioSupport && (
-                          <span className="flex items-center gap-1 px-2 py-0.5 bg-purple-50 text-purple-700 rounded-md text-[9px] font-black uppercase tracking-tighter border border-purple-100">
+                          <span className="flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-purple-100 shadow-sm">
                             <Music size={10} /> Som
                           </span>
                         )}
                         {booking.schoolComputer && (
-                          <span className="flex items-center gap-1 px-2 py-0.5 bg-orange-50 text-orange-700 rounded-md text-[9px] font-black uppercase tracking-tighter border border-orange-100">
+                          <span className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 text-slate-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-slate-200 shadow-sm">
                             <Laptop size={10} /> PC Escola
                           </span>
                         )}
                         {booking.externalComputer && (
-                          <span className="flex items-center gap-1 px-2 py-0.5 bg-red-50 text-red-700 rounded-md text-[9px] font-black uppercase tracking-tighter border border-red-100">
-                            <Laptop size={10} /> PC Externo
+                          <span className="flex items-center gap-1.5 px-3 py-1 bg-orange-50 text-orange-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-orange-100 shadow-sm">
+                            <Laptop size={10} /> Notebook
                           </span>
                         )}
                       </div>
                     )}
                   </div>
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className={`px-2 py-1 text-[10px] font-bold rounded-full uppercase border ${
-                      booking.type === 'FIXED' 
-                        ? 'bg-purple-50 text-purple-700 border-purple-100' 
-                        : 'bg-blue-50 text-blue-700 border-blue-100'
-                    }`}>
-                      {booking.type === 'FIXED' ? 'Recorrente' : 'Único'}
-                    </span>
-                    
-                    {(isAdmin || (isAV && booking.space.unitId === user?.unitId) || booking.userId === userId) && (
-                      <button 
-                        onClick={() => handleDeleteBooking(booking.id)}
-                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                        title="Cancelar Agendamento"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    )}
-                  </div>
+                
+                <div className="flex items-center gap-4 relative z-10">
+                  <span className={`px-4 py-2 text-[9px] font-black rounded-full uppercase tracking-[0.2em] border shadow-sm ${
+                    booking.type === 'FIXED' 
+                      ? 'bg-purple-50 text-purple-700 border-purple-100' 
+                      : 'bg-blue-50 text-[#003399] border-blue-100'
+                  }`}>
+                    {booking.type === 'FIXED' ? 'Recorrente' : 'Evento Único'}
+                  </span>
+                  
+                  {(isAdmin || (isAV && booking.space.unitId === user?.unitId) || booking.userId === userId) && (
+                    <button 
+                      onClick={() => handleDeleteBooking(booking.id)}
+                      className="p-3 text-slate-300 hover:text-red-600 hover:bg-red-50 rounded-2xl transition-all border border-transparent hover:border-red-100 active:scale-90"
+                      title="Cancelar Agendamento"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  )}
                 </div>
               </div>
             ))

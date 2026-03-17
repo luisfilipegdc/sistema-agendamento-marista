@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
-import { Building2, Calendar, LayoutDashboard, Users, Clock, MapPin } from 'lucide-react'
+import { Building2, Calendar, LayoutDashboard, Users, Clock, MapPin, ArrowRight, ShieldCheck, Zap } from 'lucide-react'
 import Header from '@/components/Header'
 import CalendarView from '@/components/CalendarView'
 
@@ -31,152 +31,187 @@ export default async function Home() {
   ])
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#f8fafc]">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="text-center mb-10 sm:mb-16">
-          <h2 className="text-3xl sm:text-5xl font-black text-[#003399] tracking-tight">
-            Gestão de Espaços
-          </h2>
-          <div className="mt-2 h-1.5 w-24 bg-[#FFCC00] mx-auto rounded-full" />
-          <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-medium">
-            Selecione a unidade educacional para gerenciar e reservar ambientes de aprendizagem.
-          </p>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 relative overflow-hidden">
+        {/* Background Decorative Elements */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none z-0">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-20" />
+          <div className="absolute bottom-40 right-10 w-96 h-96 bg-yellow-100 rounded-full blur-3xl opacity-20" />
         </div>
 
-        {/* Novo: Visão Consolidada de Agendamentos */}
-        <div className="mb-20">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-blue-50 text-[#003399] rounded-xl flex items-center justify-center shadow-sm">
-                  <Calendar size={22} />
-                </div>
-                <h3 className="text-2xl font-black text-[#003399] tracking-tight italic">Agenda Global</h3>
-              </div>
-              <p className="text-gray-500 font-medium">Acompanhe as atividades em tempo real em todas as unidades.</p>
+        <div className="relative z-10">
+          {/* Hero Section */}
+          <div className="text-center mb-20 sm:mb-28">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-[#003399] rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-8 border border-blue-100 animate-in fade-in slide-in-from-top-4 duration-700">
+              <ShieldCheck size={14} /> Sistema Oficial Marista Brasil
             </div>
-            
-            <div className="flex flex-wrap gap-3">
-              <div className="px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl flex items-center gap-2">
-                <div className="w-2 h-2 bg-[#003399] rounded-full animate-pulse" />
-                <span className="text-[10px] font-black text-[#003399] uppercase tracking-widest">{allBookings.length} Atividades Hoje</span>
+            <h2 className="text-4xl sm:text-7xl font-black text-[#003399] tracking-tight mb-8 italic">
+              Gestão de <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#003399] to-blue-600">Espaços</span>
+            </h2>
+            <p className="text-lg sm:text-2xl text-slate-500 max-w-3xl mx-auto leading-relaxed font-medium mb-12">
+              Infraestrutura inteligente para potencializar a excelência acadêmica e a inovação pedagógica.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <a href="#unidades" className="px-8 py-5 bg-[#003399] text-white rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-[#002266] transition-all shadow-xl shadow-blue-900/20 active:scale-95 flex items-center gap-3">
+                Explorar Unidades <ArrowRight size={18} />
+              </a>
+              <div className="px-8 py-5 bg-white text-slate-600 rounded-[2rem] font-black text-xs uppercase tracking-widest border border-slate-200 flex items-center gap-3">
+                <Zap size={18} className="text-[#FFCC00]" /> {allBookings.length} Atividades Hoje
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Calendário Interativo */}
-            <div className="lg:col-span-2 bg-white rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 overflow-hidden">
-              <CalendarView bookings={allBookings as any} />
+          {/* Agenda Global Section */}
+          <div className="mb-32">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+              <div>
+                <div className="flex items-center gap-4 mb-3">
+                  <div className="w-12 h-12 bg-white text-[#003399] rounded-2xl flex items-center justify-center shadow-xl shadow-blue-900/5 border border-slate-100">
+                    <Calendar size={24} />
+                  </div>
+                  <h3 className="text-3xl font-black text-[#003399] tracking-tight italic">Agenda Global</h3>
+                </div>
+                <p className="text-slate-500 font-medium text-lg">Visão em tempo real da ocupação em toda a rede.</p>
+              </div>
             </div>
 
-            {/* Próximos Eventos do Dia */}
-            <div className="lg:col-span-1 space-y-6">
-              <div className="bg-[#003399] p-8 rounded-[2.5rem] text-white relative overflow-hidden group h-full">
-                <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
-                  <Clock size={120} />
-                </div>
-                
-                <h4 className="text-xl font-black mb-8 relative z-10 tracking-tight italic flex items-center gap-3">
-                  <Clock size={24} className="text-[#FFCC00]" />
-                  Próximas Atividades
-                </h4>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+              {/* Calendário */}
+              <div className="lg:col-span-2 bg-white rounded-[3rem] shadow-[0_30px_60px_-15px_rgba(0,51,153,0.08)] border border-slate-100 overflow-hidden">
+                <CalendarView bookings={allBookings as any} />
+              </div>
 
-                <div className="space-y-6 relative z-10">
-                  {allBookings.slice(0, 4).length === 0 ? (
-                    <div className="py-10 text-center border-2 border-dashed border-white/20 rounded-3xl">
-                      <p className="text-blue-100 font-medium italic">Nenhum evento para hoje.</p>
+              {/* Sidebar: Atividades */}
+              <div className="lg:col-span-1 flex flex-col gap-8">
+                <div className="bg-gradient-to-br from-[#003399] to-[#001a4d] p-10 rounded-[3rem] text-white relative overflow-hidden group shadow-2xl shadow-blue-900/20 flex-1">
+                  <div className="absolute -right-10 -top-10 p-6 opacity-10 group-hover:scale-110 group-hover:rotate-12 transition-all duration-1000">
+                    <Clock size={200} />
+                  </div>
+                  
+                  <div className="relative z-10">
+                    <h4 className="text-2xl font-black mb-10 tracking-tight italic flex items-center gap-3">
+                      <Clock size={28} className="text-[#FFCC00]" />
+                      Próximas Atividades
+                    </h4>
+
+                    <div className="space-y-6">
+                      {allBookings.slice(0, 4).length === 0 ? (
+                        <div className="py-16 text-center border-2 border-dashed border-white/20 rounded-[2rem]">
+                          <p className="text-blue-200 font-medium italic opacity-60">Nenhuma atividade agendada para hoje.</p>
+                        </div>
+                      ) : (
+                        allBookings.slice(0, 4).map((booking) => (
+                          <div key={booking.id} className="bg-white/5 hover:bg-white/10 p-6 rounded-3xl transition-all border border-white/10 group/item">
+                            <div className="flex justify-between items-start mb-3">
+                              <span className="text-[10px] font-black text-[#FFCC00] uppercase tracking-[0.2em] bg-yellow-500/10 px-3 py-1 rounded-full">
+                                {new Date(booking.start).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                              </span>
+                              <span className="text-[10px] font-black text-blue-200 uppercase tracking-widest opacity-60">
+                                {booking.space.unit.name}
+                              </span>
+                            </div>
+                            <h5 className="font-black text-base mb-2 truncate group-hover/item:text-[#FFCC00] transition-colors">{booking.title}</h5>
+                            <div className="flex items-center gap-2 text-xs text-blue-100 font-medium opacity-80">
+                              <MapPin size={14} className="text-[#FFCC00]" />
+                              <span className="truncate">{booking.space.name}</span>
+                            </div>
+                          </div>
+                        ))
+                      )}
                     </div>
-                  ) : (
-                    allBookings.slice(0, 4).map((booking) => (
-                      <div key={booking.id} className="bg-white/10 hover:bg-white/20 p-5 rounded-2xl transition-all border border-white/10">
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="text-[10px] font-black text-[#FFCC00] uppercase tracking-[0.2em]">
-                            {new Date(booking.start).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                          </span>
-                          <span className="text-[10px] font-black text-blue-200 uppercase tracking-widest">
-                            {booking.space.unit.name}
-                          </span>
-                        </div>
-                        <h5 className="font-black text-sm mb-1 truncate">{booking.title}</h5>
-                        <div className="flex items-center gap-2 text-xs text-blue-100 font-medium">
-                          <MapPin size={12} className="text-[#FFCC00]" />
-                          <span className="truncate">{booking.space.name}</span>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
 
-                <div className="mt-8 pt-6 border-t border-white/10 text-center">
-                  <button className="text-[10px] font-black text-[#FFCC00] uppercase tracking-[0.2em] hover:text-white transition-colors">
-                    Ver agenda completa →
-                  </button>
+                    <div className="mt-10 pt-8 border-t border-white/10">
+                      <button className="w-full py-4 bg-white/10 hover:bg-white text-white hover:text-[#003399] rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500 border border-white/10">
+                        Ver Agenda Completa
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {units.map((unit) => (
-            <Link
-              key={unit.id}
-              href={`/unidade/${unit.slug}`}
-              className="group relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,51,153,0.1)] transition-all duration-500 border border-gray-100 p-8 flex flex-col items-center text-center overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:opacity-[0.08] group-hover:scale-110 transition-all duration-700">
-                <Building2 size={120} />
+          {/* Unidades Section */}
+          <div id="unidades" className="mb-32 scroll-mt-32">
+            <div className="flex items-center gap-4 mb-12">
+              <div className="w-12 h-12 bg-white text-[#FFCC00] rounded-2xl flex items-center justify-center shadow-xl shadow-yellow-500/5 border border-slate-100">
+                <Building2 size={24} />
               </div>
-              
-              <div className="w-20 h-20 bg-blue-50 text-[#003399] rounded-2xl flex items-center justify-center mb-8 group-hover:bg-[#003399] group-hover:text-white group-hover:rotate-6 transition-all duration-500 shadow-sm">
-                <Building2 size={40} />
+              <div>
+                <h3 className="text-3xl font-black text-[#003399] tracking-tight italic">Unidades Educacionais</h3>
+                <p className="text-slate-500 font-medium">Selecione o campus para gerenciar os ambientes.</p>
               </div>
-
-              <h3 className="text-2xl font-black text-[#003399] mb-3">{unit.name}</h3>
-              <p className="text-gray-500 mb-8 font-medium leading-relaxed">
-                {unit._count.spaces} ambientes disponíveis para atividades acadêmicas.
-              </p>
-
-              <div className="mt-auto flex items-center gap-3 text-[#003399] font-bold text-sm uppercase tracking-widest group-hover:gap-5 transition-all">
-                Explorar Espaços
-                <span className="text-xl">→</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        {/* Informações rápidas - Estilo Marista */}
-        <div className="mt-24 pt-16 border-t border-gray-100 grid grid-cols-1 gap-12 md:grid-cols-3">
-          <div className="flex flex-col items-center text-center px-4">
-            <div className="w-14 h-14 bg-blue-50 text-[#003399] rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-              <Calendar size={28} />
             </div>
-            <h4 className="text-xl font-black text-[#003399] mb-3">Agendamento Ágil</h4>
-            <p className="text-gray-600 font-medium leading-relaxed">Processo simplificado para reserva de salas e equipamentos em poucos cliques.</p>
+
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {units.map((unit) => (
+                <Link
+                  key={unit.id}
+                  href={`/unidade/${unit.slug}`}
+                  className="group relative bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_rgba(0,51,153,0.12)] transition-all duration-700 border border-slate-100 p-10 flex flex-col items-center text-center overflow-hidden hover:-translate-y-2"
+                >
+                  <div className="absolute top-0 right-0 p-10 opacity-[0.02] group-hover:opacity-[0.08] group-hover:scale-150 group-hover:rotate-12 transition-all duration-1000 text-[#003399]">
+                    <Building2 size={180} />
+                  </div>
+                  
+                  <div className="w-24 h-24 bg-slate-50 text-[#003399] rounded-[2rem] flex items-center justify-center mb-10 group-hover:bg-[#003399] group-hover:text-white group-hover:rotate-6 transition-all duration-700 shadow-inner">
+                    <Building2 size={48} />
+                  </div>
+
+                  <h3 className="text-3xl font-black text-[#003399] mb-4 tracking-tight italic">{unit.name}</h3>
+                  <div className="h-1 w-12 bg-[#FFCC00] rounded-full mb-6 group-hover:w-20 transition-all duration-700" />
+                  <p className="text-slate-500 mb-10 font-medium leading-relaxed">
+                    {unit._count.spaces} ambientes inteligentes prontos para agendamento.
+                  </p>
+
+                  <div className="mt-auto px-8 py-4 bg-slate-50 group-hover:bg-[#FFCC00] rounded-2xl flex items-center gap-3 text-[#003399] font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500">
+                    Explorar Espaços <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-col items-center text-center px-4">
-            <div className="w-14 h-14 bg-yellow-50 text-[#e6b800] rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-              <LayoutDashboard size={28} />
-            </div>
-            <h4 className="text-xl font-black text-[#003399] mb-3">Gestão Integrada</h4>
-            <p className="text-gray-600 font-medium leading-relaxed">Controle total sobre a ocupação dos espaços em todas as unidades educacionais.</p>
-          </div>
-          <div className="flex flex-col items-center text-center px-4">
-            <div className="w-14 h-14 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-              <Users size={28} />
-            </div>
-            <h4 className="text-xl font-black text-[#003399] mb-3">Suporte Colaborativo</h4>
-            <p className="text-gray-600 font-medium leading-relaxed">Comunicação direta com a equipe de Áudio Visual para suporte técnico especializado.</p>
+
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+            {[
+              { icon: Calendar, title: 'Agendamento Ágil', desc: 'Processo simplificado para reserva de salas e equipamentos em segundos.', color: 'blue' },
+              { icon: LayoutDashboard, title: 'Gestão Integrada', desc: 'Controle total sobre a ocupação dos espaços em toda a rede Marista.', color: 'yellow' },
+              { icon: Users, title: 'Suporte Técnico', desc: 'Integração direta com a equipe de AV para garantir o sucesso da sua aula.', color: 'green' }
+            ].map((f, i) => (
+              <div key={i} className="flex flex-col items-center text-center p-10 bg-white rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500">
+                <div className={`w-16 h-16 mb-8 rounded-[1.5rem] flex items-center justify-center shadow-inner ${
+                  f.color === 'blue' ? 'bg-blue-50 text-[#003399]' : 
+                  f.color === 'yellow' ? 'bg-yellow-50 text-[#e6b800]' : 'bg-green-50 text-green-600'
+                }`}>
+                  <f.icon size={32} />
+                </div>
+                <h4 className="text-2xl font-black text-[#003399] mb-4 tracking-tight italic">{f.title}</h4>
+                <p className="text-slate-500 font-medium leading-relaxed">{f.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </main>
 
-      <footer className="bg-white border-t border-gray-200 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-500 text-sm">
-          © {new Date().getFullYear()} Colégio Marista - Sistema de Agendamento Interno.
+      <footer className="bg-white border-t border-slate-100 mt-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex items-center gap-3 opacity-50">
+            <div className="w-10 h-10 bg-[#003399] rounded-xl flex items-center justify-center text-white font-black text-lg">M</div>
+            <div className="flex flex-col text-left">
+              <span className="text-sm font-black text-[#003399] leading-none uppercase tracking-tighter">Agendamento</span>
+              <span className="text-[8px] font-black text-slate-400 uppercase tracking-[0.3em]">Marista Brasil</span>
+            </div>
+          </div>
+          <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
+            © {new Date().getFullYear()} Colégio Marista • Sistema Interno de Gestão de Ativos
+          </p>
+          <div className="flex gap-6">
+            <button className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-[#003399] transition-colors">Termos</button>
+            <button className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-[#003399] transition-colors">Suporte</button>
+          </div>
         </div>
       </footer>
     </div>
