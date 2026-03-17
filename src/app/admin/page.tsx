@@ -15,6 +15,8 @@ import AdminSpaceManager from '@/components/AdminSpaceManager'
 import AdminUserManager from '@/components/AdminUserManager'
 import AdminUnitManager from '@/components/AdminUnitManager'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions)
   const isAdmin = (session?.user as any)?.role === 'ADMIN'
