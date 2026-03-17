@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server'
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(authOptions)
   if ((session?.user as any)?.role !== 'ADMIN') {
@@ -13,9 +13,10 @@ export async function PATCH(
   }
 
   try {
+    const { id } = await params
     const { name, slug } = await req.json()
     const unit = await prisma.unit.update({
-      where: { id: params.id },
+      where: { id },
       data: { name, slug }
     })
     return NextResponse.json(unit)
@@ -26,7 +27,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(authOptions)
   if ((session?.user as any)?.role !== 'ADMIN') {
@@ -34,8 +35,9 @@ export async function DELETE(
   }
 
   try {
+    const { id } = await params
     await prisma.unit.delete({
-      where: { id: params.id }
+      where: { id }
     })
     return NextResponse.json({ success: true })
   } catch (error) {
