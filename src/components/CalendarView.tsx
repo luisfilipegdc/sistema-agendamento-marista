@@ -11,7 +11,6 @@ import {
   endOfWeek, 
   isSameMonth, 
   isSameDay, 
-  addDays, 
   eachDayOfInterval,
   isToday
 } from 'date-fns'
@@ -93,34 +92,33 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
   }
 
   return (
-    <div className="bg-white overflow-hidden">
-      {/* Header do Calendário */}
-      <div className="p-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
-        <h2 className="text-xl font-black text-[#003399] flex items-center gap-3 capitalize italic tracking-tight">
-          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-100">
-            <CalendarIcon size={20} className="text-[#FFCC00]" />
+    <div className="overflow-hidden bg-card">
+      <div className="flex items-center justify-between border-b border-border bg-card px-4 py-3 sm:px-5">
+        <h2 className="flex items-center gap-3 text-lg font-medium tracking-tight text-foreground capitalize">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+            <CalendarIcon size={18} className="text-primary" />
           </div>
           {format(currentMonth, 'MMMM yyyy', { locale: ptBR })}
         </h2>
         <div className="flex items-center gap-2">
           <button 
             onClick={prevMonth}
-            className="p-3 hover:bg-white rounded-xl border border-transparent hover:border-slate-200 transition-all shadow-sm active:scale-90"
+            className="rounded-full border border-border p-2.5 transition-colors hover:bg-secondary active:scale-95"
           >
-            <ChevronLeft size={20} className="text-slate-400" />
+            <ChevronLeft size={18} className="text-muted-foreground" />
           </button>
           <button 
             onClick={nextMonth}
-            className="p-3 hover:bg-white rounded-xl border border-transparent hover:border-slate-200 transition-all shadow-sm active:scale-90"
+            className="rounded-full border border-border p-2.5 transition-colors hover:bg-secondary active:scale-95"
           >
-            <ChevronRight size={20} className="text-slate-400" />
+            <ChevronRight size={18} className="text-muted-foreground" />
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-7 border-b border-slate-50 bg-slate-50/10">
+      <div className="grid grid-cols-7 border-b border-border bg-secondary/20">
         {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(day => (
-          <div key={day} className="py-4 text-center text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">
+          <div key={day} className="py-3 text-center text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
             {day}
           </div>
         ))}
@@ -138,24 +136,24 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
               key={idx}
               onClick={() => setSelectedDate(day)}
               className={`
-                relative h-16 sm:h-24 border-r border-b border-slate-50 flex flex-col items-center justify-center transition-all group
-                ${!isCurrentMonth ? 'bg-slate-50/20 text-slate-200' : 'text-slate-600 hover:bg-blue-50/50'}
-                ${isSelected ? 'bg-blue-50/80 text-[#003399] z-10' : ''}
+                relative flex h-14 flex-col items-center justify-center border-r border-b border-border transition-colors group sm:h-20
+                ${!isCurrentMonth ? 'bg-secondary/20 text-muted-foreground/50' : 'text-muted-foreground hover:bg-secondary/60'}
+                ${isSelected ? 'z-10 bg-primary/10 text-primary' : ''}
               `}
             >
               <span className={`
-                text-sm font-black mb-2 transition-all
-                ${isCurrentDay && !isSelected ? 'w-8 h-8 bg-[#003399] text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20 rotate-3' : ''}
-                ${isSelected ? 'scale-125' : 'group-hover:scale-110'}
+                mb-1 text-sm font-medium transition-all
+                ${isCurrentDay && !isSelected ? 'flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground' : ''}
+                ${isSelected ? 'scale-110' : 'group-hover:scale-105'}
               `}>
                 {format(day, 'd')}
               </span>
               
               {hasBooking && (
                 <div className="flex gap-1">
-                  <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-[#003399]' : 'bg-[#FFCC00]'} animate-pulse`} />
+                  <div className={`h-1.5 w-1.5 rounded-full ${isSelected ? 'bg-primary' : 'bg-primary/80'} animate-pulse`} />
                   {bookings.filter(b => isSameDay(new Date(b.start), day)).length > 1 && (
-                    <div className={`w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-[#003399]' : 'bg-[#FFCC00]'} opacity-50`} />
+                    <div className={`h-1.5 w-1.5 rounded-full ${isSelected ? 'bg-primary' : 'bg-primary/80'} opacity-45`} />
                   )}
                 </div>
               )}
@@ -165,46 +163,46 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
       </div>
 
       {/* Lista de agendamentos do dia selecionado */}
-      <div className="p-8 bg-slate-50/30">
+      <div className="bg-secondary/20 p-4 sm:p-5">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xs font-black text-[#003399] uppercase tracking-[0.2em] flex items-center gap-3 italic">
-            <div className="w-1.5 h-6 bg-[#FFCC00] rounded-full" />
+          <h3 className="flex items-center gap-2 text-xs font-medium tracking-wide text-primary uppercase">
+            <div className="h-5 w-1 rounded-full bg-primary" />
             Agenda: {format(selectedDate, "d 'de' MMMM", { locale: ptBR })}
           </h3>
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-white px-3 py-1 rounded-full border border-slate-100 shadow-sm">
+          <span className="rounded-full border border-border bg-background px-3 py-1 text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
             {selectedDayBookings.length} Atividades
           </span>
         </div>
         
         <div className="space-y-4">
           {selectedDayBookings.length === 0 ? (
-            <div className="bg-white p-10 rounded-3xl border border-slate-100 border-dashed text-center">
-              <p className="text-sm text-slate-400 font-medium italic">Nenhum agendamento para este dia.</p>
+            <div className="rounded-xl border border-dashed border-border bg-background p-8 text-center">
+              <p className="text-sm font-medium text-muted-foreground">Nenhum agendamento para este dia.</p>
             </div>
           ) : (
             selectedDayBookings.map((booking) => (
-              <div key={booking.id} className="group bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-blue-900/5 transition-all duration-500 flex flex-col sm:flex-row sm:items-center justify-between gap-6 relative overflow-hidden">
-                <div className="absolute left-0 top-0 w-1.5 h-full bg-[#003399] opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div key={booking.id} className="group relative flex flex-col justify-between gap-5 overflow-hidden rounded-xl border border-border bg-background p-5 transition-colors hover:bg-secondary/50 sm:flex-row sm:items-center">
+                <div className="absolute left-0 top-0 h-full w-1 bg-primary/30 opacity-0 transition-opacity group-hover:opacity-100" />
                 
                 <div className="flex items-start gap-5 relative z-10">
-                  <div className="w-14 h-14 bg-slate-50 text-[#003399] rounded-2xl flex items-center justify-center shrink-0 shadow-inner group-hover:bg-[#003399] group-hover:text-white transition-all duration-500">
-                    <Clock size={24} />
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                    <Clock size={18} />
                   </div>
                   <div>
-                    <h4 className="text-lg font-black text-[#003399] tracking-tight italic group-hover:translate-x-1 transition-transform">{booking.title}</h4>
+                    <h4 className="text-base font-medium tracking-tight text-foreground group-hover:translate-x-0.5 transition-transform">{booking.title}</h4>
                     <div className="flex flex-wrap items-center gap-4 mt-2">
-                      <span className="text-xs text-slate-500 font-black uppercase tracking-widest flex items-center gap-1.5">
-                        <Clock size={14} className="text-[#FFCC00]" />
+                      <span className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                        <Clock size={14} className="text-primary" />
                         {format(new Date(booking.start), 'HH:mm')} - {format(new Date(booking.end), 'HH:mm')}
                       </span>
                       {booking.class && (
-                        <span className="text-xs text-slate-500 font-bold bg-slate-100 px-2 py-0.5 rounded-md">
+                        <span className="rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
                           Turma: {booking.class}
                         </span>
                       )}
-                      <span className="text-xs text-slate-300 hidden sm:inline">•</span>
-                      <span className="text-xs text-slate-500 font-bold flex items-center gap-1.5">
-                        <User size={14} className="text-[#FFCC00]" />
+                      <span className="hidden text-xs text-muted-foreground sm:inline">•</span>
+                      <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                        <User size={14} className="text-primary" />
                         {booking.user.name || 'Professor'}
                       </span>
                     </div>
@@ -214,41 +212,41 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
                       <div className="mt-4 space-y-3">
                         <div className="flex flex-wrap gap-2">
                           {booking.airConditioning && (
-                            <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-[#003399] rounded-full text-[9px] font-black uppercase tracking-widest border border-blue-100 shadow-sm">
+                            <span className="flex items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1 text-[9px] font-medium tracking-wide text-foreground uppercase">
                               <Wind size={10} /> Ar
                             </span>
                           )}
                           {booking.microphones > 0 && (
-                            <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-yellow-100 shadow-sm">
+                            <span className="flex items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1 text-[9px] font-medium tracking-wide text-foreground uppercase">
                               <Mic size={10} /> {booking.microphones} Mic {booking.wirelessMic ? '(S/Fio)' : ''}
                             </span>
                           )}
                           {booking.projection && (
-                            <span className="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-green-100 shadow-sm">
+                            <span className="flex items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1 text-[9px] font-medium tracking-wide text-foreground uppercase">
                               <Monitor size={10} /> Projeção
                             </span>
                           )}
                           {booking.audioSupport && (
-                            <span className="flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-purple-100 shadow-sm">
+                            <span className="flex items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1 text-[9px] font-medium tracking-wide text-foreground uppercase">
                               <Music size={10} /> Som
                             </span>
                           )}
                           {booking.schoolComputer && (
-                            <span className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 text-slate-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-slate-200 shadow-sm">
+                            <span className="flex items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1 text-[9px] font-medium tracking-wide text-foreground uppercase">
                               <Laptop size={10} /> PC Escola
                             </span>
                           )}
                           {booking.externalComputer && (
-                            <span className="flex items-center gap-1.5 px-3 py-1 bg-orange-50 text-orange-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-orange-100 shadow-sm">
+                            <span className="flex items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1 text-[9px] font-medium tracking-wide text-foreground uppercase">
                               <Laptop size={10} /> Notebook
                             </span>
                           )}
                         </div>
                         
                         {booking.techNotes && (
-                          <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 flex gap-2 items-start">
-                            <FileText size={12} className="text-slate-400 mt-0.5 shrink-0" />
-                            <p className="text-[10px] text-slate-500 font-medium italic leading-tight">
+                          <div className="flex items-start gap-2 rounded-lg border border-border bg-secondary/60 p-3">
+                            <FileText size={12} className="mt-0.5 shrink-0 text-muted-foreground" />
+                            <p className="text-[10px] font-medium leading-tight text-muted-foreground">
                               {booking.techNotes}
                             </p>
                           </div>
@@ -259,10 +257,10 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
                 </div>
                 
                 <div className="flex items-center gap-4 relative z-10">
-                  <span className={`px-4 py-2 text-[9px] font-black rounded-full uppercase tracking-[0.2em] border shadow-sm ${
+                  <span className={`rounded-full border px-3 py-1.5 text-[9px] font-medium uppercase tracking-wide ${
                     booking.type === 'FIXED' 
-                      ? 'bg-purple-50 text-purple-700 border-purple-100' 
-                      : 'bg-blue-50 text-[#003399] border-blue-100'
+                      ? 'bg-secondary text-foreground border-border' 
+                      : 'bg-primary/10 text-primary border-primary/20'
                   }`}>
                     {booking.type === 'FIXED' ? 'Recorrente' : 'Evento Único'}
                   </span>
@@ -270,7 +268,7 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
                   {(isAdmin || (isAV && booking.space.unitId === user?.unitId) || booking.userId === userId) && (
                     <button 
                       onClick={() => handleDeleteBooking(booking.id)}
-                      className="p-3 text-slate-300 hover:text-red-600 hover:bg-red-50 rounded-2xl transition-all border border-transparent hover:border-red-100 active:scale-90"
+                      className="rounded-full border border-transparent p-2.5 text-muted-foreground transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-600 active:scale-95"
                       title="Cancelar Agendamento"
                     >
                       <Trash2 size={18} />
