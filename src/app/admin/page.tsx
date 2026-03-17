@@ -12,6 +12,8 @@ import {
   Activity,
 } from 'lucide-react'
 import AdminSpaceManager from '@/components/AdminSpaceManager'
+import AdminUserManager from '@/components/AdminUserManager'
+import AdminUnitManager from '@/components/AdminUnitManager'
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions)
@@ -87,14 +89,19 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Gerenciador de Espaços (Client Component) */}
-          <div className="lg:col-span-2">
-            <AdminSpaceManager initialSpaces={spaces as any} units={units as any} />
-          </div>
+        <div className="space-y-12">
+          {/* Gerenciador de Unidades */}
+          <AdminUnitManager />
 
-          {/* Logs / Atividades Recentes */}
-          <div className="lg:col-span-1 space-y-8">
+          {/* Gerenciador de Espaços e Usuários */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div className="lg:col-span-2 space-y-12">
+              <AdminSpaceManager initialSpaces={spaces as any} units={units as any} />
+              <AdminUserManager />
+            </div>
+
+            {/* Coluna Lateral */}
+            <div className="lg:col-span-1 space-y-8">
             <div className="bg-white rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 overflow-hidden">
               <div className="p-8 border-b border-gray-50 flex items-center gap-3">
                 <div className="w-10 h-10 bg-gray-50 text-gray-400 rounded-xl flex items-center justify-center">
