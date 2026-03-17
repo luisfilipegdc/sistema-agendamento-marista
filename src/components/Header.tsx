@@ -24,6 +24,14 @@ export default async function Header() {
           </div>
         </Link>
 
+        <nav className="hidden md:flex items-center gap-8">
+          <Link href="/" className="text-[10px] font-black text-white/70 hover:text-white uppercase tracking-[0.2em] transition-colors">Início</Link>
+          <Link href="/minhas-reservas" className="text-[10px] font-black text-white/70 hover:text-white uppercase tracking-[0.2em] transition-colors">Minhas Reservas</Link>
+          {(session?.user as any)?.role === 'ADMIN' && (
+            <Link href="/admin" className="text-[10px] font-black text-[#FFCC00] hover:text-white uppercase tracking-[0.2em] transition-colors">Painel Admin</Link>
+          )}
+        </nav>
+
         <div className="flex items-center gap-6">
           {session ? (
             <div className="flex items-center gap-4">

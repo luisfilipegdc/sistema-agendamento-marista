@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Building2, Calendar, LayoutDashboard, Users, Clock, MapPin, ArrowRight, ShieldCheck, Zap } from 'lucide-react'
 import Header from '@/components/Header'
 import CalendarView from '@/components/CalendarView'
+import HumanDecisionFlow from '@/components/HumanDecisionFlow'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,6 +13,14 @@ export default async function Home() {
       include: {
         _count: {
           select: { spaces: true }
+        },
+        spaces: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            capacity: true
+          }
         }
       }
     }),
@@ -54,13 +63,18 @@ export default async function Home() {
               Infraestrutura inteligente para potencializar a excelência acadêmica e a inovação pedagógica.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="#unidades" className="px-8 py-5 bg-[#003399] text-white rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-[#002266] transition-all shadow-xl shadow-blue-900/20 active:scale-95 flex items-center gap-3">
-                Explorar Unidades <ArrowRight size={18} />
+              <a href="#fluxo-decisao" className="px-8 py-5 bg-[#003399] text-white rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-[#002266] transition-all shadow-xl shadow-blue-900/20 active:scale-95 flex items-center gap-3">
+                Agendar Agora <ArrowRight size={18} />
               </a>
               <div className="px-8 py-5 bg-white text-slate-600 rounded-[2rem] font-black text-xs uppercase tracking-widest border border-slate-200 flex items-center gap-3">
                 <Zap size={18} className="text-[#FFCC00]" /> {allBookings.length} Atividades Hoje
               </div>
             </div>
+          </div>
+
+          {/* NOVO: Fluxo de Decisão Humanizado */}
+          <div id="fluxo-decisao" className="mb-32 scroll-mt-32">
+            <HumanDecisionFlow units={units as any} />
           </div>
 
           {/* Agenda Global Section */}
@@ -130,47 +144,6 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Unidades Section */}
-          <div id="unidades" className="mb-32 scroll-mt-32">
-            <div className="flex items-center gap-4 mb-12">
-              <div className="w-12 h-12 bg-white text-[#FFCC00] rounded-2xl flex items-center justify-center shadow-xl shadow-yellow-500/5 border border-slate-100">
-                <Building2 size={24} />
-              </div>
-              <div>
-                <h3 className="text-3xl font-black text-[#003399] tracking-tight italic">Unidades Educacionais</h3>
-                <p className="text-slate-500 font-medium">Selecione o campus para gerenciar os ambientes.</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {units.map((unit) => (
-                <Link
-                  key={unit.id}
-                  href={`/unidade/${unit.slug}`}
-                  className="group relative bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_rgba(0,51,153,0.12)] transition-all duration-700 border border-slate-100 p-10 flex flex-col items-center text-center overflow-hidden hover:-translate-y-2"
-                >
-                  <div className="absolute top-0 right-0 p-10 opacity-[0.02] group-hover:opacity-[0.08] group-hover:scale-150 group-hover:rotate-12 transition-all duration-1000 text-[#003399]">
-                    <Building2 size={180} />
-                  </div>
-                  
-                  <div className="w-24 h-24 bg-slate-50 text-[#003399] rounded-[2rem] flex items-center justify-center mb-10 group-hover:bg-[#003399] group-hover:text-white group-hover:rotate-6 transition-all duration-700 shadow-inner">
-                    <Building2 size={48} />
-                  </div>
-
-                  <h3 className="text-3xl font-black text-[#003399] mb-4 tracking-tight italic">{unit.name}</h3>
-                  <div className="h-1 w-12 bg-[#FFCC00] rounded-full mb-6 group-hover:w-20 transition-all duration-700" />
-                  <p className="text-slate-500 mb-10 font-medium leading-relaxed">
-                    {unit._count.spaces} ambientes inteligentes prontos para agendamento.
-                  </p>
-
-                  <div className="mt-auto px-8 py-4 bg-slate-50 group-hover:bg-[#FFCC00] rounded-2xl flex items-center gap-3 text-[#003399] font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500">
-                    Explorar Espaços <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
-              ))}
             </div>
           </div>
 

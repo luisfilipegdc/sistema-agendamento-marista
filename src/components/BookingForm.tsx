@@ -51,6 +51,21 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
     audioSupport: false
   })
 
+  // Sugestões de horários (Design Preventivo)
+  const timeSuggestions = [
+    { label: '07:15 - 08:00', start: '07:15', end: '08:00' },
+    { label: '08:00 - 08:45', start: '08:00', end: '08:45' },
+    { label: '08:45 - 09:30', start: '08:45', end: '09:30' },
+    { label: '10:00 - 10:45', start: '10:00', end: '10:45' },
+    { label: '10:45 - 11:30', start: '10:45', end: '11:30' },
+    { label: '13:30 - 14:15', start: '13:30', end: '14:15' },
+    { label: '14:15 - 15:00', start: '14:15', end: '15:00' },
+  ]
+
+  const applySuggestion = (s: typeof timeSuggestions[0]) => {
+    setFormData(prev => ({ ...prev, startTime: s.start, endTime: s.end }))
+  }
+
   const toggleDay = (day: number) => {
     setFormData(prev => ({
       ...prev,
@@ -137,6 +152,8 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           startTime: '',
           endTime: '',
           type: 'ONE_OFF',
+          repeatUntil: '',
+          daysOfWeek: [],
           airConditioning: true,
           microphones: 0,
           wirelessMic: false,
@@ -145,7 +162,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           externalComputer: false,
           audioSupport: false
         })
-      }, 3000)
+      }, 5000)
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -177,14 +194,41 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
 
   if (success) {
     return (
-      <div className="bg-white p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,51,153,0.1)] border border-green-100 flex flex-col items-center text-center animate-in zoom-in-95 duration-500">
-        <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6 shadow-inner">
-          <CheckCircle2 size={40} />
+      <div className="bg-white p-12 rounded-[3rem] shadow-[0_30px_60px_rgba(0,51,153,0.15)] border border-green-100 flex flex-col items-center text-center animate-in zoom-in-95 duration-500 relative overflow-hidden">
+        {/* Background Magic */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-green-50 rounded-full blur-3xl opacity-50" />
+        
+        <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-8 shadow-inner relative z-10">
+          <CheckCircle2 size={48} />
         </div>
-        <h2 className="text-2xl font-black text-[#003399] mb-2 tracking-tight italic">Reserva Confirmada!</h2>
-        <p className="text-gray-500 font-medium text-sm leading-relaxed max-w-[240px]">
-          Seu agendamento foi registrado com sucesso. Enviamos um e-mail de confirmação.
-        </p>
+        
+        <div className="relative z-10">
+          <h2 className="text-3xl font-black text-[#003399] mb-4 tracking-tight italic">🎉 Reserva Confirmada!</h2>
+          <p className="text-slate-600 font-bold text-lg mb-2 leading-tight">
+            Bom uso do {spaceName}!
+          </p>
+          <p className="text-slate-400 font-medium text-sm leading-relaxed max-w-[280px] mx-auto mb-8">
+            Seu agendamento foi registrado e a equipe de AV já foi notificada.
+          </p>
+          
+          <div className="p-6 bg-slate-50 rounded-[2rem] border border-slate-100 space-y-3 mb-8">
+            <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
+              <span className="text-slate-400">Atividade</span>
+              <span className="text-[#003399]">{formData.title}</span>
+            </div>
+            <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
+              <span className="text-slate-400">Horário</span>
+              <span className="text-[#003399]">{formData.startTime} - {formData.endTime}</span>
+            </div>
+          </div>
+
+          <button 
+            onClick={() => setSuccess(false)}
+            className="text-[10px] font-black text-[#003399] uppercase tracking-[0.3em] hover:opacity-70 transition-opacity"
+          >
+            Fazer nova reserva
+          </button>
+        </div>
       </div>
     )
   }
@@ -293,6 +337,29 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                     className="w-full pl-14 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all"
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* Sugestões de Horários - Redução de esforço mental */}
+            <div className="space-y-3">
+              <label className="block text-[10px] font-black text-[#003399] uppercase tracking-widest ml-1 italic">
+                Sugestões (Blocos de 45 min):
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {timeSuggestions.map((s, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => applySuggestion(s)}
+                    className={`px-3 py-2 rounded-xl text-[10px] font-black transition-all border ${
+                      formData.startTime === s.start && formData.endTime === s.end
+                        ? 'bg-[#003399] text-white border-[#003399] shadow-lg shadow-blue-900/10'
+                        : 'bg-white text-slate-400 border-slate-100 hover:border-blue-200'
+                    }`}
+                  >
+                    {s.label}
+                  </button>
+                ))}
               </div>
             </div>
 

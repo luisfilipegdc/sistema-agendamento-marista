@@ -95,6 +95,16 @@ export default async function SpacePage({ params }: { params: Promise<{ slug: st
 
                   <div className="flex items-start gap-5 group/item">
                     <div className="w-12 h-12 bg-yellow-50 text-[#e6b800] rounded-2xl flex items-center justify-center shrink-0 shadow-inner group-hover/item:bg-[#FFCC00] group-hover/item:text-[#003399] transition-all duration-500">
+                      <Clock size={22} />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Duração Sugerida</p>
+                      <p className="text-lg font-black text-slate-700 tracking-tight italic">Blocos de 45 min</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-5 group/item">
+                    <div className="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center shrink-0 shadow-inner group-hover/item:bg-green-600 group-hover/item:text-white transition-all duration-500">
                       <Settings size={22} />
                     </div>
                     <div>
