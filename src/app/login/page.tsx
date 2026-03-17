@@ -3,8 +3,12 @@
 import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Mail, Lock, Loader2, CheckCircle } from 'lucide-react'
+import { Mail, Lock, Loader2, CheckCircle, ArrowRight } from 'lucide-react'
 import { signIn } from 'next-auth/react'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 
 function LoginForm() {
   const router = useRouter()
@@ -51,104 +55,77 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl">
+    <div className="flex min-h-screen items-center justify-center px-4 py-10">
+      <Card className="w-full max-w-md rounded-[2rem] border-border/80 bg-card/80 shadow-[0_40px_60px_-45px] shadow-primary/70">
+        <CardHeader className="space-y-3 pb-2">
+          <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
             M
           </div>
-        </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Acesse sua conta
-        </h2>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-100">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <CardTitle className="text-2xl font-black tracking-tight">Acesse sua conta</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">
+            Entre para continuar no fluxo de agendamento inteligente.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             {success && (
-              <div className="bg-green-50 border-l-4 border-green-400 p-4 text-green-700 text-sm flex items-center gap-2">
+              <div className="rounded-xl border border-green-200 bg-green-50 p-3 text-sm text-green-700 flex items-center gap-2">
                 <CheckCircle size={18} />
                 {success}
               </div>
             )}
             
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-400 p-4 text-red-700 text-sm">
+              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                 {error}
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                E-mail Institucional
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
+              <Label className="mb-2 block text-xs tracking-wide text-muted-foreground">E-mail Institucional</Label>
+              <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                   <Mail size={18} />
                 </div>
-                <input
+                <Input
                   name="email"
                   type="email"
                   required
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                  className="h-12 rounded-xl border-border bg-background pl-10 font-medium"
                   placeholder="email@marista.edu.br"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Senha
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
+              <Label className="mb-2 block text-xs tracking-wide text-muted-foreground">Senha</Label>
+              <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                   <Lock size={18} />
                 </div>
-                <input
+                <Input
                   name="password"
                   type="password"
                   required
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                  className="h-12 rounded-xl border-border bg-background pl-10 font-medium"
                   placeholder="••••••••"
                 />
               </div>
             </div>
 
-            <div>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                {isLoading ? <Loader2 className="animate-spin" size={20} /> : 'Entrar'}
-              </button>
-            </div>
+            <Button type="submit" disabled={isLoading} className="h-12 w-full rounded-xl text-sm font-bold">
+              {isLoading ? <Loader2 className="animate-spin" size={18} /> : <>Entrar <ArrowRight size={16} /></>}
+            </Button>
           </form>
 
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">
-                  Novo por aqui?
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <Link
-                href="/register"
-                className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-              >
-                Criar conta de professor
-              </Link>
-            </div>
+          <div className="mt-6 rounded-xl border border-border bg-secondary/40 p-3 text-center">
+            <p className="mb-2 text-xs text-muted-foreground">Novo por aqui?</p>
+            <Link href="/register" className="text-sm font-bold text-primary hover:underline">
+              Criar conta de professor
+            </Link>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
@@ -157,9 +134,8 @@ export const dynamic = 'force-dynamic'
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50"><Loader2 className="animate-spin text-blue-600" size={40} /></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-primary" size={40} /></div>}>
       <LoginForm />
     </Suspense>
   )
 }
-

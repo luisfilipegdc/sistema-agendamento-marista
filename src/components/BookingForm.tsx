@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { motion, AnimatePresence } from 'framer-motion'
+import confetti from 'canvas-confetti'
 import { 
   Calendar as CalendarIcon, 
-  Clock, 
   Loader2, 
   AlertCircle, 
   Settings, 
@@ -44,6 +44,12 @@ interface BookingFormProps {
   spaceName: string
 }
 
+type AvailabilitySlot = {
+  start: string
+  end: string
+  status: 'available' | 'booked' | 'blocked'
+}
+
 export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
   const router = useRouter()
   const { data: session } = useSession()
@@ -51,7 +57,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
-  const [availableSlots, setAvailableSlots] = useState<any[]>([])
+  const [availableSlots, setAvailableSlots] = useState<AvailabilitySlot[]>([])
   const [isLoadingSlots, setIsLoadingSlots] = useState(false)
   
   // Form State
@@ -83,14 +89,24 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
     }
   }, [formData.date])
 
+  useEffect(() => {
+    if (!success) return
+    confetti({
+      particleCount: 120,
+      spread: 80,
+      origin: { y: 0.65 },
+      colors: ['#6755F5', '#21C8A8', '#F59E0B', '#FFFFFF'],
+    })
+  }, [success])
+
   const fetchAvailability = async (date: string) => {
     if (!date || !spaceId) return
     setIsLoadingSlots(true)
     try {
       const res = await fetch(`/api/availability?spaceId=${spaceId}&date=${date}`)
       const data = await res.json()
-      setAvailableSlots(data)
-    } catch (err) {
+      setAvailableSlots(data as AvailabilitySlot[])
+    } catch {
       console.error('Error fetching slots')
     } finally {
       setIsLoadingSlots(false)
@@ -106,7 +122,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
     }))
   }
 
-  const selectSlot = (slot: any) => {
+  const selectSlot = (slot: AvailabilitySlot) => {
     if (slot.status !== 'available') return
     setFormData(prev => ({ ...prev, startTime: slot.start, endTime: slot.end }))
   }
@@ -131,8 +147,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
     setStep(step - 1)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     if (step === 1) {
       nextStep()
       return
@@ -193,8 +208,8 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           techNotes: ''
         })
       }, 5000)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro ao realizar agendamento')
     } finally {
       setIsLoading(false)
     }
@@ -302,7 +317,10 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
       </CardHeader>
 
       <CardContent className="p-8">
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={(event) => {
+          event.preventDefault()
+          void handleSubmit()
+        }} className="space-y-8">
           <AnimatePresence mode="wait">
             {error && (
               <motion.div 
@@ -371,7 +389,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                 <div className="space-y-2.5">
                   <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Quando você quer usar?</Label>
                   <Popover>
-                    <PopoverTrigger asChild>
+                    <PopoverTrigger>
                       <Button
                         variant={"outline"}
                         className={cn(
@@ -466,7 +484,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                     value={formData.type} 
                     onValueChange={val => setFormData({ 
                       ...formData, 
-                      type: val,
+                      type: val ?? 'ONE_OFF',
                       daysOfWeek: val === 'FIXED' && formData.date ? [formData.date.getDay()] : formData.daysOfWeek
                     })}
                   >
@@ -713,6 +731,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
         
         {step < 2 ? (
           <Button
+            type="button"
             onClick={nextStep}
             className="flex-1 h-14 bg-[#003399] text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-[#002266] transition-all shadow-xl shadow-blue-900/10 flex items-center justify-center gap-2 active:scale-95 border-none"
           >
@@ -720,7 +739,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           </Button>
         ) : (
           <Button
-            onClick={handleSubmit}
+            type="submit"
             disabled={isLoading}
             className="flex-[2] h-14 bg-[#003399] text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-[#002266] transition-all shadow-xl shadow-blue-900/10 flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95 border-none"
           >

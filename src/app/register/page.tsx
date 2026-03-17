@@ -3,7 +3,12 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Building2, User, Mail, Lock, Loader2 } from 'lucide-react'
+import { User, Mail, Lock, Loader2, ArrowRight } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -50,123 +55,103 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl">
+    <div className="flex min-h-screen items-center justify-center px-4 py-10">
+      <Card className="w-full max-w-md rounded-[2rem] border-border/80 bg-card/80 shadow-[0_40px_60px_-45px] shadow-primary/70">
+        <CardHeader>
+          <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
             M
           </div>
-        </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Crie sua conta
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Acesse o sistema de agendamento do Marista
-        </p>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-100">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <CardTitle className="text-2xl font-black tracking-tight">Crie sua conta</CardTitle>
+          <CardDescription>Acesse o sistema de agendamento com fluxo guiado.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-400 p-4 text-red-700 text-sm">
+              <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                 {error}
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Nome Completo
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
+              <Label className="mb-2 block text-xs tracking-wide text-muted-foreground">Nome Completo</Label>
+              <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                   <User size={18} />
                 </div>
-                <input
+                <Input
                   name="name"
                   type="text"
                   required
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                  className="h-12 rounded-xl border-border bg-background pl-10 font-medium"
                   placeholder="Seu nome"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                E-mail Institucional
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
+              <Label className="mb-2 block text-xs tracking-wide text-muted-foreground">E-mail Institucional</Label>
+              <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                   <Mail size={18} />
                 </div>
-                <input
+                <Input
                   name="email"
                   type="email"
                   required
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                  className="h-12 rounded-xl border-border bg-background pl-10 font-medium"
                   placeholder="email@marista.edu.br"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Senha
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
+              <Label className="mb-2 block text-xs tracking-wide text-muted-foreground">Senha</Label>
+              <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                   <Lock size={18} />
                 </div>
-                <input
+                <Input
                   name="password"
                   type="password"
                   required
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-blue-600 focus:border-blue-600 sm:text-sm"
+                  className="h-12 rounded-xl border-border bg-background pl-10 font-medium"
                   placeholder="••••••••"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Tipo de Usuário
-              </label>
-              <select
-                name="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border text-slate-800"
-              >
-                <option value="PROFESSOR">Professor</option>
-                <option value="COLLABORATOR">Colaborador</option>
-              </select>
+              <Label className="mb-2 block text-xs tracking-wide text-muted-foreground">Tipo de Usuário</Label>
+              <Select value={role} onValueChange={(value) => setRole(value ?? 'PROFESSOR')}>
+                <SelectTrigger className="h-12 rounded-xl border-border bg-background">
+                  <SelectValue placeholder="Selecione o perfil" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="PROFESSOR">Professor</SelectItem>
+                  <SelectItem value="COLLABORATOR">Colaborador</SelectItem>
+                </SelectContent>
+              </Select>
+              <input type="hidden" name="role" value={role} />
             </div>
 
-            <div className="mt-6 text-center">
-              <Link href="/register/av" className="text-xs text-gray-500 hover:text-blue-600">
+            <div className="text-center">
+              <Link href="/register/av" className="text-xs text-muted-foreground hover:text-primary">
                 Faz parte da equipe de Áudio Visual? Clique aqui
               </Link>
             </div>
 
-            <div>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading ? <Loader2 className="animate-spin" size={20} /> : 'Criar Conta'}
-              </button>
-            </div>
+            <Button type="submit" disabled={isLoading} className="h-12 w-full rounded-xl text-sm font-bold">
+              {isLoading ? <Loader2 className="animate-spin" size={18} /> : <>Criar Conta <ArrowRight size={16} /></>}
+            </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <Link href="/login" className="text-sm font-medium text-blue-600 hover:text-blue-500">
+          <div className="mt-6 rounded-xl border border-border bg-secondary/40 p-3 text-center">
+            <Link href="/login" className="text-sm font-bold text-primary hover:underline">
               Já tem uma conta? Entre aqui
             </Link>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

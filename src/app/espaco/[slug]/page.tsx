@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
-import { ArrowLeft, MapPin, Users, Video, QrCode, Info, ShieldCheck, Settings } from 'lucide-react'
+import { ArrowLeft, MapPin, Users, Video, QrCode, Info, ShieldCheck, Settings, Clock } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'

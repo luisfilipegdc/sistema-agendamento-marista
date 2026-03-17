@@ -2,12 +2,32 @@ import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import Header from '@/components/Header'
-import { Calendar, Clock, MapPin, Trash2, Wind, Mic, Monitor, Laptop, Music, AlertCircle } from 'lucide-react'
+import { Calendar, Clock, MapPin, Trash2, Wind, Mic, Monitor, Laptop, FileText } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
 export const dynamic = 'force-dynamic'
+
+type BookingWithSpace = {
+  id: string
+  title: string
+  type: string
+  start: Date
+  end: Date
+  airConditioning: boolean
+  microphones: number
+  wirelessMic: boolean
+  projection: boolean
+  schoolComputer: boolean
+  externalComputer: boolean
+  techNotes?: string | null
+  space: {
+    name: string
+    unit: { name: string }
+  }
+}
 
 export default async function MyBookingsPage() {
   const session = await getServerSession(authOptions)
@@ -15,8 +35,11 @@ export default async function MyBookingsPage() {
   if (!session) {
     redirect('/login')
   }
+  if (!session.user?.email) {
+    redirect('/login')
+  }
 
-  const bookings = await prisma.booking.findMany({
+  const bookings = (await prisma.booking.findMany({
     where: {
       user: {
         email: session.user.email
@@ -32,7 +55,7 @@ export default async function MyBookingsPage() {
     orderBy: {
       start: 'desc'
     }
-  })
+  })) as BookingWithSpace[]
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
@@ -51,9 +74,9 @@ export default async function MyBookingsPage() {
             </div>
             <h3 className="text-xl font-black text-slate-400 mb-2 italic">Nenhuma reserva encontrada</h3>
             <p className="text-slate-400 mb-8 max-w-xs mx-auto">Você ainda não realizou nenhum agendamento no sistema.</p>
-            <a href="/" className="inline-flex items-center gap-2 px-8 py-4 bg-[#003399] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#002266] transition-all shadow-lg shadow-blue-900/10">
+            <Link href="/" className="inline-flex items-center gap-2 px-8 py-4 bg-[#003399] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#002266] transition-all shadow-lg shadow-blue-900/10">
               Agendar agora
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6">

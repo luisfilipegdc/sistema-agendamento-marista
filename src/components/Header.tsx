@@ -2,52 +2,55 @@ import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import UserMenu from './UserMenu'
+import { CalendarClock, House, LayoutDashboard, NotebookTabs } from 'lucide-react'
 
 export default async function Header() {
   const session = await getServerSession(authOptions)
-  
-  // Debug log para verificar o papel do usuário no servidor
-  if (session) {
-    console.log(`[AUTH DEBUG] Usuário: ${session.user?.email}, Role: ${(session.user as any)?.role}`)
-  }
 
   return (
-    <header className="bg-[#003399] border-b border-white/10 sticky top-0 z-50 backdrop-blur-md bg-opacity-95">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-4 group transition-transform active:scale-95">
-          <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-[#003399] font-black text-xl group-hover:rotate-6 transition-all shadow-xl shadow-blue-900/20">
-            M
+    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/75 backdrop-blur-xl">
+      <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="group flex items-center gap-3 transition-transform active:scale-[0.98]">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[0_14px_28px_-16px] shadow-primary/80 transition-all group-hover:-translate-y-0.5">
+            <CalendarClock size={20} className="group-hover:animate-pulse" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-xl font-black text-white leading-none tracking-tight italic">Agendamento</h1>
-            <span className="text-[10px] font-black text-[#FFCC00] uppercase tracking-[0.3em] mt-1">Marista Brasil</span>
+            <h1 className="text-base leading-none font-black tracking-tight text-foreground sm:text-lg">Agenda Inteligente</h1>
+            <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.24em] text-muted-foreground">Marista Brasil</span>
           </div>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
-          <Link href="/" className="text-[10px] font-black text-white/70 hover:text-white uppercase tracking-[0.2em] transition-colors">Início</Link>
-          <Link href="/minhas-reservas" className="text-[10px] font-black text-white/70 hover:text-white uppercase tracking-[0.2em] transition-colors">Minhas Reservas</Link>
+        <nav className="hidden items-center gap-2 rounded-2xl border border-border/80 bg-card/70 p-1.5 md:flex">
+          <Link href="/" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[11px] font-bold tracking-wide text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
+            <House size={14} />
+            Início
+          </Link>
+          <Link href="/minhas-reservas" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[11px] font-bold tracking-wide text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
+            <NotebookTabs size={14} />
+            Reservas
+          </Link>
           {(session?.user as any)?.role === 'ADMIN' && (
-            <Link href="/admin" className="text-[10px] font-black text-[#FFCC00] hover:text-white uppercase tracking-[0.2em] transition-colors">Painel Admin</Link>
+            <Link href="/admin" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[11px] font-bold tracking-wide text-primary transition-colors hover:bg-primary/10">
+              <LayoutDashboard size={14} />
+              Admin
+            </Link>
           )}
         </nav>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3">
           {session ? (
-            <div className="flex items-center gap-4">
-              <UserMenu user={session.user as any} />
-            </div>
+            <UserMenu user={session.user as any} />
           ) : (
             <div className="flex items-center gap-3">
               <Link 
                 href="/login" 
-                className="text-xs font-black text-white/80 hover:text-[#FFCC00] uppercase tracking-widest transition-all px-4 py-2 rounded-xl hover:bg-white/5"
+                className="rounded-xl px-3 py-2 text-[11px] font-semibold tracking-wide text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
               >
                 Entrar
               </Link>
               <Link 
                 href="/register" 
-                className="px-6 py-3 bg-[#FFCC00] text-[#003399] text-xs font-black uppercase tracking-widest rounded-xl hover:bg-white hover:shadow-xl hover:shadow-yellow-500/10 transition-all active:scale-95 shadow-lg shadow-yellow-500/5"
+                className="rounded-xl bg-primary px-4 py-2 text-[11px] font-bold tracking-wide text-primary-foreground shadow-[0_16px_24px_-14px] shadow-primary transition-all hover:brightness-110 active:scale-95"
               >
                 Criar Conta
               </Link>

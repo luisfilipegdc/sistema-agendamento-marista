@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
-import { Building2, Calendar, LayoutDashboard, Users, Clock, MapPin, ArrowRight, ShieldCheck, Zap, Sparkles } from 'lucide-react'
+import { CalendarClock, ArrowRight, Sparkles, Clock3, CalendarDays, BarChart3, Users, MapPin } from 'lucide-react'
 import Header from '@/components/Header'
 import CalendarView from '@/components/CalendarView'
 import HumanDecisionFlow from '@/components/HumanDecisionFlow'
@@ -40,177 +40,109 @@ export default async function Home() {
   ])
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 relative overflow-hidden">
-        {/* Background Decorative Elements */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none z-0">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-20" />
-          <div className="absolute bottom-40 right-10 w-96 h-96 bg-yellow-100 rounded-full blur-3xl opacity-20" />
-        </div>
-
-        <div className="relative z-10">
-          {/* PRD: Entrada Inteligente */}
-          <div className="mb-16">
-            <h2 className="text-2xl sm:text-3xl font-black text-[#003399] tracking-tight mb-2 italic flex items-center gap-3">
-              👋 Olá, Professor
-            </h2>
-            <p className="text-lg text-slate-500 font-medium">Vamos agendar um espaço hoje?</p>
+      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <section className="mb-8 rounded-[2rem] border border-border/80 bg-card/75 p-6 shadow-[0_28px_40px_-34px] shadow-primary/70 sm:p-10">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-bold tracking-wide text-primary">
+            <Sparkles size={14} />
+            Agenda com design comportamental
           </div>
-
-          {/* PRD: Cards Grandes de Decisão Binária */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-20">
-            <a href="#fluxo-decisao" className="group bg-[#003399] p-10 rounded-[3rem] text-white shadow-2xl shadow-blue-900/20 hover:-translate-y-2 transition-all duration-500 relative overflow-hidden">
-              <div className="absolute -right-10 -top-10 p-6 opacity-10 group-hover:scale-110 transition-transform">
-                <Calendar size={180} />
+          <h2 className="mt-4 text-2xl leading-tight font-black tracking-tight text-foreground sm:text-4xl">
+            Fluxo rápido para agendar sem esforço
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Escolha unidade, espaço, data e horário em poucos cliques com feedback visual imediato.
+          </p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <a href="#fluxo-decisao" className="group rounded-2xl bg-primary p-5 text-primary-foreground shadow-[0_20px_28px_-20px] shadow-primary transition-transform hover:-translate-y-0.5">
+              <div className="flex items-center justify-between">
+                <CalendarClock size={20} />
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </div>
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-8 border border-white/10">
-                  <Sparkles size={32} className="text-[#FFCC00]" />
-                </div>
-                <h3 className="text-3xl font-black mb-4 tracking-tight italic">Agendar Espaço</h3>
-                <p className="text-blue-100 font-medium opacity-80 leading-relaxed max-w-[240px]">
-                  Reserve salas, auditórios ou estúdios em menos de 30 segundos.
-                </p>
-                <div className="mt-8 flex items-center gap-2 text-[#FFCC00] font-black text-xs uppercase tracking-[0.2em]">
-                  Começar agora <ArrowRight size={18} />
-                </div>
-              </div>
+              <h3 className="mt-4 text-lg font-extrabold">Agendar Espaço</h3>
+              <p className="mt-1 text-xs opacity-85">Reserve em menos de 30 segundos.</p>
             </a>
-
-            <Link href="/minhas-reservas" className="group bg-white p-10 rounded-[3rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_rgba(0,51,153,0.1)] hover:-translate-y-2 transition-all duration-500 relative overflow-hidden">
-              <div className="absolute -right-10 -top-10 p-6 opacity-[0.03] group-hover:scale-110 transition-transform text-[#003399]">
-                <Clock size={180} />
+            <Link href="/minhas-reservas" className="group rounded-2xl border border-border bg-background p-5 transition-transform hover:-translate-y-0.5">
+              <div className="flex items-center justify-between text-primary">
+                <Clock3 size={20} />
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </div>
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 border border-blue-100">
-                  <Clock size={32} className="text-[#003399]" />
-                </div>
-                <h3 className="text-3xl font-black text-[#003399] mb-4 tracking-tight italic">Minhas Reservas</h3>
-                <p className="text-slate-400 font-medium leading-relaxed max-w-[240px]">
-                  Visualize seus agendamentos, cancele ou repita reservas anteriores.
-                </p>
-                <div className="mt-8 flex items-center gap-2 text-[#003399] font-black text-xs uppercase tracking-[0.2em]">
-                  Gerenciar agenda <ArrowRight size={18} />
-                </div>
-              </div>
+              <h3 className="mt-4 text-lg font-extrabold text-foreground">Minhas Reservas</h3>
+              <p className="mt-1 text-xs text-muted-foreground">Gerencie, repita ou cancele horários.</p>
             </Link>
           </div>
+        </section>
 
-          {/* Fluxo de Decisão Humanizado */}
-          <div id="fluxo-decisao" className="mb-32 scroll-mt-32">
+        <div id="fluxo-decisao" className="mb-14 scroll-mt-28">
+          <section className="rounded-[2rem] border border-border/80 bg-card/80 p-5 sm:p-8">
             <HumanDecisionFlow units={units as any} />
-          </div>
-
-          {/* Agenda Global Section */}
-          <div className="mb-32">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
-              <div>
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-12 h-12 bg-white text-[#003399] rounded-2xl flex items-center justify-center shadow-xl shadow-blue-900/5 border border-slate-100">
-                    <Calendar size={24} />
-                  </div>
-                  <h3 className="text-3xl font-black text-[#003399] tracking-tight italic">Agenda Global</h3>
-                </div>
-                <p className="text-slate-500 font-medium text-lg">Visão em tempo real da ocupação em toda a rede.</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-              {/* Calendário */}
-              <div className="lg:col-span-2 bg-white rounded-[3rem] shadow-[0_30px_60px_-15px_rgba(0,51,153,0.08)] border border-slate-100 overflow-hidden">
-                <CalendarView bookings={allBookings as any} />
-              </div>
-
-              {/* Sidebar: Atividades */}
-              <div className="lg:col-span-1 flex flex-col gap-8">
-                <div className="bg-gradient-to-br from-[#003399] to-[#001a4d] p-10 rounded-[3rem] text-white relative overflow-hidden group shadow-2xl shadow-blue-900/20 flex-1">
-                  <div className="absolute -right-10 -top-10 p-6 opacity-10 group-hover:scale-110 group-hover:rotate-12 transition-all duration-1000">
-                    <Clock size={200} />
-                  </div>
-                  
-                  <div className="relative z-10">
-                    <h4 className="text-2xl font-black mb-10 tracking-tight italic flex items-center gap-3">
-                      <Clock size={28} className="text-[#FFCC00]" />
-                      Próximas Atividades
-                    </h4>
-
-                    <div className="space-y-6">
-                      {allBookings.slice(0, 4).length === 0 ? (
-                        <div className="py-16 text-center border-2 border-dashed border-white/20 rounded-[2rem]">
-                          <p className="text-blue-200 font-medium italic opacity-60">Nenhuma atividade agendada para hoje.</p>
-                        </div>
-                      ) : (
-                        allBookings.slice(0, 4).map((booking) => (
-                          <div key={booking.id} className="bg-white/5 hover:bg-white/10 p-6 rounded-3xl transition-all border border-white/10 group/item">
-                            <div className="flex justify-between items-start mb-3">
-                              <span className="text-[10px] font-black text-[#FFCC00] uppercase tracking-[0.2em] bg-yellow-500/10 px-3 py-1 rounded-full">
-                                {new Date(booking.start).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                              </span>
-                              <span className="text-[10px] font-black text-blue-200 uppercase tracking-widest opacity-60">
-                                {booking.space.unit.name}
-                              </span>
-                            </div>
-                            <h5 className="font-black text-base mb-2 truncate group-hover/item:text-[#FFCC00] transition-colors">{booking.title}</h5>
-                            <div className="flex items-center gap-2 text-xs text-blue-100 font-medium opacity-80">
-                              <MapPin size={14} className="text-[#FFCC00]" />
-                              <span className="truncate">{booking.space.name}</span>
-                            </div>
-                          </div>
-                        ))
-                      )}
-                    </div>
-
-                    <div className="mt-10 pt-8 border-t border-white/10">
-                      <button className="w-full py-4 bg-white/10 hover:bg-white text-white hover:text-[#003399] rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500 border border-white/10">
-                        Ver Agenda Completa
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-            {[
-              { icon: Calendar, title: 'Agendamento Ágil', desc: 'Processo simplificado para reserva de salas e equipamentos em segundos.', color: 'blue' },
-              { icon: LayoutDashboard, title: 'Gestão Integrada', desc: 'Controle total sobre a ocupação dos espaços em toda a rede Marista.', color: 'yellow' },
-              { icon: Users, title: 'Suporte Técnico', desc: 'Integração direta com a equipe de AV para garantir o sucesso da sua aula.', color: 'green' }
-            ].map((f, i) => (
-              <div key={i} className="flex flex-col items-center text-center p-10 bg-white rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500">
-                <div className={`w-16 h-16 mb-8 rounded-[1.5rem] flex items-center justify-center shadow-inner ${
-                  f.color === 'blue' ? 'bg-blue-50 text-[#003399]' : 
-                  f.color === 'yellow' ? 'bg-yellow-50 text-[#e6b800]' : 'bg-green-50 text-green-600'
-                }`}>
-                  <f.icon size={32} />
-                </div>
-                <h4 className="text-2xl font-black text-[#003399] mb-4 tracking-tight italic">{f.title}</h4>
-                <p className="text-slate-500 font-medium leading-relaxed">{f.desc}</p>
-              </div>
-            ))}
-          </div>
+          </section>
         </div>
+
+        <section className="mb-14">
+          <div className="mb-6 flex items-center justify-between">
+            <h3 className="text-xl font-black tracking-tight text-foreground sm:text-2xl">Agenda Global</h3>
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-[11px] font-bold text-muted-foreground">
+              <CalendarDays size={13} />
+              {allBookings.length} hoje
+            </div>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-3">
+            <div className="overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_24px_34px_-30px] shadow-primary/60 lg:col-span-2">
+              <CalendarView bookings={allBookings as any} />
+            </div>
+            <div className="rounded-[2rem] border border-border bg-card p-5">
+              <h4 className="mb-4 text-sm font-extrabold tracking-wide text-foreground">Próximas atividades</h4>
+              <div className="space-y-3">
+                {allBookings.slice(0, 4).length === 0 ? (
+                  <div className="rounded-2xl border border-dashed border-border bg-secondary/30 p-6 text-center text-xs font-medium text-muted-foreground">
+                    Nenhuma atividade agendada para hoje.
+                  </div>
+                ) : (
+                  allBookings.slice(0, 4).map((booking) => (
+                    <div key={booking.id} className="rounded-2xl border border-border bg-background p-4">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-[10px] font-bold tracking-wide text-primary">
+                          {new Date(booking.start).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                        <span className="text-[10px] font-semibold text-muted-foreground">{booking.space.unit.name}</span>
+                      </div>
+                      <p className="truncate text-sm font-bold text-foreground">{booking.title}</p>
+                      <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
+                        <MapPin size={12} />
+                        {booking.space.name}
+                      </p>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="grid gap-4 sm:grid-cols-3">
+          {[
+            { icon: CalendarDays, title: 'Agendamento rápido', desc: 'Fluxo simples e objetivo.' },
+            { icon: BarChart3, title: 'Visão em tempo real', desc: 'Status por horário e disponibilidade.' },
+            { icon: Users, title: 'Apoio técnico', desc: 'Detalhes para equipe AV no mesmo fluxo.' }
+          ].map((feature) => (
+            <div key={feature.title} className="rounded-2xl border border-border bg-card p-4">
+              <div className="mb-3 inline-flex rounded-xl bg-primary/10 p-2 text-primary">
+                <feature.icon size={18} />
+              </div>
+              <p className="text-sm font-extrabold text-foreground">{feature.title}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{feature.desc}</p>
+            </div>
+          ))}
+        </section>
       </main>
 
-      <footer className="bg-white border-t border-slate-100 mt-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="flex items-center gap-3 opacity-50">
-            <div className="w-10 h-10 bg-[#003399] rounded-xl flex items-center justify-center text-white font-black text-lg">M</div>
-            <div className="flex flex-col text-left">
-              <span className="text-sm font-black text-[#003399] leading-none uppercase tracking-tighter">Agendamento</span>
-              <span className="text-[8px] font-black text-slate-400 uppercase tracking-[0.3em]">Marista Brasil</span>
-            </div>
-          </div>
-          <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
-            © {new Date().getFullYear()} Colégio Marista • Sistema Interno de Gestão de Ativos
-          </p>
-          <div className="flex gap-6">
-            <button className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-[#003399] transition-colors">Termos</button>
-            <button className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-[#003399] transition-colors">Suporte</button>
-          </div>
+      <footer className="mt-16 border-t border-border/70 bg-card/70">
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-3 px-4 py-6 text-center text-xs text-muted-foreground sm:flex-row sm:px-6 lg:px-8">
+          <span>© {new Date().getFullYear()} Colégio Marista</span>
+          <span>Sistema inteligente de organização de espaços</span>
         </div>
       </footer>
     </div>
