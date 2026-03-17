@@ -8,29 +8,29 @@ export default async function Header() {
   const session = await getServerSession(authOptions)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/75 backdrop-blur-xl">
-      <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex items-center gap-3 transition-transform active:scale-[0.98]">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[0_14px_28px_-16px] shadow-primary/80 transition-all group-hover:-translate-y-0.5">
-            <CalendarClock size={20} className="group-hover:animate-pulse" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
+            <CalendarClock size={18} />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-base leading-none font-black tracking-tight text-foreground sm:text-lg">Agenda Inteligente</h1>
-            <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.24em] text-muted-foreground">Marista Brasil</span>
+            <h1 className="text-sm leading-none font-bold tracking-tight text-foreground sm:text-base">Agenda Inteligente</h1>
+            <span className="mt-1 text-[10px] font-medium tracking-wide text-muted-foreground">Marista Brasil</span>
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-2 rounded-2xl border border-border/80 bg-card/70 p-1.5 md:flex">
-          <Link href="/" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[11px] font-bold tracking-wide text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
+        <nav className="hidden items-center gap-1 rounded-xl border border-border bg-card p-1 md:flex">
+          <Link href="/" className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
             <House size={14} />
             Início
           </Link>
-          <Link href="/minhas-reservas" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[11px] font-bold tracking-wide text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
+          <Link href="/minhas-reservas" className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
             <NotebookTabs size={14} />
             Reservas
           </Link>
           {(session?.user as any)?.role === 'ADMIN' && (
-            <Link href="/admin" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[11px] font-bold tracking-wide text-primary transition-colors hover:bg-primary/10">
+            <Link href="/admin" className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/10">
               <LayoutDashboard size={14} />
               Admin
             </Link>
@@ -42,16 +42,10 @@ export default async function Header() {
             <UserMenu user={session.user as any} />
           ) : (
             <div className="flex items-center gap-3">
-              <Link 
-                href="/login" 
-                className="rounded-xl px-3 py-2 text-[11px] font-semibold tracking-wide text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-              >
+              <Link href="/login" className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
                 Entrar
               </Link>
-              <Link 
-                href="/register" 
-                className="rounded-xl bg-primary px-4 py-2 text-[11px] font-bold tracking-wide text-primary-foreground shadow-[0_16px_24px_-14px] shadow-primary transition-all hover:brightness-110 active:scale-95"
-              >
+              <Link href="/register" className="rounded-lg bg-primary px-3.5 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90">
                 Criar Conta
               </Link>
             </div>

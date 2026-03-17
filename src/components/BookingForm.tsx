@@ -217,20 +217,20 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
 
   if (!session) {
     return (
-      <Card className="bg-[#003399] border-none shadow-2xl text-white overflow-hidden relative group rounded-[2.5rem]">
+      <Card className="overflow-hidden rounded-2xl border border-border bg-card">
         <div className="absolute -right-4 -top-4 opacity-10 group-hover:scale-110 group-hover:rotate-12 transition-all duration-700">
           <CalendarIcon size={160} />
         </div>
-        <CardHeader className="relative z-10 pt-10 px-10">
-          <CardTitle className="text-3xl font-black italic tracking-tight">Novo Agendamento</CardTitle>
-          <CardDescription className="text-blue-100/70 text-base font-medium leading-relaxed">
+        <CardHeader className="relative z-10 p-6 pb-2">
+          <CardTitle className="text-2xl font-semibold tracking-tight text-foreground">Novo Agendamento</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">
             Identifique-se para reservar este ambiente e receber as confirmações por e-mail.
           </CardDescription>
         </CardHeader>
-        <CardContent className="relative z-10 p-10 pt-0">
+        <CardContent className="relative z-10 p-6 pt-2">
           <Button 
             onClick={() => router.push('/login')}
-            className="w-full h-14 bg-[#FFCC00] text-[#003399] font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-white hover:text-[#003399] transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2 border-none"
+            className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary text-xs font-medium text-primary-foreground hover:bg-primary/90"
           >
             Acessar Sistema Marista <ChevronRight size={16} />
           </Button>
@@ -246,32 +246,32 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="border-green-100 shadow-[0_30px_60px_rgba(0,51,153,0.15)] rounded-[3rem] overflow-hidden text-center p-12 relative">
+        <Card className="relative overflow-hidden rounded-2xl border border-border p-8 text-center">
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-green-50 rounded-full blur-3xl opacity-50" />
           <CardHeader className="flex flex-col items-center pb-8">
-            <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6 shadow-inner relative z-10">
+            <div className="relative z-10 mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-green-50 text-green-600">
               <CheckCircle2 size={48} />
             </div>
-            <CardTitle className="text-3xl font-black text-[#003399] italic tracking-tight">🎉 Reserva Confirmada!</CardTitle>
-            <CardDescription className="text-slate-600 font-bold text-lg mt-2">
+            <CardTitle className="text-2xl font-semibold tracking-tight text-foreground">Reserva Confirmada</CardTitle>
+            <CardDescription className="mt-2 text-sm text-muted-foreground">
               Bom uso do {spaceName}!
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="p-6 bg-slate-50 rounded-[2rem] border border-slate-100 space-y-4">
-              <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400">
+              <div className="flex items-center justify-between text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
                 <span>Atividade</span>
-                <span className="text-[#003399]">{formData.title}</span>
+                <span className="text-foreground">{formData.title}</span>
               </div>
-              <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400">
+              <div className="flex items-center justify-between text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
                 <span>Horário</span>
-                <span className="text-[#003399]">{formData.startTime} - {formData.endTime}</span>
+                <span className="text-foreground">{formData.startTime} - {formData.endTime}</span>
               </div>
             </div>
             <Button 
               variant="link" 
               onClick={() => setSuccess(false)}
-              className="text-[10px] font-black text-[#003399] uppercase tracking-[0.3em] hover:no-underline opacity-70 hover:opacity-100 transition-opacity"
+              className="text-[10px] font-medium text-primary uppercase tracking-[0.16em] hover:no-underline"
             >
               Fazer nova reserva
             </Button>
@@ -282,34 +282,34 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
   }
 
   return (
-    <Card className="border-slate-100 shadow-[0_20px_50px_rgba(0,51,153,0.05)] rounded-[3rem] overflow-hidden">
-      <CardHeader className="bg-slate-50/50 border-b border-slate-100 p-8">
-        <div className="flex items-center justify-between mb-8">
+    <Card className="overflow-hidden rounded-2xl border-border">
+      <CardHeader className="border-b border-border bg-card p-5 sm:p-6">
+        <div className="mb-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Badge className={cn(
-              "w-8 h-8 rounded-full flex items-center justify-center p-0 font-black transition-all duration-500",
-              step >= 1 ? "bg-[#003399] text-white shadow-lg shadow-blue-900/20" : "bg-slate-200 text-slate-400"
+              "flex h-7 w-7 items-center justify-center rounded-full p-0 text-xs font-medium transition-all",
+              step >= 1 ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
             )}>1</Badge>
-            <div className={cn("h-px w-8 transition-all duration-500", step >= 2 ? "bg-[#003399]" : "bg-slate-200")} />
+            <div className={cn("h-px w-7 transition-all duration-500", step >= 2 ? "bg-primary" : "bg-border")} />
             <Badge className={cn(
-              "w-8 h-8 rounded-full flex items-center justify-center p-0 font-black transition-all duration-500",
-              step >= 2 ? "bg-[#003399] text-white shadow-lg shadow-blue-900/20" : "bg-slate-200 text-slate-400"
+              "flex h-7 w-7 items-center justify-center rounded-full p-0 text-xs font-medium transition-all",
+              step >= 2 ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
             )}>2</Badge>
           </div>
-          <Badge variant="outline" className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic border-slate-200 px-4 py-1.5 rounded-full">
+          <Badge variant="outline" className="rounded-full border-border px-3 py-1 text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
             Passo {step} de 2
           </Badge>
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 bg-white text-[#003399] rounded-2xl flex items-center justify-center shadow-sm border border-slate-100">
+          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
             {step === 1 ? <CalendarIcon size={28} /> : <Settings size={28} />}
           </div>
           <div>
-            <CardTitle className="text-2xl font-black text-[#003399] italic tracking-tight">
+            <CardTitle className="text-xl font-semibold tracking-tight text-foreground">
               {step === 1 ? 'Dados da Reserva' : 'Requisitos Técnicos'}
             </CardTitle>
-            <CardDescription className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+            <CardDescription className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
               {step === 1 ? 'Informações básicas e horários' : 'Equipamentos e suporte extra'}
             </CardDescription>
           </div>
@@ -718,12 +718,12 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
         </form>
       </CardContent>
 
-      <CardFooter className="bg-slate-50/50 border-t border-slate-100 p-8 gap-4">
+      <CardFooter className="gap-3 border-t border-border bg-card p-5 sm:p-6">
         {step > 1 && (
           <Button
             variant="outline"
             onClick={prevStep}
-            className="flex-1 h-14 bg-white text-slate-400 font-black uppercase tracking-widest text-xs rounded-2xl border-slate-100 hover:bg-slate-50 hover:text-[#003399] transition-all active:scale-95 flex items-center justify-center gap-2"
+            className="flex h-11 flex-1 items-center justify-center gap-2 rounded-lg border-border bg-background text-xs font-medium tracking-wide text-muted-foreground uppercase hover:bg-secondary hover:text-foreground"
           >
             <ChevronLeft size={16} /> Voltar
           </Button>
@@ -733,7 +733,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           <Button
             type="button"
             onClick={nextStep}
-            className="flex-1 h-14 bg-[#003399] text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-[#002266] transition-all shadow-xl shadow-blue-900/10 flex items-center justify-center gap-2 active:scale-95 border-none"
+            className="flex h-11 flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-xs font-medium tracking-wide text-primary-foreground uppercase hover:bg-primary/90"
           >
             Próximo Passo <ChevronRight size={16} />
           </Button>
@@ -741,7 +741,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           <Button
             type="submit"
             disabled={isLoading}
-            className="flex-[2] h-14 bg-[#003399] text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-[#002266] transition-all shadow-xl shadow-blue-900/10 flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95 border-none"
+            className="flex h-11 flex-[2] items-center justify-center gap-3 rounded-lg bg-primary text-xs font-medium tracking-wide text-primary-foreground uppercase hover:bg-primary/90 disabled:opacity-50"
           >
             {isLoading ? <Loader2 className="animate-spin" size={20} /> : (
               <>

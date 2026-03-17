@@ -58,56 +58,56 @@ export default async function MyBookingsPage() {
   })) as BookingWithSpace[]
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen">
       <Header />
       
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
-        <div className="mb-12">
-          <h2 className="text-4xl font-black text-[#003399] tracking-tight mb-2 italic">Minhas Reservas</h2>
-          <p className="text-slate-400 font-medium">Gerencie seus agendamentos e requisitos técnicos.</p>
+      <main className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div className="mb-8">
+          <h2 className="mb-1 text-3xl font-semibold tracking-tight text-foreground">Minhas Reservas</h2>
+          <p className="text-sm text-muted-foreground">Gerencie seus agendamentos e requisitos técnicos.</p>
         </div>
 
         {bookings.length === 0 ? (
-          <div className="bg-white p-20 rounded-[3rem] border border-slate-100 shadow-sm text-center">
-            <div className="w-20 h-20 bg-slate-50 text-slate-300 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <div className="rounded-2xl border border-border bg-card p-16 text-center">
+            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-xl bg-secondary text-muted-foreground">
               <Calendar size={40} />
             </div>
-            <h3 className="text-xl font-black text-slate-400 mb-2 italic">Nenhuma reserva encontrada</h3>
-            <p className="text-slate-400 mb-8 max-w-xs mx-auto">Você ainda não realizou nenhum agendamento no sistema.</p>
-            <Link href="/" className="inline-flex items-center gap-2 px-8 py-4 bg-[#003399] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#002266] transition-all shadow-lg shadow-blue-900/10">
+            <h3 className="mb-2 text-lg font-semibold text-foreground">Nenhuma reserva encontrada</h3>
+            <p className="mx-auto mb-6 max-w-xs text-sm text-muted-foreground">Você ainda não realizou nenhum agendamento no sistema.</p>
+            <Link href="/" className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-xs font-medium tracking-wide text-primary-foreground uppercase hover:bg-primary/90">
               Agendar agora
             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6">
             {bookings.map((booking) => (
-              <div key={booking.id} className="group bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-500 relative overflow-hidden">
-                <div className="absolute left-0 top-0 w-2 h-full bg-[#003399] opacity-10 group-hover:opacity-100 transition-opacity" />
+              <div key={booking.id} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6">
+                <div className="absolute left-0 top-0 h-full w-1.5 bg-primary/25" />
                 
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-4">
-                      <span className="px-3 py-1 bg-blue-50 text-[#003399] text-[9px] font-black uppercase tracking-widest rounded-full border border-blue-100">
+                      <span className="rounded-full border border-border bg-secondary px-3 py-1 text-[9px] font-medium tracking-wide text-foreground uppercase">
                         {booking.type === 'FIXED' ? 'Série Recorrente' : 'Evento Único'}
                       </span>
-                      <span className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em]">
+                      <span className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
                         ID: {booking.id.slice(-6).toUpperCase()}
                       </span>
                     </div>
 
-                    <h3 className="text-2xl font-black text-[#003399] mb-4 tracking-tight italic">{booking.title}</h3>
+                    <h3 className="mb-3 text-xl font-semibold tracking-tight text-foreground">{booking.title}</h3>
                     
                     <div className="flex flex-wrap items-center gap-6">
-                      <div className="flex items-center gap-2 text-slate-500 font-bold text-sm">
-                        <Calendar size={16} className="text-[#FFCC00]" />
+                      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                        <Calendar size={16} className="text-primary" />
                         {format(new Date(booking.start), "dd 'de' MMMM", { locale: ptBR })}
                       </div>
-                      <div className="flex items-center gap-2 text-slate-500 font-bold text-sm">
-                        <Clock size={16} className="text-[#FFCC00]" />
+                      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                        <Clock size={16} className="text-primary" />
                         {format(new Date(booking.start), "HH:mm")} - {format(new Date(booking.end), "HH:mm")}
                       </div>
-                      <div className="flex items-center gap-2 text-slate-500 font-bold text-sm">
-                        <MapPin size={16} className="text-[#FFCC00]" />
+                      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                        <MapPin size={16} className="text-primary" />
                         {booking.space.name} ({booking.space.unit.name})
                       </div>
                     </div>
@@ -116,38 +116,38 @@ export default async function MyBookingsPage() {
                     <div className="mt-6 space-y-3">
                       <div className="flex flex-wrap gap-2">
                         {booking.airConditioning && (
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-[#003399] rounded-xl text-[9px] font-black uppercase tracking-widest border border-blue-100">
+                          <div className="flex items-center gap-1.5 rounded-lg border border-border bg-secondary px-3 py-1.5 text-[9px] font-medium tracking-wide text-foreground uppercase">
                             <Wind size={12} /> Ar
                           </div>
                         )}
                         {booking.microphones > 0 && (
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 text-yellow-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-yellow-100">
+                          <div className="flex items-center gap-1.5 rounded-lg border border-border bg-secondary px-3 py-1.5 text-[9px] font-medium tracking-wide text-foreground uppercase">
                             <Mic size={12} /> {booking.microphones} Mic {booking.wirelessMic ? '(S/Fio)' : ''}
                           </div>
                         )}
                         {booking.projection && (
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-green-100">
+                          <div className="flex items-center gap-1.5 rounded-lg border border-border bg-secondary px-3 py-1.5 text-[9px] font-medium tracking-wide text-foreground uppercase">
                             <Monitor size={12} /> Projeção
                           </div>
                         )}
                         {booking.schoolComputer && (
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-slate-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-slate-200">
+                          <div className="flex items-center gap-1.5 rounded-lg border border-border bg-secondary px-3 py-1.5 text-[9px] font-medium tracking-wide text-foreground uppercase">
                             <Laptop size={12} /> PC Escola
                           </div>
                         )}
                         {booking.externalComputer && (
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 text-orange-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-orange-100">
+                          <div className="flex items-center gap-1.5 rounded-lg border border-border bg-secondary px-3 py-1.5 text-[9px] font-medium tracking-wide text-foreground uppercase">
                             <Laptop size={12} /> Notebook
                           </div>
                         )}
                       </div>
 
                       {booking.techNotes && (
-                        <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex gap-3 items-start">
-                          <FileText size={14} className="text-slate-400 mt-0.5 shrink-0" />
+                        <div className="flex items-start gap-3 rounded-xl border border-border bg-secondary/40 p-4">
+                          <FileText size={14} className="mt-0.5 shrink-0 text-muted-foreground" />
                           <div>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Observações da Equipe de AV</p>
-                            <p className="text-xs text-slate-600 font-medium italic leading-relaxed">
+                            <p className="mb-1 text-[10px] font-medium tracking-wide text-muted-foreground uppercase">Observações da Equipe de AV</p>
+                            <p className="text-xs leading-relaxed text-foreground">
                               {booking.techNotes}
                             </p>
                           </div>
@@ -157,7 +157,7 @@ export default async function MyBookingsPage() {
                   </div>
 
                   <div className="flex items-center gap-4">
-                    <button className="flex-1 md:flex-none px-6 py-4 bg-red-50 text-red-600 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-100 transition-all flex items-center justify-center gap-2">
+                    <button className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-red-50 px-5 py-2.5 text-[10px] font-medium tracking-wide text-red-600 uppercase hover:bg-red-100 md:flex-none">
                       <Trash2 size={16} /> Cancelar
                     </button>
                   </div>
