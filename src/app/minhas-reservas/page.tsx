@@ -90,30 +90,44 @@ export default async function MyBookingsPage() {
                     </div>
 
                     {/* Requisitos Técnicos */}
-                    <div className="mt-6 flex flex-wrap gap-2">
-                      {booking.airConditioning && (
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-[#003399] rounded-xl text-[9px] font-black uppercase tracking-widest border border-blue-100">
-                          <Wind size={12} /> Ar
-                        </div>
-                      )}
-                      {booking.microphones > 0 && (
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 text-yellow-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-yellow-100">
-                          <Mic size={12} /> {booking.microphones} Mic {booking.wirelessMic ? '(S/Fio)' : ''}
-                        </div>
-                      )}
-                      {booking.projection && (
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-green-100">
-                          <Monitor size={12} /> Projeção
-                        </div>
-                      )}
-                      {booking.schoolComputer && (
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-slate-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-slate-200">
-                          <Laptop size={12} /> PC Escola
-                        </div>
-                      )}
-                      {booking.externalComputer && (
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 text-orange-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-orange-100">
-                          <Laptop size={12} /> Notebook
+                    <div className="mt-6 space-y-3">
+                      <div className="flex flex-wrap gap-2">
+                        {booking.airConditioning && (
+                          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-[#003399] rounded-xl text-[9px] font-black uppercase tracking-widest border border-blue-100">
+                            <Wind size={12} /> Ar
+                          </div>
+                        )}
+                        {booking.microphones > 0 && (
+                          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 text-yellow-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-yellow-100">
+                            <Mic size={12} /> {booking.microphones} Mic {booking.wirelessMic ? '(S/Fio)' : ''}
+                          </div>
+                        )}
+                        {booking.projection && (
+                          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-green-100">
+                            <Monitor size={12} /> Projeção
+                          </div>
+                        )}
+                        {booking.schoolComputer && (
+                          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-slate-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-slate-200">
+                            <Laptop size={12} /> PC Escola
+                          </div>
+                        )}
+                        {booking.externalComputer && (
+                          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 text-orange-700 rounded-xl text-[9px] font-black uppercase tracking-widest border border-orange-100">
+                            <Laptop size={12} /> Notebook
+                          </div>
+                        )}
+                      </div>
+
+                      {booking.techNotes && (
+                        <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex gap-3 items-start">
+                          <FileText size={14} className="text-slate-400 mt-0.5 shrink-0" />
+                          <div>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Observações da Equipe de AV</p>
+                            <p className="text-xs text-slate-600 font-medium italic leading-relaxed">
+                              {booking.techNotes}
+                            </p>
+                          </div>
                         </div>
                       )}
                     </div>

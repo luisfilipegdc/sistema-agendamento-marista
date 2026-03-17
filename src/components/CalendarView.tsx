@@ -211,36 +211,47 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
                     
                     {/* Detalhes Técnicos */}
                     {(isAdmin || isAV || booking.userId === userId) && (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {booking.airConditioning && (
-                          <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-[#003399] rounded-full text-[9px] font-black uppercase tracking-widest border border-blue-100 shadow-sm">
-                            <Wind size={10} /> Ar
-                          </span>
-                        )}
-                        {booking.microphones > 0 && (
-                          <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-yellow-100 shadow-sm">
-                            <Mic size={10} /> {booking.microphones} Mic {booking.wirelessMic ? '(S/Fio)' : ''}
-                          </span>
-                        )}
-                        {booking.projection && (
-                          <span className="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-green-100 shadow-sm">
-                            <Monitor size={10} /> Projeção
-                          </span>
-                        )}
-                        {booking.audioSupport && (
-                          <span className="flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-purple-100 shadow-sm">
-                            <Music size={10} /> Som
-                          </span>
-                        )}
-                        {booking.schoolComputer && (
-                          <span className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 text-slate-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-slate-200 shadow-sm">
-                            <Laptop size={10} /> PC Escola
-                          </span>
-                        )}
-                        {booking.externalComputer && (
-                          <span className="flex items-center gap-1.5 px-3 py-1 bg-orange-50 text-orange-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-orange-100 shadow-sm">
-                            <Laptop size={10} /> Notebook
-                          </span>
+                      <div className="mt-4 space-y-3">
+                        <div className="flex flex-wrap gap-2">
+                          {booking.airConditioning && (
+                            <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-[#003399] rounded-full text-[9px] font-black uppercase tracking-widest border border-blue-100 shadow-sm">
+                              <Wind size={10} /> Ar
+                            </span>
+                          )}
+                          {booking.microphones > 0 && (
+                            <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-yellow-100 shadow-sm">
+                              <Mic size={10} /> {booking.microphones} Mic {booking.wirelessMic ? '(S/Fio)' : ''}
+                            </span>
+                          )}
+                          {booking.projection && (
+                            <span className="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-green-100 shadow-sm">
+                              <Monitor size={10} /> Projeção
+                            </span>
+                          )}
+                          {booking.audioSupport && (
+                            <span className="flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-purple-100 shadow-sm">
+                              <Music size={10} /> Som
+                            </span>
+                          )}
+                          {booking.schoolComputer && (
+                            <span className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 text-slate-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-slate-200 shadow-sm">
+                              <Laptop size={10} /> PC Escola
+                            </span>
+                          )}
+                          {booking.externalComputer && (
+                            <span className="flex items-center gap-1.5 px-3 py-1 bg-orange-50 text-orange-700 rounded-full text-[9px] font-black uppercase tracking-widest border border-orange-100 shadow-sm">
+                              <Laptop size={10} /> Notebook
+                            </span>
+                          )}
+                        </div>
+                        
+                        {booking.techNotes && (
+                          <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 flex gap-2 items-start">
+                            <FileText size={12} className="text-slate-400 mt-0.5 shrink-0" />
+                            <p className="text-[10px] text-slate-500 font-medium italic leading-tight">
+                              {booking.techNotes}
+                            </p>
+                          </div>
                         )}
                       </div>
                     )}
