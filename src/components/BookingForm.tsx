@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { Calendar as CalendarIcon, Clock, Loader2, AlertCircle } from 'lucide-react'
+import { Calendar as CalendarIcon, Clock, Loader2, AlertCircle, Settings } from 'lucide-react'
 
 interface BookingFormProps {
   spaceId: string
@@ -15,6 +15,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
   const { data: session } = useSession()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showExternalWarning, setShowExternalWarning] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -32,6 +33,15 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
     const startTime = formData.get('startTime') as string
     const endTime = formData.get('endTime') as string
     const type = formData.get('type') as string
+    
+    // Novos campos técnicos
+    const airConditioning = formData.get('airConditioning') === 'true'
+    const microphones = parseInt(formData.get('microphones') as string) || 0
+    const wirelessMic = formData.get('wirelessMic') === 'true'
+    const projection = formData.get('projection') === 'true'
+    const schoolComputer = formData.get('schoolComputer') === 'true'
+    const externalComputer = formData.get('externalComputer') === 'true'
+    const audioSupport = formData.get('audioSupport') === 'true'
 
     // Criar objetos Date
     const start = new Date(`${date}T${startTime}`)
@@ -53,6 +63,13 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           end,
           spaceId,
           type,
+          airConditioning,
+          microphones,
+          wirelessMic,
+          projection,
+          schoolComputer,
+          externalComputer,
+          audioSupport
         }),
       })
 
@@ -180,6 +197,87 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
             <option value="ONE_OFF">Evento Único</option>
             <option value="FIXED">Horário Fixo (Recorrente)</option>
           </select>
+        </div>
+
+        {/* Requisitos Técnicos Checklist */}
+        <div className="pt-4 border-t border-gray-100 space-y-4">
+          <h3 className="text-xs font-black text-[#003399] uppercase tracking-widest italic flex items-center gap-2">
+            <Settings className="text-[#FFCC00]" size={16} />
+            Requisitos Técnicos
+          </h3>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* Ar Condicionado (Padrão) */}
+            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-100">
+              <input type="checkbox" name="airConditioning" value="true" defaultChecked className="w-4 h-4 text-[#003399] rounded border-gray-300 focus:ring-[#003399]" />
+              <div className="flex flex-col">
+                <span className="text-xs font-black text-[#003399] uppercase tracking-tighter">Ar Condicionado</span>
+                <span className="text-[9px] text-gray-400 font-bold">Ligar ambiente</span>
+              </div>
+            </label>
+
+            {/* Microfones */}
+            <div className="flex flex-col gap-1.5 p-3 bg-gray-50 rounded-xl border border-transparent">
+              <span className="text-xs font-black text-[#003399] uppercase tracking-tighter">Microfones</span>
+              <div className="flex items-center gap-2">
+                <input 
+                  type="number" 
+                  name="microphones" 
+                  min="0" 
+                  max="10" 
+                  defaultValue="0"
+                  className="w-16 px-2 py-1 bg-white border border-gray-200 rounded-lg text-xs font-bold text-slate-800"
+                />
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" name="wirelessMic" value="true" className="w-3 h-3 text-[#003399] rounded border-gray-300" />
+                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-tighter">Sem fio</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Projeção */}
+            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-100">
+              <input type="checkbox" name="projection" value="true" className="w-4 h-4 text-[#003399] rounded border-gray-300 focus:ring-[#003399]" />
+              <span className="text-xs font-black text-[#003399] uppercase tracking-tighter">Projeção / TV</span>
+            </label>
+
+            {/* Suporte Áudio */}
+            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-100">
+              <input type="checkbox" name="audioSupport" value="true" className="w-4 h-4 text-[#003399] rounded border-gray-300 focus:ring-[#003399]" />
+              <span className="text-xs font-black text-[#003399] uppercase tracking-tighter">Suporte de Áudio</span>
+            </label>
+
+            {/* Computador da Escola */}
+            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-100">
+              <input type="checkbox" name="schoolComputer" value="true" className="w-4 h-4 text-[#003399] rounded border-gray-300 focus:ring-[#003399]" />
+              <span className="text-xs font-black text-[#003399] uppercase tracking-tighter">PC da Escola</span>
+            </label>
+
+            {/* Computador Externo */}
+            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-100">
+              <input 
+                type="checkbox" 
+                name="externalComputer" 
+                value="true" 
+                onChange={(e) => setShowExternalWarning(e.target.checked)}
+                className="w-4 h-4 text-[#003399] rounded border-gray-300 focus:ring-[#003399]" 
+              />
+              <span className="text-xs font-black text-[#003399] uppercase tracking-tighter">Notebook Próprio</span>
+            </label>
+          </div>
+
+          {/* Warning for External Computer */}
+          {showExternalWarning && (
+            <div className="p-4 bg-orange-50 border border-orange-100 rounded-2xl flex items-start gap-3 animate-in zoom-in-95">
+              <AlertCircle size={18} className="text-[#FFCC00] shrink-0 mt-0.5" />
+              <div>
+                <p className="text-[10px] font-black text-[#003399] uppercase tracking-widest mb-1">Aviso Importante</p>
+                <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                  Por favor, certifique-se de baixar seus arquivos previamente e trazer os <strong>adaptadores necessários</strong>. Nossas conexões padrão são <strong>HDMI</strong>.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         <button

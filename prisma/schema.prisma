@@ -73,6 +73,15 @@ model Booking {
   type        BookingType   @default(ONE_OFF)
   status      BookingStatus @default(CONFIRMED)
   
+  // Requisitos Técnicos
+  airConditioning   Boolean @default(true)
+  microphones       Int     @default(0)
+  wirelessMic       Boolean @default(false)
+  projection        Boolean @default(false)
+  schoolComputer    Boolean @default(false)
+  externalComputer  Boolean @default(false)
+  audioSupport      Boolean @default(false)
+  
   spaceId     String
   space       Space         @relation(fields: [spaceId], references: [id])
   

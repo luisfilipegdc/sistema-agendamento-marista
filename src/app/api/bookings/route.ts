@@ -14,7 +14,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Não autorizado' }, { status: 401 })
     }
 
-    const { title, start, end, spaceId, type } = await req.json()
+    const { 
+      title, 
+      start, 
+      end, 
+      spaceId, 
+      type,
+      airConditioning,
+      microphones,
+      wirelessMic,
+      projection,
+      schoolComputer,
+      externalComputer,
+      audioSupport
+    } = await req.json()
 
     const startTime = new Date(start)
     const endTime = new Date(end)
@@ -74,6 +87,13 @@ export async function POST(req: Request) {
         spaceId,
         userId: user.id,
         type,
+        airConditioning,
+        microphones,
+        wirelessMic,
+        projection,
+        schoolComputer,
+        externalComputer,
+        audioSupport
       },
       include: {
         space: {

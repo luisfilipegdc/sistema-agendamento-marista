@@ -16,7 +16,7 @@ import {
   isToday
 } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, User, Trash2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, User, Trash2, Wind, Mic, Monitor, Laptop, Music, Settings } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 
 interface Booking {
@@ -28,6 +28,14 @@ interface Booking {
   userId: string
   type: string
   space: { unitId: string }
+  // Campos técnicos
+  airConditioning: boolean
+  microphones: number
+  wirelessMic: boolean
+  projection: boolean
+  schoolComputer: boolean
+  externalComputer: boolean
+  audioSupport: boolean
 }
 
 interface CalendarViewProps {
@@ -178,6 +186,42 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
                         {booking.user.name || 'Professor'}
                       </span>
                     </div>
+                    
+                    {/* Detalhes Técnicos - Visíveis para Admin/AV ou Dono */}
+                    {(isAdmin || isAV || booking.userId === userId) && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {booking.airConditioning && (
+                          <span className="flex items-center gap-1 px-2 py-0.5 bg-blue-50 text-blue-600 rounded-md text-[9px] font-black uppercase tracking-tighter border border-blue-100">
+                            <Wind size={10} /> Ar
+                          </span>
+                        )}
+                        {booking.microphones > 0 && (
+                          <span className="flex items-center gap-1 px-2 py-0.5 bg-yellow-50 text-yellow-700 rounded-md text-[9px] font-black uppercase tracking-tighter border border-yellow-100">
+                            <Mic size={10} /> {booking.microphones} Mic {booking.wirelessMic ? '(S/Fio)' : ''}
+                          </span>
+                        )}
+                        {booking.projection && (
+                          <span className="flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 rounded-md text-[9px] font-black uppercase tracking-tighter border border-green-100">
+                            <Monitor size={10} /> Projeção
+                          </span>
+                        )}
+                        {booking.audioSupport && (
+                          <span className="flex items-center gap-1 px-2 py-0.5 bg-purple-50 text-purple-700 rounded-md text-[9px] font-black uppercase tracking-tighter border border-purple-100">
+                            <Music size={10} /> Som
+                          </span>
+                        )}
+                        {booking.schoolComputer && (
+                          <span className="flex items-center gap-1 px-2 py-0.5 bg-orange-50 text-orange-700 rounded-md text-[9px] font-black uppercase tracking-tighter border border-orange-100">
+                            <Laptop size={10} /> PC Escola
+                          </span>
+                        )}
+                        {booking.externalComputer && (
+                          <span className="flex items-center gap-1 px-2 py-0.5 bg-red-50 text-red-700 rounded-md text-[9px] font-black uppercase tracking-tighter border border-red-100">
+                            <Laptop size={10} /> PC Externo
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div>
