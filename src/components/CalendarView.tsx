@@ -75,6 +75,17 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
     isSameDay(new Date(booking.start), selectedDate)
   ).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
 
+  const hasConflict = (booking: Booking) => {
+    const start = new Date(booking.start).getTime()
+    const end = new Date(booking.end).getTime()
+    return selectedDayBookings.some((other) => {
+      if (other.id === booking.id) return false
+      const otherStart = new Date(other.start).getTime()
+      const otherEnd = new Date(other.end).getTime()
+      return start < otherEnd && otherStart < end
+    })
+  }
+
   const handleDeleteBooking = async (id: string) => {
     if (!confirm('Deseja realmente cancelar este agendamento?')) return
     
@@ -181,8 +192,8 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
             </div>
           ) : (
             selectedDayBookings.map((booking) => (
-              <div key={booking.id} className="group relative flex flex-col justify-between gap-5 overflow-hidden rounded-xl border border-border bg-background p-5 transition-colors hover:bg-secondary/50 sm:flex-row sm:items-center">
-                <div className="absolute left-0 top-0 h-full w-1 bg-primary/30 opacity-0 transition-opacity group-hover:opacity-100" />
+              <div key={booking.id} className={`group relative flex flex-col justify-between gap-5 overflow-hidden rounded-xl border bg-background p-5 transition-colors hover:bg-secondary/50 sm:flex-row sm:items-center ${hasConflict(booking) ? 'border-red-300' : 'border-border'}`}>
+                <div className={`absolute left-0 top-0 h-full w-1 opacity-0 transition-opacity group-hover:opacity-100 ${hasConflict(booking) ? 'bg-red-500/60' : 'bg-primary/30'}`} />
                 
                 <div className="flex items-start gap-5 relative z-10">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
@@ -257,6 +268,11 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
                 </div>
                 
                 <div className="flex items-center gap-4 relative z-10">
+                  {hasConflict(booking) && (
+                    <span className="rounded-full border border-red-200 bg-red-50 px-3 py-1.5 text-[9px] font-medium uppercase tracking-wide text-red-700">
+                      Conflito
+                    </span>
+                  )}
                   <span className={`rounded-full border px-3 py-1.5 text-[9px] font-medium uppercase tracking-wide ${
                     booking.type === 'FIXED' 
                       ? 'bg-secondary text-foreground border-border' 

@@ -45,28 +45,38 @@ export default async function Home() {
 
       <main className="mx-auto w-full max-w-7xl px-4 py-5 sm:px-6 sm:py-7 lg:px-8">
         <section className="mb-5 rounded-xl border border-border bg-card p-5 sm:p-6">
+          <div className="mb-3 inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-[11px] font-medium tracking-wide text-primary">
+            Agendamento guiado em 4 passos
+          </div>
           <h2 className="text-2xl leading-tight font-medium tracking-tight text-foreground sm:text-3xl">
-            Fluxo rápido para agendar sem esforço
+            Agende com clareza, sem erro e sem burocracia
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Escolha unidade, espaço, data e horário em poucos cliques com feedback visual imediato.
+            Unidade, espaço, data e horário em sequência guiada com feedback imediato de disponibilidade.
           </p>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            {['1. Unidade', '2. Espaço', '3. Data', '4. Horário'].map((step) => (
+              <span key={step} className="rounded-full border border-border bg-secondary px-2.5 py-1 text-[10px] font-medium tracking-wide text-muted-foreground">
+                {step}
+              </span>
+            ))}
+          </div>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             <a href="#fluxo-decisao" className="group rounded-lg bg-primary px-4 py-3.5 text-primary-foreground transition-colors hover:bg-primary/90">
               <div className="flex items-center justify-between">
                 <CalendarClock size={18} />
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </div>
-              <h3 className="mt-3 text-base font-medium">Agendar Espaço</h3>
-              <p className="mt-1 text-xs opacity-90">Reserve em menos de 30 segundos.</p>
+              <h3 className="mt-3 text-base font-medium">Agendar agora</h3>
+              <p className="mt-1 text-xs opacity-90">Começar fluxo guiado de agendamento.</p>
             </a>
             <Link href="/minhas-reservas" className="group rounded-lg border border-border bg-background px-4 py-3.5 transition-colors hover:bg-secondary/60">
               <div className="flex items-center justify-between text-primary">
                 <Clock3 size={18} />
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </div>
-              <h3 className="mt-3 text-base font-medium text-foreground">Minhas Reservas</h3>
-              <p className="mt-1 text-xs text-muted-foreground">Gerencie, repita ou cancele horários.</p>
+              <h3 className="mt-3 text-base font-medium text-foreground">Ver minhas reservas</h3>
+              <p className="mt-1 text-xs text-muted-foreground">Acompanhe, ajuste e cancele horários.</p>
             </Link>
           </div>
         </section>

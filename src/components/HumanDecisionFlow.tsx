@@ -30,14 +30,26 @@ export default function HumanDecisionFlow({ units }: { units: Unit[] }) {
 
   return (
     <div id="decision-flow" className="mx-auto w-full max-w-5xl">
+      <div className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {[
+          { label: 'Unidade', active: step >= 1 },
+          { label: 'Espaço', active: step >= 2 },
+          { label: 'Data', active: step >= 2 },
+          { label: 'Horário', active: step >= 2 },
+        ].map((item, index) => (
+          <div key={item.label} className={`rounded-lg border px-3 py-2 text-center text-[10px] font-medium tracking-wide uppercase ${item.active ? 'border-primary/25 bg-primary/10 text-primary' : 'border-border bg-secondary/40 text-muted-foreground'}`}>
+            {index + 1}. {item.label}
+          </div>
+        ))}
+      </div>
       <div className="mb-7 text-center">
         <h3 className="text-2xl leading-tight font-medium tracking-tight text-foreground sm:text-3xl">
           {step === 1 ? 'Onde vamos agendar hoje?' : `Qual espaço no ${selectedUnit?.name}?`}
         </h3>
         <p className="mx-auto mt-2 max-w-2xl text-sm text-muted-foreground">
           {step === 1 
-            ? 'Selecione a unidade educacional para ver os ambientes disponíveis.' 
-            : 'Escolha o ambiente ideal para sua atividade acadêmica.'}
+            ? 'Passo 1: selecione a unidade para visualizar os espaços disponíveis.' 
+            : 'Passo 2: escolha o espaço. Em seguida você seleciona data e horário.'}
         </p>
       </div>
 
@@ -61,7 +73,7 @@ export default function HumanDecisionFlow({ units }: { units: Unit[] }) {
                   {unit._count.spaces} Ambientes
                 </p>
                 <div className="mt-auto inline-flex items-center gap-1 text-[10px] font-medium tracking-wide text-primary">
-                  Ver Espaços <ArrowRight size={14} />
+                  Continuar <ArrowRight size={14} />
                 </div>
               </motion.button>
             ))}
@@ -91,7 +103,7 @@ export default function HumanDecisionFlow({ units }: { units: Unit[] }) {
                       <Calendar size={18} />
                     </div>
                     <span className="rounded-full bg-secondary px-2 py-1 text-[9px] font-medium tracking-wide text-foreground">
-                      Disponível
+                      Passo 3 e 4
                     </span>
                   </div>
                   <h4 className="text-base font-medium tracking-tight text-foreground">{space.name}</h4>
