@@ -82,6 +82,13 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Se ainda estiver no passo 1, apenas avança
+    if (step === 1) {
+      nextStep()
+      return
+    }
+
     if (!session) {
       router.push('/login')
       return
