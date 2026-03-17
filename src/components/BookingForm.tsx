@@ -52,7 +52,8 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
     projection: false,
     schoolComputer: false,
     externalComputer: false,
-    audioSupport: false
+    audioSupport: false,
+    techNotes: ''
   })
 
   // Buscar disponibilidade quando a data mudar
@@ -596,6 +597,23 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                   className="w-5 h-5 text-purple-600 rounded-lg border-gray-300 focus:ring-purple-600" 
                 />
               </label>
+
+              {/* Observações Técnicas */}
+              <div className="space-y-1.5 pt-2">
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-1">
+                  Observações de Equipamentos e Suporte
+                </label>
+                <div className="relative group">
+                  <FileText size={18} className="absolute left-4 top-4 text-gray-300 group-focus-within:text-[#003399] transition-colors" />
+                  <textarea
+                    value={formData.techNotes}
+                    onChange={e => setFormData({ ...formData, techNotes: e.target.value })}
+                    rows={3}
+                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all resize-none placeholder:text-gray-300 placeholder:italic"
+                    placeholder="Descreva detalhes adicionais, ex: cabo P2, adaptador Mac, microfone de lapela..."
+                  />
+                </div>
+              </div>
             </div>
           </div>
         )}

@@ -30,7 +30,8 @@ export async function POST(req: Request) {
       projection,
       schoolComputer,
       externalComputer,
-      audioSupport
+      audioSupport,
+      techNotes
     } = await req.json()
 
     const startTime = new Date(start)
@@ -87,7 +88,8 @@ export async function POST(req: Request) {
             projection,
             schoolComputer,
             externalComputer,
-            audioSupport
+            audioSupport,
+            techNotes
           })
         }
         currentStart.setDate(currentStart.getDate() + 1)
@@ -109,7 +111,8 @@ export async function POST(req: Request) {
         projection,
         schoolComputer,
         externalComputer,
-        audioSupport
+        audioSupport,
+        techNotes
       })
     }
 

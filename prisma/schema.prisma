@@ -92,6 +92,7 @@ model Booking {
   schoolComputer    Boolean @default(false)
   externalComputer  Boolean @default(false)
   audioSupport      Boolean @default(false)
+  techNotes         String? // Observações técnicas adicionais
   
   spaceId     String
   space       Space         @relation(fields: [spaceId], references: [id])

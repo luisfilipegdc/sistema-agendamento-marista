@@ -38,6 +38,7 @@ interface Booking {
   schoolComputer: boolean
   externalComputer: boolean
   audioSupport: boolean
+  techNotes?: string
 }
 
 interface CalendarViewProps {
