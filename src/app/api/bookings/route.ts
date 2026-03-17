@@ -85,9 +85,9 @@ export async function POST(req: Request) {
     })
 
     // 4. Enviar e-mail de confirmação para o professor
-    const formattedDate = format(new Date(start), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
-    const startTime = format(new Date(start), "HH:mm")
-    const endTime = format(new Date(end), "HH:mm")
+    const formattedDate = format(startTime, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
+    const startStr = format(startTime, "HH:mm")
+    const endStr = format(endTime, "HH:mm")
 
     await sendEmail({
       to: user.email,
@@ -98,8 +98,8 @@ export async function POST(req: Request) {
         spaceName: booking.space.name,
         unitName: booking.space.unit.name,
         date: formattedDate,
-        startTime,
-        endTime
+        startTime: startStr,
+        endTime: endStr
       }
     })
 
@@ -121,8 +121,8 @@ export async function POST(req: Request) {
           spaceName: booking.space.name,
           unitName: booking.space.unit.name,
           date: formattedDate,
-          startTime,
-          endTime
+          startTime: startStr,
+          endTime: endStr
         }
       })
     }
