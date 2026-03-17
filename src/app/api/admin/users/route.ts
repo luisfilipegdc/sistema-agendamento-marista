@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs'
 
 export async function GET() {
   const session = await getServerSession(authOptions)
-  if ((session?.user as any)?.role !== 'ADMIN') {
+  if (session?.user?.role !== 'ADMIN') {
     return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
   }
 
@@ -23,7 +23,7 @@ export async function GET() {
 
 export async function PATCH(req: Request) {
   const session = await getServerSession(authOptions)
-  if ((session?.user as any)?.role !== 'ADMIN') {
+  if (session?.user?.role !== 'ADMIN') {
     return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
   }
 
@@ -51,7 +51,7 @@ export async function PATCH(req: Request) {
 
 export async function DELETE(req: Request) {
   const session = await getServerSession(authOptions)
-  if ((session?.user as any)?.role !== 'ADMIN') {
+  if (session?.user?.role !== 'ADMIN') {
     return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
   }
 

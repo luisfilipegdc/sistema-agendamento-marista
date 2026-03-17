@@ -6,7 +6,7 @@ import { authOptions } from '../../auth/[...nextauth]/route'
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session || (session.user as any)?.role !== 'ADMIN') {
+    if (!session || session.user.role !== 'ADMIN') {
       return NextResponse.json({ message: 'Não autorizado' }, { status: 401 })
     }
 
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
 export async function PATCH(req: Request) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session || (session.user as any)?.role !== 'ADMIN') {
+    if (!session || session.user.role !== 'ADMIN') {
       return NextResponse.json({ message: 'Não autorizado' }, { status: 401 })
     }
 
@@ -60,7 +60,7 @@ export async function PATCH(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session || (session.user as any)?.role !== 'ADMIN') {
+    if (!session || session.user.role !== 'ADMIN') {
       return NextResponse.json({ message: 'Não autorizado' }, { status: 401 })
     }
 

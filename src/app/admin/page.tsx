@@ -19,7 +19,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions)
-  const isAdmin = (session?.user as any)?.role === 'ADMIN'
+  const isAdmin = session?.user?.role === 'ADMIN'
 
   if (!isAdmin) {
     redirect('/')

@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     const now = new Date()
 
     // 1. Validar Prazo de 24 horas (Admin e AV ignoram esta regra se necessário)
-    const isSpecialUser = ['ADMIN', 'AV'].includes((session.user as any).role)
+    const isSpecialUser = ['ADMIN', 'AV'].includes(session.user.role)
     const hoursDifference = (startTime.getTime() - now.getTime()) / (1000 * 60 * 60)
     
     if (!isSpecialUser && hoursDifference < 24) {
