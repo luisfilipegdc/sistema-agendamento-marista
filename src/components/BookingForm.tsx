@@ -347,12 +347,12 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                 <div className="space-y-2.5">
                   <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Título da Atividade</Label>
                   <div className="relative group">
-                    <BookOpen size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#003399] transition-colors" />
+                    <BookOpen size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
                     <Input 
                       value={formData.title}
                       onChange={e => setFormData({ ...formData, title: e.target.value })}
                       placeholder="Ex: Aula de Robótica"
-                      className="pl-12 h-14 bg-slate-50 border-slate-100 rounded-2xl text-sm font-bold focus-visible:ring-[#003399] focus-visible:bg-white transition-all"
+                      className="h-12 rounded-lg border-border bg-secondary/40 pl-12 text-sm font-medium transition-all focus-visible:ring-primary focus-visible:bg-background"
                     />
                   </div>
                 </div>
@@ -362,24 +362,24 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                   <div className="space-y-2.5">
                     <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Turma</Label>
                     <div className="relative group">
-                      <Users size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#003399] transition-colors" />
+                      <Users size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
                       <Input 
                         value={formData.class}
                         onChange={e => setFormData({ ...formData, class: e.target.value })}
                         placeholder="Ex: 2º Ano B"
-                        className="pl-12 h-14 bg-slate-50 border-slate-100 rounded-2xl text-sm font-bold focus-visible:ring-[#003399] focus-visible:bg-white transition-all"
+                        className="h-12 rounded-lg border-border bg-secondary/40 pl-12 text-sm font-medium transition-all focus-visible:ring-primary focus-visible:bg-background"
                       />
                     </div>
                   </div>
                   <div className="space-y-2.5">
                     <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Finalidade</Label>
                     <div className="relative group">
-                      <HelpCircle size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#003399] transition-colors" />
+                      <HelpCircle size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
                       <Input 
                         value={formData.purpose}
                         onChange={e => setFormData({ ...formData, purpose: e.target.value })}
                         placeholder="Ex: Avaliação"
-                        className="pl-12 h-14 bg-slate-50 border-slate-100 rounded-2xl text-sm font-bold focus-visible:ring-[#003399] focus-visible:bg-white transition-all"
+                        className="h-12 rounded-lg border-border bg-secondary/40 pl-12 text-sm font-medium transition-all focus-visible:ring-primary focus-visible:bg-background"
                       />
                     </div>
                   </div>
@@ -393,7 +393,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full h-14 justify-start text-left font-bold bg-slate-50 border-slate-100 rounded-2xl px-4 hover:bg-slate-100",
+                          "h-12 w-full justify-start rounded-lg border-border bg-secondary/40 px-4 text-left font-medium hover:bg-secondary",
                           !formData.date && "text-slate-400"
                         )}
                       >
@@ -401,7 +401,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                         {formData.date ? format(formData.date, "PPP", { locale: ptBR }) : <span>Selecione uma data</span>}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 rounded-3xl overflow-hidden border-slate-100 shadow-2xl" align="start">
+                    <PopoverContent className="w-auto overflow-hidden rounded-xl border-border p-0 shadow-lg" align="start">
                       <Calendar
                         mode="single"
                         selected={formData.date}
@@ -422,7 +422,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                     className="space-y-4 pt-4 border-t border-slate-100"
                   >
                     <div className="flex items-center justify-between">
-                      <Label className="text-[10px] font-black text-[#003399] uppercase tracking-widest italic flex items-center gap-2">
+                      <Label className="flex items-center gap-2 text-[10px] font-medium tracking-wide text-primary uppercase">
                         Horários Disponíveis (45min)
                         {isLoadingSlots && <Loader2 size={12} className="animate-spin" />}
                       </Label>
@@ -436,18 +436,18 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                           disabled={slot.status !== 'available'}
                           onClick={() => selectSlot(slot)}
                           className={cn(
-                            "group py-4 px-2 rounded-2xl text-[10px] font-black transition-all border flex flex-col items-center gap-2 relative overflow-hidden",
+                            "group relative flex flex-col items-center gap-2 overflow-hidden rounded-lg border px-2 py-3 text-[10px] font-medium transition-all",
                             slot.status === 'available' 
                               ? formData.startTime === slot.start 
-                                ? "bg-[#003399] text-white border-[#003399] shadow-xl scale-95" 
-                                : "bg-white text-slate-600 border-slate-100 hover:border-blue-200 hover:bg-blue-50/50"
+                                ? "scale-95 border-primary bg-primary text-primary-foreground" 
+                                : "border-border bg-background text-muted-foreground hover:border-primary/30 hover:bg-secondary/70"
                               : slot.status === 'booked'
                                 ? "bg-red-50/50 text-red-300 border-red-50 cursor-not-allowed"
                                 : "bg-slate-100 text-slate-400 border-slate-100 cursor-not-allowed"
                           )}
                         >
                           {slot.status === 'available' && formData.startTime === slot.start && (
-                            <motion.div layoutId="active-slot" className="absolute inset-0 bg-[#003399] z-[-1]" />
+                            <motion.div layoutId="active-slot" className="absolute inset-0 z-[-1] bg-primary" />
                           )}
                           <span className="relative z-10">{slot.start}</span>
                           <div className={cn(
@@ -488,12 +488,12 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                       daysOfWeek: val === 'FIXED' && formData.date ? [formData.date.getDay()] : formData.daysOfWeek
                     })}
                   >
-                    <SelectTrigger className="h-14 bg-slate-50 border-slate-100 rounded-2xl font-bold focus:ring-[#003399]">
+                    <SelectTrigger className="h-12 rounded-lg border-border bg-secondary/40 font-medium focus:ring-primary">
                       <SelectValue placeholder="Selecione a frequência" />
                     </SelectTrigger>
-                    <SelectContent className="rounded-2xl border-slate-100 shadow-xl">
-                      <SelectItem value="ONE_OFF" className="font-bold py-3">Evento Único</SelectItem>
-                      <SelectItem value="FIXED" className="font-bold py-3">Horário Fixo (Recorrente)</SelectItem>
+                    <SelectContent className="rounded-lg border-border shadow-lg">
+                      <SelectItem value="ONE_OFF" className="py-2.5 font-medium">Evento Único</SelectItem>
+                      <SelectItem value="FIXED" className="py-2.5 font-medium">Horário Fixo (Recorrente)</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -501,10 +501,10 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                     <motion.div 
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
-                      className="space-y-6 p-8 bg-blue-50/50 rounded-[2.5rem] border border-blue-100"
+                      className="space-y-5 rounded-xl border border-border bg-secondary/50 p-5"
                     >
                       <div className="space-y-3">
-                        <Label className="text-[10px] font-black text-[#003399] uppercase tracking-widest ml-1">Repetir nos dias:</Label>
+                        <Label className="ml-1 text-[10px] font-medium tracking-wide text-primary uppercase">Repetir nos dias:</Label>
                         <div className="flex flex-wrap gap-2.5">
                           {[
                             { l: 'D', v: 0 }, { l: 'S', v: 1 }, { l: 'T', v: 2 }, 
@@ -516,10 +516,10 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                               variant={formData.daysOfWeek.includes(day.v) ? "default" : "outline"}
                               onClick={() => toggleDay(day.v)}
                               className={cn(
-                                "w-11 h-11 rounded-xl font-black text-xs transition-all p-0",
+                                "h-10 w-10 rounded-lg p-0 text-xs font-medium transition-all",
                                 formData.daysOfWeek.includes(day.v) 
-                                  ? "bg-[#003399] text-white shadow-lg shadow-blue-900/20 border-none" 
-                                  : "bg-white text-slate-400 border-slate-100 hover:border-blue-200"
+                                  ? "border-primary bg-primary text-primary-foreground" 
+                                  : "border-border bg-background text-muted-foreground hover:border-primary/30"
                               )}
                             >
                               {day.l}
@@ -529,13 +529,13 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                       </div>
 
                       <div className="space-y-2.5">
-                        <Label className="text-[10px] font-black text-[#003399] uppercase tracking-widest ml-1">Até quando repetir?</Label>
+                        <Label className="ml-1 text-[10px] font-medium tracking-wide text-primary uppercase">Até quando repetir?</Label>
                         <Input 
                           type="date"
                           value={formData.repeatUntil}
                           min={formData.date ? format(formData.date, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd')}
                           onChange={e => setFormData({ ...formData, repeatUntil: e.target.value })}
-                          className="h-14 bg-white border-blue-100 rounded-2xl text-sm font-bold focus-visible:ring-[#003399]"
+                          className="h-12 rounded-lg border-border bg-background text-sm font-medium focus-visible:ring-primary"
                         />
                       </div>
                     </motion.div>
@@ -554,61 +554,61 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Ar Condicionado */}
                   <div className={cn(
-                    "flex items-center justify-between p-6 rounded-[2rem] border transition-all cursor-pointer group",
-                    formData.airConditioning ? "bg-blue-50 border-blue-200 shadow-sm" : "bg-slate-50 border-slate-100 hover:bg-slate-100"
+                    "group flex cursor-pointer items-center justify-between rounded-lg border p-4 transition-all",
+                    formData.airConditioning ? "border-primary/30 bg-primary/10" : "border-border bg-secondary/50 hover:bg-secondary"
                   )} onClick={() => setFormData({...formData, airConditioning: !formData.airConditioning})}>
                     <div className="flex items-center gap-4">
                       <div className={cn(
-                        "w-12 h-12 rounded-2xl flex items-center justify-center transition-all",
-                        formData.airConditioning ? "bg-[#003399] text-white" : "bg-white text-slate-300"
+                        "flex h-10 w-10 items-center justify-center rounded-full transition-all",
+                        formData.airConditioning ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground"
                       )}>
                         <Wind size={24} />
                       </div>
                       <div>
-                        <p className={cn("text-xs font-black uppercase tracking-widest", formData.airConditioning ? "text-[#003399]" : "text-slate-400")}>Ar Condicionado</p>
-                        <p className="text-[9px] text-slate-400 font-bold uppercase">Climatizar</p>
+                        <p className={cn("text-xs font-medium tracking-wide uppercase", formData.airConditioning ? "text-primary" : "text-muted-foreground")}>Ar Condicionado</p>
+                        <p className="text-[9px] font-medium text-muted-foreground uppercase">Climatizar</p>
                       </div>
                     </div>
-                    <Checkbox checked={formData.airConditioning} className="rounded-lg border-slate-200 data-[state=checked]:bg-[#003399]" />
+                    <Checkbox checked={formData.airConditioning} className="rounded border-border data-[state=checked]:bg-primary" />
                   </div>
 
                   {/* Projeção */}
                   <div className={cn(
-                    "flex items-center justify-between p-6 rounded-[2rem] border transition-all cursor-pointer group",
-                    formData.projection ? "bg-green-50 border-green-200 shadow-sm" : "bg-slate-50 border-slate-100 hover:bg-slate-100"
+                    "group flex cursor-pointer items-center justify-between rounded-lg border p-4 transition-all",
+                    formData.projection ? "border-primary/30 bg-primary/10" : "border-border bg-secondary/50 hover:bg-secondary"
                   )} onClick={() => setFormData({...formData, projection: !formData.projection})}>
                     <div className="flex items-center gap-4">
                       <div className={cn(
-                        "w-12 h-12 rounded-2xl flex items-center justify-center transition-all",
-                        formData.projection ? "bg-green-600 text-white" : "bg-white text-slate-300"
+                        "flex h-10 w-10 items-center justify-center rounded-full transition-all",
+                        formData.projection ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground"
                       )}>
                         <Monitor size={24} />
                       </div>
                       <div>
-                        <p className={cn("text-xs font-black uppercase tracking-widest", formData.projection ? "text-green-700" : "text-slate-400")}>Projeção / TV</p>
-                        <p className="text-[9px] text-slate-400 font-bold uppercase">Uso de tela</p>
+                        <p className={cn("text-xs font-medium tracking-wide uppercase", formData.projection ? "text-primary" : "text-muted-foreground")}>Projeção / TV</p>
+                        <p className="text-[9px] font-medium text-muted-foreground uppercase">Uso de tela</p>
                       </div>
                     </div>
-                    <Checkbox checked={formData.projection} className="rounded-lg border-slate-200 data-[state=checked]:bg-green-600" />
+                    <Checkbox checked={formData.projection} className="rounded border-border data-[state=checked]:bg-primary" />
                   </div>
                 </div>
 
                 {/* Microfones */}
                 <div className={cn(
-                  "p-8 rounded-[2.5rem] border transition-all",
-                  formData.microphones > 0 ? "bg-yellow-50 border-yellow-200 shadow-sm" : "bg-slate-50 border-slate-100"
+                  "rounded-xl border p-5 transition-all",
+                  formData.microphones > 0 ? "border-primary/30 bg-primary/10" : "border-border bg-secondary/50"
                 )}>
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-4">
                       <div className={cn(
-                        "w-12 h-12 rounded-2xl flex items-center justify-center transition-all",
-                        formData.microphones > 0 ? "bg-[#FFCC00] text-[#003399]" : "bg-white text-slate-300"
+                        "flex h-10 w-10 items-center justify-center rounded-full transition-all",
+                        formData.microphones > 0 ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground"
                       )}>
                         <Mic size={24} />
                       </div>
                       <div>
-                        <p className={cn("text-xs font-black uppercase tracking-widest", formData.microphones > 0 ? "text-[#003399]" : "text-slate-400")}>Microfones</p>
-                        <p className="text-[9px] text-slate-400 font-bold uppercase">Quantidade e tipo</p>
+                        <p className={cn("text-xs font-medium tracking-wide uppercase", formData.microphones > 0 ? "text-primary" : "text-muted-foreground")}>Microfones</p>
+                        <p className="text-[9px] font-medium text-muted-foreground uppercase">Quantidade e tipo</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -618,7 +618,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                         className="w-8 h-8 p-0 rounded-lg bg-white border-slate-100"
                         onClick={() => setFormData(prev => ({ ...prev, microphones: Math.max(0, prev.microphones - 1) }))}
                       >-</Button>
-                      <span className="text-sm font-black text-[#003399] w-4 text-center">{formData.microphones}</span>
+                      <span className="w-4 text-center text-sm font-medium text-foreground">{formData.microphones}</span>
                       <Button 
                         type="button" 
                         variant="outline" 
@@ -633,34 +633,34 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                         id="wireless" 
                         checked={formData.wirelessMic} 
                         onCheckedChange={val => setFormData({...formData, wirelessMic: !!val})}
-                        className="rounded-lg border-yellow-300 data-[state=checked]:bg-[#FFCC00] data-[state=checked]:text-[#003399]"
+                        className="rounded border-border data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                       />
-                      <Label htmlFor="wireless" className="text-[10px] font-black text-[#003399] uppercase tracking-widest opacity-70">Preferência por Sem Fio</Label>
+                      <Label htmlFor="wireless" className="text-[10px] font-medium tracking-wide text-primary uppercase opacity-80">Preferência por Sem Fio</Label>
                     </div>
                   )}
                 </div>
 
                 {/* Computadores */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   <div 
                     onClick={() => setFormData({...formData, schoolComputer: !formData.schoolComputer, externalComputer: false})}
                     className={cn(
-                      "flex flex-col items-center justify-center p-8 rounded-[2.5rem] border transition-all gap-4 cursor-pointer",
-                      formData.schoolComputer ? "bg-blue-50 border-[#003399] text-[#003399] shadow-sm" : "bg-slate-50 border-slate-100 text-slate-300"
+                      "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border p-5 transition-all",
+                      formData.schoolComputer ? "border-primary/30 bg-primary/10 text-primary" : "border-border bg-secondary/50 text-muted-foreground"
                     )}
                   >
-                    <Laptop size={32} />
-                    <span className="text-[10px] font-black uppercase tracking-widest">PC Escola</span>
+                    <Laptop size={26} />
+                    <span className="text-[10px] font-medium tracking-wide uppercase">PC Escola</span>
                   </div>
                   <div 
                     onClick={() => setFormData({...formData, externalComputer: !formData.externalComputer, schoolComputer: false})}
                     className={cn(
-                      "flex flex-col items-center justify-center p-8 rounded-[2.5rem] border transition-all gap-4 cursor-pointer",
-                      formData.externalComputer ? "bg-orange-50 border-orange-600 text-orange-600 shadow-sm" : "bg-slate-50 border-slate-100 text-slate-300"
+                      "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border p-5 transition-all",
+                      formData.externalComputer ? "border-primary/30 bg-primary/10 text-primary" : "border-border bg-secondary/50 text-muted-foreground"
                     )}
                   >
-                    <Laptop size={32} />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Meu Notebook</span>
+                    <Laptop size={26} />
+                    <span className="text-[10px] font-medium tracking-wide uppercase">Meu Notebook</span>
                   </div>
                 </div>
 
@@ -668,12 +668,12 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="p-6 bg-orange-50 border border-orange-100 rounded-[2rem] flex items-start gap-4"
+                    className="flex items-start gap-3 rounded-lg border border-border bg-secondary/60 p-4"
                   >
-                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shrink-0 shadow-sm">
-                      <Info size={20} className="text-orange-600" />
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                      <Info size={18} className="text-primary" />
                     </div>
-                    <p className="text-[10px] text-orange-800 font-bold leading-relaxed uppercase tracking-tighter">
+                    <p className="text-[10px] font-medium leading-relaxed tracking-wide text-muted-foreground uppercase">
                       Não esqueça os adaptadores <strong>HDMI</strong> e de baixar seus arquivos previamente.
                     </p>
                   </motion.div>
@@ -681,34 +681,34 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
 
                 {/* Suporte de Áudio */}
                 <div className={cn(
-                  "flex items-center justify-between p-6 rounded-[2rem] border transition-all cursor-pointer group",
-                  formData.audioSupport ? "bg-purple-50 border-purple-200 shadow-sm" : "bg-slate-50 border-slate-100 hover:bg-slate-100"
+                  "group flex cursor-pointer items-center justify-between rounded-lg border p-4 transition-all",
+                  formData.audioSupport ? "border-primary/30 bg-primary/10" : "border-border bg-secondary/50 hover:bg-secondary"
                 )} onClick={() => setFormData({...formData, audioSupport: !formData.audioSupport})}>
                   <div className="flex items-center gap-4">
                     <div className={cn(
-                      "w-12 h-12 rounded-2xl flex items-center justify-center transition-all",
-                      formData.audioSupport ? "bg-purple-600 text-white" : "bg-white text-slate-300"
+                      "flex h-10 w-10 items-center justify-center rounded-full transition-all",
+                      formData.audioSupport ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground"
                     )}>
                       <Music size={24} />
                     </div>
                     <div>
-                      <p className={cn("text-xs font-black uppercase tracking-widest", formData.audioSupport ? "text-purple-700" : "text-slate-400")}>Suporte de Áudio</p>
-                      <p className="text-[9px] text-slate-400 font-bold uppercase">Auxílio técnico</p>
+                      <p className={cn("text-xs font-medium tracking-wide uppercase", formData.audioSupport ? "text-primary" : "text-muted-foreground")}>Suporte de Áudio</p>
+                      <p className="text-[9px] font-medium text-muted-foreground uppercase">Auxílio técnico</p>
                     </div>
                   </div>
-                  <Checkbox checked={formData.audioSupport} className="rounded-lg border-slate-200 data-[state=checked]:bg-purple-600" />
+                  <Checkbox checked={formData.audioSupport} className="rounded border-border data-[state=checked]:bg-primary" />
                 </div>
 
                 {/* Observações */}
                 <div className="space-y-2.5">
-                  <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Observações Técnicas</Label>
+                  <Label className="ml-1 text-[10px] font-medium tracking-wide text-muted-foreground uppercase">Observações Técnicas</Label>
                   <div className="relative group">
-                    <FileText size={18} className="absolute left-4 top-4 text-slate-300 group-focus-within:text-[#003399] transition-colors" />
+                    <FileText size={18} className="absolute left-4 top-4 text-muted-foreground transition-colors group-focus-within:text-primary" />
                     <Textarea 
                       value={formData.techNotes}
                       onChange={e => setFormData({ ...formData, techNotes: e.target.value })}
                       placeholder="Descreva detalhes adicionais (cabos, adaptadores, microfones extras...)"
-                      className="pl-12 min-h-[120px] bg-slate-50 border-slate-100 rounded-[2rem] text-sm font-bold focus-visible:ring-[#003399] focus-visible:bg-white transition-all resize-none"
+                      className="min-h-[120px] resize-none rounded-lg border-border bg-secondary/40 pl-12 text-sm font-medium transition-all focus-visible:ring-primary focus-visible:bg-background"
                     />
                   </div>
                 </div>

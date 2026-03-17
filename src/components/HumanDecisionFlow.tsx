@@ -31,7 +31,7 @@ export default function HumanDecisionFlow({ units }: { units: Unit[] }) {
   return (
     <div id="decision-flow" className="mx-auto w-full max-w-5xl">
       <div className="mb-7 text-center">
-        <h3 className="text-2xl leading-tight font-semibold tracking-tight text-foreground sm:text-3xl">
+        <h3 className="text-2xl leading-tight font-medium tracking-tight text-foreground sm:text-3xl">
           {step === 1 ? 'Onde vamos agendar hoje?' : `Qual espaço no ${selectedUnit?.name}?`}
         </h3>
         <p className="mx-auto mt-2 max-w-2xl text-sm text-muted-foreground">
@@ -51,12 +51,12 @@ export default function HumanDecisionFlow({ units }: { units: Unit[] }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 onClick={() => handleUnitSelect(unit)}
-                className="group flex flex-col items-center rounded-xl border border-border bg-card p-5 text-center transition-colors hover:bg-secondary/40"
+                className="group flex flex-col items-center rounded-lg border border-border bg-card p-5 text-center transition-colors hover:bg-secondary/50"
               >
-                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
+                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
                   <Building2 size={22} />
                 </div>
-                <h4 className="text-base font-semibold tracking-tight text-foreground">{unit.name}</h4>
+                <h4 className="text-base font-medium tracking-tight text-foreground">{unit.name}</h4>
                 <p className="mb-4 mt-1 text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
                   {unit._count.spaces} Ambientes
                 </p>
@@ -83,23 +83,23 @@ export default function HumanDecisionFlow({ units }: { units: Unit[] }) {
                 <Link
                   key={space.id}
                   href={`/espaco/${space.slug}`}
-                  className="group rounded-xl border border-border bg-card p-5 transition-colors hover:bg-secondary/40"
+                  className="group rounded-lg border border-border bg-card p-5 transition-colors hover:bg-secondary/50"
                 >
                   <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }}>
                   <div className="mb-4 flex items-start justify-between">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
                       <Calendar size={18} />
                     </div>
                     <span className="rounded-full bg-secondary px-2 py-1 text-[9px] font-medium tracking-wide text-foreground">
                       Disponível
                     </span>
                   </div>
-                  <h4 className="text-base font-semibold tracking-tight text-foreground">{space.name}</h4>
+                  <h4 className="text-base font-medium tracking-tight text-foreground">{space.name}</h4>
                   <div className="mb-5 mt-2 flex items-center gap-2 text-[10px] font-medium text-muted-foreground">
                     <Users size={14} className="text-primary" />
                     <span>Capacidade: {space.capacity || '--'} pessoas</span>
                   </div>
-                  <div className="mt-auto w-full rounded-lg bg-primary py-2.5 text-center text-[10px] font-medium tracking-wide text-primary-foreground transition-colors group-hover:bg-primary/90">
+                  <div className="mt-auto w-full rounded-full bg-primary py-2.5 text-center text-[10px] font-medium tracking-wide text-primary-foreground transition-colors group-hover:bg-primary/90">
                     Agendar Agora
                   </div>
                   </motion.div>
