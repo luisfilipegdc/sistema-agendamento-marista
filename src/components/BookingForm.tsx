@@ -492,6 +492,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
         <div className="flex gap-3 pt-2">
           {step > 1 && (
             <button
+              key="prev-btn"
               type="button"
               onClick={prevStep}
               className="flex-1 py-4 bg-gray-50 text-gray-400 font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-gray-100 transition-all active:scale-95 flex items-center justify-center gap-2"
@@ -502,14 +503,20 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           
           {step < 2 ? (
             <button
+              key="next-btn"
               type="button"
-              onClick={nextStep}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                nextStep()
+              }}
               className="flex-1 py-4 bg-[#003399] text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-[#002266] transition-all shadow-lg shadow-blue-900/10 flex items-center justify-center gap-2 active:scale-95"
             >
               Próximo Passo <ChevronRight size={16} />
             </button>
           ) : (
             <button
+              key="submit-btn"
               type="submit"
               disabled={isLoading}
               className="flex-[2] py-4 bg-[#003399] text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-[#002266] transition-all shadow-lg shadow-blue-900/10 flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95"
