@@ -4,6 +4,8 @@ import { Building2, Calendar, LayoutDashboard, Users, Clock, MapPin } from 'luci
 import Header from '@/components/Header'
 import CalendarView from '@/components/CalendarView'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
   const [units, allBookings] = await Promise.all([
     prisma.unit.findMany({
