@@ -22,6 +22,8 @@ import { useSession } from 'next-auth/react'
 interface Booking {
   id: string
   title: string
+  class?: string
+  purpose?: string
   start: Date
   end: Date
   user: { name: string | null }
@@ -194,6 +196,11 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
                         <Clock size={14} className="text-[#FFCC00]" />
                         {format(new Date(booking.start), 'HH:mm')} - {format(new Date(booking.end), 'HH:mm')}
                       </span>
+                      {booking.class && (
+                        <span className="text-xs text-slate-500 font-bold bg-slate-100 px-2 py-0.5 rounded-md">
+                          Turma: {booking.class}
+                        </span>
+                      )}
                       <span className="text-xs text-slate-300 hidden sm:inline">•</span>
                       <span className="text-xs text-slate-500 font-bold flex items-center gap-1.5">
                         <User size={14} className="text-[#FFCC00]" />

@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
-import { Building2, Calendar, LayoutDashboard, Users, Clock, MapPin, ArrowRight, ShieldCheck, Zap } from 'lucide-react'
+import { Building2, Calendar, LayoutDashboard, Users, Clock, MapPin, ArrowRight, ShieldCheck, Zap, Sparkles } from 'lucide-react'
 import Header from '@/components/Header'
 import CalendarView from '@/components/CalendarView'
 import HumanDecisionFlow from '@/components/HumanDecisionFlow'
@@ -51,28 +51,54 @@ export default async function Home() {
         </div>
 
         <div className="relative z-10">
-          {/* Hero Section */}
-          <div className="text-center mb-20 sm:mb-28">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-[#003399] rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-8 border border-blue-100 animate-in fade-in slide-in-from-top-4 duration-700">
-              <ShieldCheck size={14} /> Sistema Oficial Marista Brasil
-            </div>
-            <h2 className="text-4xl sm:text-7xl font-black text-[#003399] tracking-tight mb-8 italic">
-              Gestão de <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#003399] to-blue-600">Espaços</span>
+          {/* PRD: Entrada Inteligente */}
+          <div className="mb-16">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#003399] tracking-tight mb-2 italic flex items-center gap-3">
+              👋 Olá, Professor
             </h2>
-            <p className="text-lg sm:text-2xl text-slate-500 max-w-3xl mx-auto leading-relaxed font-medium mb-12">
-              Infraestrutura inteligente para potencializar a excelência acadêmica e a inovação pedagógica.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <a href="#fluxo-decisao" className="px-8 py-5 bg-[#003399] text-white rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-[#002266] transition-all shadow-xl shadow-blue-900/20 active:scale-95 flex items-center gap-3">
-                Agendar Agora <ArrowRight size={18} />
-              </a>
-              <div className="px-8 py-5 bg-white text-slate-600 rounded-[2rem] font-black text-xs uppercase tracking-widest border border-slate-200 flex items-center gap-3">
-                <Zap size={18} className="text-[#FFCC00]" /> {allBookings.length} Atividades Hoje
-              </div>
-            </div>
+            <p className="text-lg text-slate-500 font-medium">Vamos agendar um espaço hoje?</p>
           </div>
 
-          {/* NOVO: Fluxo de Decisão Humanizado */}
+          {/* PRD: Cards Grandes de Decisão Binária */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-20">
+            <a href="#fluxo-decisao" className="group bg-[#003399] p-10 rounded-[3rem] text-white shadow-2xl shadow-blue-900/20 hover:-translate-y-2 transition-all duration-500 relative overflow-hidden">
+              <div className="absolute -right-10 -top-10 p-6 opacity-10 group-hover:scale-110 transition-transform">
+                <Calendar size={180} />
+              </div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-8 border border-white/10">
+                  <Sparkles size={32} className="text-[#FFCC00]" />
+                </div>
+                <h3 className="text-3xl font-black mb-4 tracking-tight italic">Agendar Espaço</h3>
+                <p className="text-blue-100 font-medium opacity-80 leading-relaxed max-w-[240px]">
+                  Reserve salas, auditórios ou estúdios em menos de 30 segundos.
+                </p>
+                <div className="mt-8 flex items-center gap-2 text-[#FFCC00] font-black text-xs uppercase tracking-[0.2em]">
+                  Começar agora <ArrowRight size={18} />
+                </div>
+              </div>
+            </a>
+
+            <Link href="/minhas-reservas" className="group bg-white p-10 rounded-[3rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_rgba(0,51,153,0.1)] hover:-translate-y-2 transition-all duration-500 relative overflow-hidden">
+              <div className="absolute -right-10 -top-10 p-6 opacity-[0.03] group-hover:scale-110 transition-transform text-[#003399]">
+                <Clock size={180} />
+              </div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 border border-blue-100">
+                  <Clock size={32} className="text-[#003399]" />
+                </div>
+                <h3 className="text-3xl font-black text-[#003399] mb-4 tracking-tight italic">Minhas Reservas</h3>
+                <p className="text-slate-400 font-medium leading-relaxed max-w-[240px]">
+                  Visualize seus agendamentos, cancele ou repita reservas anteriores.
+                </p>
+                <div className="mt-8 flex items-center gap-2 text-[#003399] font-black text-xs uppercase tracking-[0.2em]">
+                  Gerenciar agenda <ArrowRight size={18} />
+                </div>
+              </div>
+            </Link>
+          </div>
+
+          {/* Fluxo de Decisão Humanizado */}
           <div id="fluxo-decisao" className="mb-32 scroll-mt-32">
             <HumanDecisionFlow units={units as any} />
           </div>

@@ -16,6 +16,8 @@ export async function POST(req: Request) {
 
     const { 
       title, 
+      class: className,
+      purpose,
       start, 
       end, 
       spaceId, 
@@ -70,6 +72,8 @@ export async function POST(req: Request) {
         if (daysOfWeek.includes(currentStart.getDay())) {
           bookingsToCreate.push({
             title,
+            class: className,
+            purpose,
             start: new Date(currentStart),
             end: new Date(currentEnd),
             spaceId,
@@ -92,6 +96,8 @@ export async function POST(req: Request) {
     } else {
       bookingsToCreate.push({
         title,
+        class: className,
+        purpose,
         start: startTime,
         end: endTime,
         spaceId,

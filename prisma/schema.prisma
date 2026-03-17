@@ -56,8 +56,10 @@ model Space {
   unitId      String
   unit        Unit      @relation(fields: [unitId], references: [id])
   bookings    Booking[]
+  blockedSlots BlockedSlot[]
   capacity    Int?
   description String?
+  durationMinutes Int   @default(45) // PRD: Duração padrão
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -68,6 +70,11 @@ model Booking {
   id          String        @id @default(cuid())
   title       String
   description String?
+  
+  // PRD: Campos obrigatórios
+  class       String?       // Turma
+  purpose     String?       // Finalidade
+  
   start       DateTime
   end         DateTime
   type        BookingType   @default(ONE_OFF)
@@ -94,4 +101,17 @@ model Booking {
   
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+}
+
+model BlockedSlot {
+  id          String   @id @default(cuid())
+  date        DateTime
+  startTime   String   // Formato "HH:mm"
+  endTime     String   // Formato "HH:mm"
+  reason      String?
+  
+  spaceId     String
+  space       Space    @relation(fields: [spaceId], references: [id])
+  
+  createdAt   DateTime @default(now())
 }

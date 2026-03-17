@@ -32,10 +32,14 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const [availableSlots, setAvailableSlots] = useState<any[]>([])
+  const [isLoadingSlots, setIsLoadingSlots] = useState(false)
   
   // Form State
   const [formData, setFormData] = useState({
     title: '',
+    class: '',      // PRD
+    purpose: '',    // PRD
     date: '',
     startTime: '',
     endTime: '',
@@ -51,19 +55,26 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
     audioSupport: false
   })
 
-  // Sugestões de horários (Design Preventivo)
-  const timeSuggestions = [
-    { label: '07:15 - 08:00', start: '07:15', end: '08:00' },
-    { label: '08:00 - 08:45', start: '08:00', end: '08:45' },
-    { label: '08:45 - 09:30', start: '08:45', end: '09:30' },
-    { label: '10:00 - 10:45', start: '10:00', end: '10:45' },
-    { label: '10:45 - 11:30', start: '10:45', end: '11:30' },
-    { label: '13:30 - 14:15', start: '13:30', end: '14:15' },
-    { label: '14:15 - 15:00', start: '14:15', end: '15:00' },
-  ]
+  // Buscar disponibilidade quando a data mudar
+  const fetchAvailability = async (date: string) => {
+    if (!date || !spaceId) return
+    setIsLoadingSlots(true)
+    try {
+      const res = await fetch(`/api/availability?spaceId=${spaceId}&date=${date}`)
+      const data = await res.json()
+      setAvailableSlots(data)
+    } catch (err) {
+      console.error('Error fetching slots')
+    } finally {
+      setIsLoadingSlots(false)
+    }
+  }
 
-  const applySuggestion = (s: typeof timeSuggestions[0]) => {
-    setFormData(prev => ({ ...prev, startTime: s.start, endTime: s.end }))
+  // Sugestões de horários (Design Preventivo) - REMOVIDO EM FAVOR DOS SLOTS REAIS DO PRD
+  
+  const selectSlot = (slot: any) => {
+    if (slot.status !== 'available') return
+    setFormData(prev => ({ ...prev, startTime: slot.start, endTime: slot.end }))
   }
 
   const toggleDay = (day: number) => {
@@ -77,8 +88,8 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
 
   const nextStep = () => {
     if (step === 1) {
-      if (!formData.title || !formData.date || !formData.startTime || !formData.endTime) {
-        setError('Por favor, preencha todos os campos obrigatórios.')
+      if (!formData.title || !formData.class || !formData.purpose || !formData.date || !formData.startTime || !formData.endTime) {
+        setError('Por favor, preencha todos os campos obrigatórios e selecione um horário.')
         return
       }
       if (formData.type === 'FIXED' && (!formData.repeatUntil || formData.daysOfWeek.length === 0)) {
@@ -278,7 +289,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500">
             <div className="space-y-1.5">
               <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-1">
-                Atividade Acadêmica
+                Título da Atividade
               </label>
               <input
                 type="text"
@@ -286,13 +297,42 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                 value={formData.title}
                 onChange={e => setFormData({ ...formData, title: e.target.value })}
                 className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all placeholder:text-gray-300"
-                placeholder="Ex: Aula de Robótica - 2º Ano B"
+                placeholder="Ex: Aula de Robótica"
               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-1">
+                  Turma
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.class}
+                  onChange={e => setFormData({ ...formData, class: e.target.value })}
+                  className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all placeholder:text-gray-300"
+                  placeholder="Ex: 2º Ano B"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-1">
+                  Finalidade
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.purpose}
+                  onChange={e => setFormData({ ...formData, purpose: e.target.value })}
+                  className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all placeholder:text-gray-300"
+                  placeholder="Ex: Avaliação"
+                />
+              </div>
             </div>
 
             <div className="space-y-1.5">
               <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-1">
-                Data da Reserva
+                Quando você quer usar?
               </label>
               <div className="relative group">
                 <CalendarIcon size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#003399] transition-colors" />
@@ -301,67 +341,72 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                   required
                   min={new Date().toISOString().split('T')[0]}
                   value={formData.date}
-                  onChange={e => setFormData({ ...formData, date: e.target.value })}
+                  onChange={e => {
+                    setFormData({ ...formData, date: e.target.value })
+                    fetchAvailability(e.target.value)
+                  }}
                   className="w-full pl-14 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-1">
-                  Início
+            {/* Seleção de Slots (PRD) */}
+            {formData.date && (
+              <div className="space-y-4 pt-2">
+                <label className="block text-[10px] font-black text-[#003399] uppercase tracking-widest ml-1 italic flex items-center justify-between">
+                  Selecione o Horário:
+                  {isLoadingSlots && <Loader2 size={12} className="animate-spin" />}
                 </label>
-                <div className="relative group">
-                  <Clock size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#003399] transition-colors" />
-                  <input
-                    type="time"
-                    required
-                    value={formData.startTime}
-                    onChange={e => setFormData({ ...formData, startTime: e.target.value })}
-                    className="w-full pl-14 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all"
-                  />
+                
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {availableSlots.length > 0 ? availableSlots.map((slot, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      disabled={slot.status !== 'available'}
+                      onClick={() => selectSlot(slot)}
+                      className={`
+                        py-3 px-2 rounded-xl text-[10px] font-black transition-all border flex flex-col items-center gap-1
+                        ${slot.status === 'available' 
+                          ? formData.startTime === slot.start 
+                            ? 'bg-[#003399] text-white border-[#003399] shadow-lg scale-95' 
+                            : 'bg-green-50 text-green-700 border-green-100 hover:border-green-300 hover:bg-green-100'
+                          : slot.status === 'booked'
+                            ? 'bg-red-50 text-red-400 border-red-50 cursor-not-allowed opacity-60'
+                            : 'bg-gray-100 text-gray-400 border-gray-100 cursor-not-allowed'
+                        }
+                      `}
+                    >
+                      <span>{slot.start}</span>
+                      <div className={`w-1.5 h-1.5 rounded-full ${
+                        slot.status === 'available' ? 'bg-green-500' : 
+                        slot.status === 'booked' ? 'bg-red-500' : 'bg-gray-400'
+                      }`} />
+                    </button>
+                  )) : !isLoadingSlots && (
+                    <p className="col-span-full text-[10px] text-slate-400 italic text-center py-4 bg-slate-50 rounded-2xl">
+                      Nenhum horário disponível para esta data.
+                    </p>
+                  )}
                 </div>
-              </div>
-              <div className="space-y-1.5">
-                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-1">
-                  Término
-                </label>
-                <div className="relative group">
-                  <Clock size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#003399] transition-colors" />
-                  <input
-                    type="time"
-                    required
-                    value={formData.endTime}
-                    onChange={e => setFormData({ ...formData, endTime: e.target.value })}
-                    className="w-full pl-14 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all"
-                  />
-                </div>
-              </div>
-            </div>
 
-            {/* Sugestões de Horários - Redução de esforço mental */}
-            <div className="space-y-3">
-              <label className="block text-[10px] font-black text-[#003399] uppercase tracking-widest ml-1 italic">
-                Sugestões (Blocos de 45 min):
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {timeSuggestions.map((s, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => applySuggestion(s)}
-                    className={`px-3 py-2 rounded-xl text-[10px] font-black transition-all border ${
-                      formData.startTime === s.start && formData.endTime === s.end
-                        ? 'bg-[#003399] text-white border-[#003399] shadow-lg shadow-blue-900/10'
-                        : 'bg-white text-slate-400 border-slate-100 hover:border-blue-200'
-                    }`}
-                  >
-                    {s.label}
-                  </button>
-                ))}
+                {/* Legenda (PRD) */}
+                <div className="flex items-center justify-center gap-4 pt-2">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-green-500" />
+                    <span className="text-[8px] font-black text-slate-400 uppercase">Livre</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-red-500" />
+                    <span className="text-[8px] font-black text-slate-400 uppercase">Ocupado</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-gray-400" />
+                    <span className="text-[8px] font-black text-slate-400 uppercase">Bloqueado</span>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="space-y-1.5">
               <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] ml-1">
