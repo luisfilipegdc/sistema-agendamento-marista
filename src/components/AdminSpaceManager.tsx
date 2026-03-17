@@ -271,7 +271,7 @@ export default function AdminSpaceManager({ initialSpaces, units }: AdminSpaceMa
                     required
                     value={formData.name}
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-gray-900 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all"
                     placeholder="Ex: Anfiteatro Dom Bosco"
                   />
                 </div>
@@ -286,7 +286,7 @@ export default function AdminSpaceManager({ initialSpaces, units }: AdminSpaceMa
                     required
                     value={formData.unitId}
                     onChange={e => setFormData({ ...formData, unitId: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-gray-900 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all appearance-none cursor-pointer"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all appearance-none cursor-pointer"
                   >
                     {units.map(unit => (
                       <option key={unit.id} value={unit.id}>{unit.name}</option>
@@ -304,7 +304,7 @@ export default function AdminSpaceManager({ initialSpaces, units }: AdminSpaceMa
                       required
                       value={formData.capacity}
                       onChange={e => setFormData({ ...formData, capacity: e.target.value })}
-                      className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-gray-900 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all"
+                      className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all"
                       placeholder="Ex: 50"
                     />
                   </div>
@@ -321,7 +321,7 @@ export default function AdminSpaceManager({ initialSpaces, units }: AdminSpaceMa
                     value={formData.description}
                     onChange={e => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
-                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-gray-900 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all resize-none"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] outline-none transition-all resize-none"
                     placeholder="Equipamentos, finalidade, observações..."
                   />
                 </div>

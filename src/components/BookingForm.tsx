@@ -117,7 +117,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
             name="title"
             type="text"
             required
-            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-gray-900 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] focus:border-transparent outline-none transition-all placeholder:text-gray-300"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] focus:border-transparent outline-none transition-all placeholder:text-gray-300"
             placeholder="Ex: Aula de Robótica - 2º Ano B"
           />
         </div>
@@ -133,7 +133,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
               type="date"
               required
               min={new Date().toISOString().split('T')[0]}
-              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-gray-900 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] focus:border-transparent outline-none transition-all"
+              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] focus:border-transparent outline-none transition-all"
             />
           </div>
         </div>
@@ -149,7 +149,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                 name="startTime"
                 type="time"
                 required
-                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-gray-900 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] focus:border-transparent outline-none transition-all"
+                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] focus:border-transparent outline-none transition-all"
               />
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                 name="endTime"
                 type="time"
                 required
-                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-gray-900 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] focus:border-transparent outline-none transition-all"
+                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] focus:border-transparent outline-none transition-all"
               />
             </div>
           </div>
@@ -175,7 +175,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           </label>
           <select
             name="type"
-            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-gray-900 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] focus:border-transparent outline-none transition-all appearance-none cursor-pointer"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm text-slate-800 font-bold focus:bg-white focus:ring-2 focus:ring-[#003399] focus:border-transparent outline-none transition-all appearance-none cursor-pointer"
           >
             <option value="ONE_OFF">Evento Único</option>
             <option value="FIXED">Horário Fixo (Recorrente)</option>

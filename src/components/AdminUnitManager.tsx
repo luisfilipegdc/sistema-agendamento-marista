@@ -215,7 +215,7 @@ export default function AdminUnitManager() {
                   <input
                     type="text"
                     placeholder="Ex: Marista Glória"
-                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 font-medium"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 font-medium text-slate-800"
                     value={name}
                     onChange={(e) => {
                       setName(e.target.value)
@@ -234,7 +234,7 @@ export default function AdminUnitManager() {
                   <input
                     type="text"
                     placeholder="ex: marista-gloria"
-                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 font-medium"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 font-medium text-slate-800"
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
                   />

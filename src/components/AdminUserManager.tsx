@@ -155,7 +155,7 @@ export default function AdminUserManager() {
           <input
             type="text"
             placeholder="Buscar por nome ou e-mail..."
-            className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 transition-all font-medium text-gray-700"
+            className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 transition-all font-medium text-slate-800"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -267,7 +267,7 @@ export default function AdminUserManager() {
                   <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-[#FFCC00]" size={18} />
                   <input
                     type="text"
-                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 font-medium"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 font-medium text-slate-800"
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
                   />
@@ -280,7 +280,7 @@ export default function AdminUserManager() {
                   <div className="relative">
                     <Shield className="absolute left-4 top-1/2 -translate-y-1/2 text-[#FFCC00]" size={18} />
                     <select
-                      className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 font-medium appearance-none"
+                      className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 font-medium appearance-none text-slate-800"
                       value={editRole}
                       onChange={(e) => setEditRole(e.target.value as any)}
                     >
@@ -296,7 +296,7 @@ export default function AdminUserManager() {
                   <div className="relative">
                     <Building className="absolute left-4 top-1/2 -translate-y-1/2 text-[#FFCC00]" size={18} />
                     <select
-                      className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 font-medium appearance-none"
+                      className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#003399]/20 font-medium appearance-none text-slate-800"
                       value={editUnitId}
                       onChange={(e) => setEditUnitId(e.target.value)}
                     >
@@ -317,7 +317,7 @@ export default function AdminUserManager() {
                 <input
                   type="password"
                   placeholder="Nova senha (deixe em branco para manter)"
-                  className="w-full px-4 py-3 bg-white border-none rounded-xl focus:ring-2 focus:ring-[#003399]/20 font-medium text-sm"
+                  className="w-full px-4 py-3 bg-white border-none rounded-xl focus:ring-2 focus:ring-[#003399]/20 font-medium text-sm text-slate-800"
                   value={editPassword}
                   onChange={(e) => setEditPassword(e.target.value)}
                 />
