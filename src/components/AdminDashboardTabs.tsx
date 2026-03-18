@@ -13,12 +13,14 @@ import {
   Clock,
   CheckCircle2,
   AlertCircle,
-  ShieldAlert
+  ShieldAlert,
+  CalendarClock
 } from 'lucide-react'
 import AdminSpaceManager from './AdminSpaceManager'
 import AdminUserManager from './AdminUserManager'
 import AdminUnitManager from './AdminUnitManager'
 import AdminBlockManager from './AdminBlockManager'
+import AdminUnitScheduleManager from './AdminUnitScheduleManager'
 
 interface AdminDashboardTabsProps {
   units: any[]
@@ -35,12 +37,13 @@ export default function AdminDashboardTabs({
   totalBookings,
   recentUsers 
 }: AdminDashboardTabsProps) {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'units' | 'spaces' | 'users' | 'blocks'>('dashboard')
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'units' | 'spaces' | 'users' | 'blocks' | 'schedules'>('dashboard')
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'units', label: 'Unidades', icon: Building2 },
     { id: 'spaces', label: 'Ambientes', icon: MapPin },
+    { id: 'schedules', label: 'Horários', icon: CalendarClock },
     { id: 'blocks', label: 'Bloqueios', icon: ShieldAlert },
     { id: 'users', label: 'Usuários', icon: Users },
   ]
@@ -214,6 +217,7 @@ export default function AdminDashboardTabs({
         )}
 
         {activeTab === 'units' && <AdminUnitManager />}
+        {activeTab === 'schedules' && <AdminUnitScheduleManager units={units} />}
         {activeTab === 'spaces' && <AdminSpaceManager initialSpaces={spaces} units={units} />}
         {activeTab === 'blocks' && <AdminBlockManager spaces={spaces} />}
         {activeTab === 'users' && <AdminUserManager />}

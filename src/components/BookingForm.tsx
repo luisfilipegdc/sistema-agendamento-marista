@@ -423,7 +423,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                   >
                     <div className="flex items-center justify-between">
                       <Label className="flex items-center gap-2 text-[10px] font-medium tracking-wide text-primary uppercase">
-                        Horários Disponíveis (45min)
+                        Horários Disponíveis da Unidade
                         {isLoadingSlots && <Loader2 size={12} className="animate-spin" />}
                       </Label>
                     </div>

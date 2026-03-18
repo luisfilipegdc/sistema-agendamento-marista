@@ -40,13 +40,14 @@ model User {
 }
 
 model Unit {
-  id          String   @id @default(cuid())
-  name        String   @unique // Maristão, Maristinha, Pio XII
-  slug        String   @unique // maristao, maristinha, pio-xii
-  spaces      Space[]
-  users       User[]   // Equipe de AV vinculada à unidade
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String            @id @default(cuid())
+  name          String            @unique // Maristão, Maristinha, Pio XII
+  slug          String            @unique // maristao, maristinha, pio-xii
+  spaces        Space[]
+  users         User[]            // Equipe de AV vinculada à unidade
+  scheduleSlots UnitScheduleSlot[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
 }
 
 model Space {
@@ -115,4 +116,22 @@ model BlockedSlot {
   space       Space    @relation(fields: [spaceId], references: [id])
   
   createdAt   DateTime @default(now())
+}
+
+model UnitScheduleSlot {
+  id            String   @id @default(cuid())
+  label         String?
+  period        String?
+  startTime     String   // Formato "HH:mm"
+  endTime       String   // Formato "HH:mm"
+  sortOrder     Int      @default(0)
+  isReservable  Boolean  @default(true)
+
+  unitId        String
+  unit          Unit     @relation(fields: [unitId], references: [id])
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([unitId, sortOrder])
 }
