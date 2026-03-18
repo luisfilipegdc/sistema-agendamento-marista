@@ -30,23 +30,23 @@ export default function HumanDecisionFlow({ units }: { units: Unit[] }) {
 
   return (
     <div id="decision-flow" className="mx-auto w-full max-w-5xl">
-      <div className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
         {[
           { label: 'Unidade', active: step >= 1 },
           { label: 'Espaço', active: step >= 2 },
           { label: 'Data', active: step >= 2 },
           { label: 'Horário', active: step >= 2 },
         ].map((item, index) => (
-          <div key={item.label} className={`rounded-lg border px-3 py-2 text-center text-[10px] font-medium tracking-wide uppercase ${item.active ? 'border-primary/25 bg-primary/10 text-primary' : 'border-border bg-secondary/40 text-muted-foreground'}`}>
+          <div key={item.label} className={`rounded-xl border px-3 py-2 text-center text-[10px] font-medium tracking-wide uppercase transition-all ${item.active ? 'border-primary/25 bg-primary/10 text-primary shadow-[0_12px_24px_-22px] shadow-primary' : 'border-border bg-secondary/40 text-muted-foreground'}`}>
             {index + 1}. {item.label}
           </div>
         ))}
       </div>
-      <div className="mb-7 text-center">
-        <h3 className="text-2xl leading-tight font-medium tracking-tight text-foreground sm:text-3xl">
+      <div className="mb-8 text-center">
+        <h3 className="text-2xl leading-[1.1] font-semibold tracking-[-0.02em] text-foreground sm:text-3xl">
           {step === 1 ? 'Onde vamos agendar hoje?' : `Qual espaço no ${selectedUnit?.name}?`}
         </h3>
-        <p className="mx-auto mt-2 max-w-2xl text-sm text-muted-foreground">
+        <p className="mx-auto mt-2.5 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
           {step === 1 
             ? 'Passo 1: selecione a unidade para visualizar os espaços disponíveis.' 
             : 'Passo 2: escolha o espaço. Em seguida você seleciona data e horário.'}
@@ -63,9 +63,11 @@ export default function HumanDecisionFlow({ units }: { units: Unit[] }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 onClick={() => handleUnitSelect(unit)}
-                className="group flex flex-col items-center rounded-lg border border-border bg-card p-5 text-center transition-colors hover:bg-secondary/50"
+                whileHover={{ y: -4 }}
+                whileTap={{ scale: 0.985 }}
+                className="group flex flex-col items-center rounded-2xl border border-border/80 bg-card p-5 text-center shadow-[0_24px_36px_-34px] shadow-primary/40 transition-all duration-300 hover:bg-secondary/50"
               >
-                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
+                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[0_14px_24px_-16px] shadow-primary transition-all group-hover:scale-105">
                   <Building2 size={22} />
                 </div>
                 <h4 className="text-base font-medium tracking-tight text-foreground">{unit.name}</h4>
@@ -95,11 +97,11 @@ export default function HumanDecisionFlow({ units }: { units: Unit[] }) {
                 <Link
                   key={space.id}
                   href={`/espaco/${space.slug}`}
-                  className="group rounded-lg border border-border bg-card p-5 transition-colors hover:bg-secondary/50"
+                  className="group rounded-2xl border border-border/80 bg-card p-5 shadow-[0_24px_36px_-34px] shadow-primary/40 transition-all duration-300 hover:-translate-y-1.5 hover:bg-secondary/50"
                 >
                   <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }}>
                   <div className="mb-4 flex items-start justify-between">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[0_14px_24px_-16px] shadow-primary">
                       <Calendar size={18} />
                     </div>
                     <span className="rounded-full bg-secondary px-2 py-1 text-[9px] font-medium tracking-wide text-foreground">
@@ -111,7 +113,7 @@ export default function HumanDecisionFlow({ units }: { units: Unit[] }) {
                     <Users size={14} className="text-primary" />
                     <span>Capacidade: {space.capacity || '--'} pessoas</span>
                   </div>
-                  <div className="mt-auto w-full rounded-full bg-primary py-2.5 text-center text-[10px] font-medium tracking-wide text-primary-foreground transition-colors group-hover:bg-primary/90">
+                  <div className="mt-auto w-full rounded-xl bg-primary py-2.5 text-center text-[10px] font-medium tracking-wide text-primary-foreground shadow-[0_14px_24px_-16px] shadow-primary transition-colors group-hover:bg-primary/90">
                     Agendar Agora
                   </div>
                   </motion.div>

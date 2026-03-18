@@ -230,7 +230,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
         <CardContent className="relative z-10 p-6 pt-2">
           <Button 
             onClick={() => router.push('/login')}
-            className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary text-xs font-medium text-primary-foreground hover:bg-primary/90"
+            className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary text-xs font-medium text-primary-foreground shadow-[0_14px_22px_-14px] shadow-primary transition-all hover:-translate-y-0.5 hover:bg-primary/90"
           >
             Acessar Sistema Marista <ChevronRight size={16} />
           </Button>
@@ -282,8 +282,8 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
   }
 
   return (
-    <Card className="overflow-hidden rounded-2xl border-border">
-      <CardHeader className="border-b border-border bg-card p-5 sm:p-6">
+      <Card className="overflow-hidden rounded-3xl border-border/80 bg-card/95 shadow-[0_30px_44px_-36px] shadow-primary/45">
+        <CardHeader className="border-b border-border bg-card/90 p-5 sm:p-6">
         <div className="mb-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Badge className={cn(
@@ -302,7 +302,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[0_14px_24px_-16px] shadow-primary">
             {step === 1 ? <CalendarIcon size={28} /> : <Settings size={28} />}
           </div>
           <div>
@@ -387,17 +387,17 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
 
                 {/* Data com Popover/Calendar shadcn */}
                 <div className="space-y-2.5">
-                  <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Quando você quer usar?</Label>
+                  <Label className="ml-1 text-[10px] font-medium tracking-wide text-muted-foreground uppercase">Quando você quer usar?</Label>
                   <Popover>
                     <PopoverTrigger>
                       <Button
                         variant={"outline"}
                         className={cn(
                           "h-12 w-full justify-start rounded-lg border-border bg-secondary/40 px-4 text-left font-medium hover:bg-secondary",
-                          !formData.date && "text-slate-400"
+                          !formData.date && "text-muted-foreground"
                         )}
                       >
-                        <CalendarIcon className="mr-3 h-5 w-5 text-slate-300" />
+                        <CalendarIcon className="mr-3 h-5 w-5 text-primary/70" />
                         {formData.date ? format(formData.date, "PPP", { locale: ptBR }) : <span>Selecione uma data</span>}
                       </Button>
                     </PopoverTrigger>
@@ -419,7 +419,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="space-y-4 pt-4 border-t border-slate-100"
+                    className="space-y-4 border-t border-border pt-5"
                   >
                     <div className="flex items-center justify-between">
                       <Label className="flex items-center gap-2 text-[10px] font-medium tracking-wide text-primary uppercase">
@@ -428,7 +428,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                       </Label>
                     </div>
 
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+                    <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4">
                       {availableSlots.map((slot, i) => (
                         <button
                           key={i}
@@ -436,14 +436,14 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                           disabled={slot.status !== 'available'}
                           onClick={() => selectSlot(slot)}
                           className={cn(
-                            "group relative flex flex-col items-center gap-2 overflow-hidden rounded-lg border px-2 py-3 text-[10px] font-medium transition-all",
+                            "group relative flex flex-col items-center gap-2 overflow-hidden rounded-xl border px-2 py-3 text-[10px] font-semibold transition-all duration-300",
                             slot.status === 'available' 
                               ? formData.startTime === slot.start 
-                                ? "scale-95 border-primary bg-primary text-primary-foreground" 
-                                : "border-border bg-background text-muted-foreground hover:border-primary/30 hover:bg-secondary/70"
+                                ? "scale-[0.97] border-primary bg-primary text-primary-foreground shadow-[0_12px_20px_-14px] shadow-primary" 
+                                : "border-emerald-200 bg-emerald-50/80 text-emerald-700 hover:-translate-y-1 hover:border-emerald-300 hover:bg-emerald-50 hover:shadow-[0_14px_20px_-16px] hover:shadow-emerald-300"
                               : slot.status === 'booked'
-                                ? "bg-red-50/50 text-red-300 border-red-50 cursor-not-allowed"
-                                : "bg-slate-100 text-slate-400 border-slate-100 cursor-not-allowed"
+                                ? "cursor-not-allowed border-red-200 bg-red-50 text-red-400"
+                                : "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400"
                           )}
                         >
                           {slot.status === 'available' && formData.startTime === slot.start && (
@@ -452,7 +452,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                           <span className="relative z-10">{slot.start}</span>
                           <div className={cn(
                             "w-1.5 h-1.5 rounded-full relative z-10",
-                            slot.status === 'available' ? "bg-green-500" : 
+                            slot.status === 'available' ? "bg-emerald-500" : 
                             slot.status === 'booked' ? "bg-red-500" : "bg-slate-400"
                           )} />
                         </button>
@@ -460,18 +460,18 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                     </div>
 
                     {/* Legenda */}
-                    <div className="flex items-center justify-center gap-6 pt-2">
+                    <div className="flex items-center justify-center gap-4 pt-3">
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500" />
-                        <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Livre</span>
+                        <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                        <span className="text-[8px] font-semibold tracking-wide text-emerald-700 uppercase">Livre</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-red-500" />
-                        <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Ocupado</span>
+                        <div className="h-2 w-2 rounded-full bg-red-500" />
+                        <span className="text-[8px] font-semibold tracking-wide text-red-700 uppercase">Ocupado</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-slate-400" />
-                        <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Bloqueado</span>
+                        <div className="h-2 w-2 rounded-full bg-slate-500" />
+                        <span className="text-[8px] font-semibold tracking-wide text-slate-600 uppercase">Bloqueado</span>
                       </div>
                     </div>
                   </motion.div>
@@ -733,7 +733,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           <Button
             type="button"
             onClick={nextStep}
-            className="flex h-11 flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-xs font-medium tracking-wide text-primary-foreground uppercase hover:bg-primary/90"
+            className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-primary text-xs font-medium tracking-wide text-primary-foreground uppercase shadow-[0_14px_22px_-14px] shadow-primary transition-all hover:-translate-y-0.5 hover:bg-primary/90"
           >
             Próximo Passo <ChevronRight size={16} />
           </Button>
@@ -741,7 +741,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
           <Button
             type="submit"
             disabled={isLoading}
-            className="flex h-11 flex-[2] items-center justify-center gap-3 rounded-lg bg-primary text-xs font-medium tracking-wide text-primary-foreground uppercase hover:bg-primary/90 disabled:opacity-50"
+            className="flex h-11 flex-[2] items-center justify-center gap-3 rounded-xl bg-primary text-xs font-medium tracking-wide text-primary-foreground uppercase shadow-[0_14px_22px_-14px] shadow-primary transition-all hover:-translate-y-0.5 hover:bg-primary/90 disabled:opacity-50"
           >
             {isLoading ? <Loader2 className="animate-spin" size={20} /> : (
               <>

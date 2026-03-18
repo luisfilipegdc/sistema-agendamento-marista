@@ -43,26 +43,26 @@ export default async function Home() {
     <div className="min-h-screen">
       <Header />
 
-      <main className="mx-auto w-full max-w-7xl px-4 py-5 sm:px-6 sm:py-7 lg:px-8">
-        <section className="mb-5 rounded-xl border border-border bg-card p-5 sm:p-6">
-          <div className="mb-3 inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-[11px] font-medium tracking-wide text-primary">
+      <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-9 lg:px-8">
+        <section className="mb-8 rounded-2xl border border-border/80 bg-card/95 p-5 shadow-[0_24px_40px_-32px] shadow-primary/40 sm:p-7">
+          <div className="mb-3 inline-flex items-center rounded-full bg-primary/12 px-3 py-1 text-[11px] font-medium tracking-wide text-primary">
             Agendamento guiado em 4 passos
           </div>
-          <h2 className="text-2xl leading-tight font-medium tracking-tight text-foreground sm:text-3xl">
+          <h2 className="text-2xl leading-[1.08] font-semibold tracking-[-0.02em] text-foreground sm:text-[2.15rem]">
             Agende com clareza, sem erro e sem burocracia
           </h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-[15px] md:text-base">
             Unidade, espaço, data e horário em sequência guiada com feedback imediato de disponibilidade.
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {['1. Unidade', '2. Espaço', '3. Data', '4. Horário'].map((step) => (
-              <span key={step} className="rounded-full border border-border bg-secondary px-2.5 py-1 text-[10px] font-medium tracking-wide text-muted-foreground">
+              <span key={step} className="rounded-full border border-border bg-secondary/70 px-2.5 py-1 text-[10px] font-medium tracking-wide text-muted-foreground">
                 {step}
               </span>
             ))}
           </div>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            <a href="#fluxo-decisao" className="group rounded-lg bg-primary px-4 py-3.5 text-primary-foreground transition-colors hover:bg-primary/90">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <a href="#fluxo-decisao" className="group rounded-xl bg-primary px-4 py-3.5 text-primary-foreground shadow-[0_16px_28px_-18px] shadow-primary transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_34px_-20px] hover:shadow-primary/70 hover:bg-primary/90 active:translate-y-0">
               <div className="flex items-center justify-between">
                 <CalendarClock size={18} />
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
@@ -70,7 +70,7 @@ export default async function Home() {
               <h3 className="mt-3 text-base font-medium">Agendar agora</h3>
               <p className="mt-1 text-xs opacity-90">Começar fluxo guiado de agendamento.</p>
             </a>
-            <Link href="/minhas-reservas" className="group rounded-lg border border-border bg-background px-4 py-3.5 transition-colors hover:bg-secondary/60">
+            <Link href="/minhas-reservas" className="group rounded-xl border border-border bg-background px-4 py-3.5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_30px_-24px] hover:shadow-primary/35 hover:bg-secondary/60 active:translate-y-0">
               <div className="flex items-center justify-between text-primary">
                 <Clock3 size={18} />
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
@@ -81,13 +81,13 @@ export default async function Home() {
           </div>
         </section>
 
-        <div id="fluxo-decisao" className="mb-8 scroll-mt-24">
-          <section className="rounded-xl border border-border bg-card p-4 sm:p-5">
+        <div id="fluxo-decisao" className="mb-9 scroll-mt-24">
+          <section className="rounded-2xl border border-border/80 bg-card/95 p-4 shadow-[0_24px_38px_-34px] shadow-primary/35 sm:p-5">
             <HumanDecisionFlow units={units as any} />
           </section>
         </div>
 
-        <section className="mb-8">
+        <section className="mb-9">
           <div className="mb-6 flex items-center justify-between">
             <h3 className="text-xl font-medium tracking-tight text-foreground">Agenda Global</h3>
             <div className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-[11px] font-medium text-muted-foreground">
@@ -96,11 +96,11 @@ export default async function Home() {
             </div>
           </div>
           <div className="grid gap-4 lg:grid-cols-3">
-            <div className="overflow-hidden rounded-xl border border-border bg-card lg:col-span-2">
+            <div className="overflow-hidden rounded-2xl border border-border/80 bg-card/95 shadow-[0_24px_38px_-34px] shadow-primary/30 lg:col-span-2">
               <CalendarView bookings={allBookings as any} />
             </div>
-            <div className="rounded-xl border border-border bg-card p-4">
-              <h4 className="mb-3 text-sm font-medium tracking-wide text-foreground">Próximas atividades</h4>
+            <div className="rounded-2xl border border-border/80 bg-card/95 p-4 shadow-[0_24px_38px_-34px] shadow-primary/30">
+              <h4 className="mb-3 text-sm font-semibold tracking-wide text-foreground">Próximas atividades</h4>
               <div className="space-y-3">
                 {allBookings.slice(0, 4).length === 0 ? (
                   <div className="rounded-xl border border-dashed border-border bg-secondary/30 p-6 text-center text-xs font-medium text-muted-foreground">
@@ -108,7 +108,7 @@ export default async function Home() {
                   </div>
                 ) : (
                   allBookings.slice(0, 4).map((booking) => (
-                    <div key={booking.id} className="rounded-xl border border-border bg-background p-3.5">
+                    <div key={booking.id} className="rounded-xl border border-border bg-background/95 p-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_24px_-20px] hover:shadow-primary/40">
                       <div className="mb-2 flex items-center justify-between">
                         <span className="text-[10px] font-semibold tracking-wide text-primary">
                           {new Date(booking.start).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
@@ -128,14 +128,14 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="grid gap-3 sm:grid-cols-3">
+        <section className="grid gap-3.5 sm:grid-cols-3">
           {[
             { icon: CalendarDays, title: 'Agendamento rápido', desc: 'Fluxo simples e objetivo.' },
             { icon: BarChart3, title: 'Visão em tempo real', desc: 'Status por horário e disponibilidade.' },
             { icon: Users, title: 'Apoio técnico', desc: 'Detalhes para equipe AV no mesmo fluxo.' }
           ].map((feature) => (
-            <div key={feature.title} className="rounded-lg border border-border bg-card p-4">
-              <div className="mb-2 inline-flex rounded-lg bg-primary/10 p-2 text-primary">
+            <div key={feature.title} className="rounded-xl border border-border/80 bg-card/95 p-4 shadow-[0_20px_34px_-34px] shadow-primary/40">
+              <div className="mb-2 inline-flex rounded-xl bg-primary/10 p-2 text-primary">
                 <feature.icon size={16} />
               </div>
               <p className="text-sm font-medium text-foreground">{feature.title}</p>

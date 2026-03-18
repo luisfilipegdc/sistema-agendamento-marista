@@ -71,9 +71,16 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
     return bookings.some(booking => isSameDay(new Date(booking.start), day))
   }
 
-  const selectedDayBookings = bookings.filter(booking => 
-    isSameDay(new Date(booking.start), selectedDate)
-  ).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
+  const dayHasConflict = (day: Date) => {
+    const dayBookings = bookings
+      .filter((booking) => isSameDay(new Date(booking.start), day))
+      .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
+    return dayBookings.some((booking, index) => {
+      if (index === 0) return false
+      const prev = dayBookings[index - 1]
+      return new Date(booking.start).getTime() < new Date(prev.end).getTime()
+    })
+  }
 
   const hasConflict = (booking: Booking) => {
     const start = new Date(booking.start).getTime()
@@ -85,6 +92,12 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
       return start < otherEnd && otherStart < end
     })
   }
+
+  const selectedDayBookings = bookings.filter(booking => 
+    isSameDay(new Date(booking.start), selectedDate)
+  ).sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
+
+  const selectedConflicts = selectedDayBookings.filter((booking) => hasConflict(booking)).length
 
   const handleDeleteBooking = async (id: string) => {
     if (!confirm('Deseja realmente cancelar este agendamento?')) return
@@ -103,31 +116,31 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
   }
 
   return (
-    <div className="overflow-hidden bg-card">
-      <div className="flex items-center justify-between border-b border-border bg-card px-4 py-3 sm:px-5">
+    <div className="overflow-hidden bg-card/95">
+      <div className="flex items-center justify-between border-b border-border bg-card/90 px-4 py-3 sm:px-5">
         <h2 className="flex items-center gap-3 text-lg font-medium tracking-tight text-foreground capitalize">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
-            <CalendarIcon size={18} className="text-primary" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[0_14px_24px_-16px] shadow-primary">
+            <CalendarIcon size={16} className="text-primary-foreground" />
           </div>
           {format(currentMonth, 'MMMM yyyy', { locale: ptBR })}
         </h2>
         <div className="flex items-center gap-2">
           <button 
             onClick={prevMonth}
-            className="rounded-full border border-border p-2.5 transition-colors hover:bg-secondary active:scale-95"
+            className="rounded-xl border border-border bg-background p-2.5 shadow-[0_12px_20px_-18px] shadow-primary/40 transition-colors hover:bg-secondary active:scale-95"
           >
             <ChevronLeft size={18} className="text-muted-foreground" />
           </button>
           <button 
             onClick={nextMonth}
-            className="rounded-full border border-border p-2.5 transition-colors hover:bg-secondary active:scale-95"
+            className="rounded-xl border border-border bg-background p-2.5 shadow-[0_12px_20px_-18px] shadow-primary/40 transition-colors hover:bg-secondary active:scale-95"
           >
             <ChevronRight size={18} className="text-muted-foreground" />
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-7 border-b border-border bg-secondary/20">
+      <div className="grid grid-cols-7 border-b border-border bg-secondary/35">
         {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(day => (
           <div key={day} className="py-3 text-center text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
             {day}
@@ -140,6 +153,7 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
           const isSelected = isSameDay(day, selectedDate)
           const isCurrentMonth = isSameMonth(day, monthStart)
           const hasBooking = dayHasBooking(day)
+          const hasDayConflict = dayHasConflict(day)
           const isCurrentDay = isToday(day)
 
           return (
@@ -147,24 +161,24 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
               key={idx}
               onClick={() => setSelectedDate(day)}
               className={`
-                relative flex h-14 flex-col items-center justify-center border-r border-b border-border transition-colors group sm:h-20
+                relative flex h-14 flex-col items-center justify-center border-r border-b border-border transition-all duration-200 group sm:h-20
                 ${!isCurrentMonth ? 'bg-secondary/20 text-muted-foreground/50' : 'text-muted-foreground hover:bg-secondary/60'}
-                ${isSelected ? 'z-10 bg-primary/10 text-primary' : ''}
+                ${isSelected ? 'z-10 bg-primary/12 text-primary shadow-inner' : ''}
               `}
             >
               <span className={`
                 mb-1 text-sm font-medium transition-all
-                ${isCurrentDay && !isSelected ? 'flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground' : ''}
-                ${isSelected ? 'scale-110' : 'group-hover:scale-105'}
+                ${isCurrentDay && !isSelected ? 'flex h-7 w-7 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-[0_10px_16px_-10px] shadow-primary' : ''}
+                ${isSelected ? 'scale-110' : 'group-hover:scale-110'}
               `}>
                 {format(day, 'd')}
               </span>
               
               {hasBooking && (
                 <div className="flex gap-1">
-                  <div className={`h-1.5 w-1.5 rounded-full ${isSelected ? 'bg-primary' : 'bg-primary/80'} animate-pulse`} />
+                  <div className={`h-1.5 w-1.5 rounded-full ${hasDayConflict ? 'bg-red-500' : isSelected ? 'bg-emerald-500' : 'bg-emerald-400'} animate-pulse`} />
                   {bookings.filter(b => isSameDay(new Date(b.start), day)).length > 1 && (
-                    <div className={`h-1.5 w-1.5 rounded-full ${isSelected ? 'bg-primary' : 'bg-primary/80'} opacity-45`} />
+                    <div className={`h-1.5 w-1.5 rounded-full ${hasDayConflict ? 'bg-red-500' : isSelected ? 'bg-emerald-500' : 'bg-emerald-400'} opacity-45`} />
                   )}
                 </div>
               )}
@@ -174,7 +188,7 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
       </div>
 
       {/* Lista de agendamentos do dia selecionado */}
-      <div className="bg-secondary/20 p-4 sm:p-5">
+      <div className="bg-secondary/25 p-4 sm:p-5">
         <div className="flex items-center justify-between mb-6">
           <h3 className="flex items-center gap-2 text-xs font-medium tracking-wide text-primary uppercase">
             <div className="h-5 w-1 rounded-full bg-primary" />
@@ -184,19 +198,27 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
             {selectedDayBookings.length} Atividades
           </span>
         </div>
+        <div className="mb-4 flex flex-wrap items-center gap-2">
+          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-medium tracking-wide text-emerald-700 uppercase">
+            {Math.max(selectedDayBookings.length - selectedConflicts, 0)} sem conflito
+          </span>
+          <span className="rounded-full border border-red-200 bg-red-50 px-2.5 py-1 text-[10px] font-medium tracking-wide text-red-700 uppercase">
+            {selectedConflicts} com conflito
+          </span>
+        </div>
         
         <div className="space-y-4">
           {selectedDayBookings.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-border bg-background p-8 text-center">
+            <div className="rounded-xl border border-dashed border-border bg-background/90 p-8 text-center">
               <p className="text-sm font-medium text-muted-foreground">Nenhum agendamento para este dia.</p>
             </div>
           ) : (
             selectedDayBookings.map((booking) => (
-              <div key={booking.id} className={`group relative flex flex-col justify-between gap-5 overflow-hidden rounded-xl border bg-background p-5 transition-colors hover:bg-secondary/50 sm:flex-row sm:items-center ${hasConflict(booking) ? 'border-red-300' : 'border-border'}`}>
+              <div key={booking.id} className={`group relative flex flex-col justify-between gap-5 overflow-hidden rounded-2xl border bg-background/95 p-5 shadow-[0_24px_34px_-34px] transition-all duration-300 hover:-translate-y-1 hover:bg-secondary/50 sm:flex-row sm:items-center ${hasConflict(booking) ? 'border-red-300 shadow-red-200/40' : 'border-border shadow-primary/35'}`}>
                 <div className={`absolute left-0 top-0 h-full w-1 opacity-0 transition-opacity group-hover:opacity-100 ${hasConflict(booking) ? 'bg-red-500/60' : 'bg-primary/30'}`} />
                 
                 <div className="flex items-start gap-5 relative z-10">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[0_14px_24px_-16px] shadow-primary transition-colors group-hover:brightness-110">
                     <Clock size={18} />
                   </div>
                   <div>
@@ -207,7 +229,7 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
                         {format(new Date(booking.start), 'HH:mm')} - {format(new Date(booking.end), 'HH:mm')}
                       </span>
                       {booking.class && (
-                        <span className="rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                        <span className="rounded-lg bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
                           Turma: {booking.class}
                         </span>
                       )}
@@ -269,14 +291,14 @@ export default function CalendarView({ bookings }: CalendarViewProps) {
                 
                 <div className="flex items-center gap-4 relative z-10">
                   {hasConflict(booking) && (
-                    <span className="rounded-full border border-red-200 bg-red-50 px-3 py-1.5 text-[9px] font-medium uppercase tracking-wide text-red-700">
+                    <span className="rounded-full border border-red-200 bg-red-50 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-wide text-red-700">
                       Conflito
                     </span>
                   )}
                   <span className={`rounded-full border px-3 py-1.5 text-[9px] font-medium uppercase tracking-wide ${
                     booking.type === 'FIXED' 
-                      ? 'bg-secondary text-foreground border-border' 
-                      : 'bg-primary/10 text-primary border-primary/20'
+                      ? 'bg-accent/55 text-foreground border-border' 
+                      : 'bg-primary/12 text-primary border-primary/25'
                   }`}>
                     {booking.type === 'FIXED' ? 'Recorrente' : 'Evento Único'}
                   </span>
