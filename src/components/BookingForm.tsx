@@ -102,12 +102,24 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
   const fetchAvailability = async (date: string) => {
     if (!date || !spaceId) return
     setIsLoadingSlots(true)
+    setError(null)
     try {
       const res = await fetch(`/api/availability?spaceId=${spaceId}&date=${date}`)
       const data = await res.json()
+      if (!res.ok) {
+        setAvailableSlots([])
+        setError(data?.message || 'Não foi possível carregar os horários disponíveis.')
+        return
+      }
+      if (!Array.isArray(data)) {
+        setAvailableSlots([])
+        setError('Formato de horários inválido. Tente novamente em instantes.')
+        return
+      }
       setAvailableSlots(data as AvailabilitySlot[])
     } catch {
-      console.error('Error fetching slots')
+      setAvailableSlots([])
+      setError('Erro ao buscar horários disponíveis.')
     } finally {
       setIsLoadingSlots(false)
     }
