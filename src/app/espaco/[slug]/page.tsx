@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
-import { ArrowLeft, MapPin, Users, Video, QrCode, Info, ShieldCheck, Settings, Clock } from 'lucide-react'
+import { ArrowLeft, MapPin, Users, Video, Info, ShieldCheck, Settings, Clock } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
@@ -13,8 +13,7 @@ import CalendarExport from '@/components/CalendarExport'
 
 export default async function SpacePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const session = await getServerSession(authOptions)
-  const isAdmin = (session?.user as any)?.role === 'ADMIN'
+  await getServerSession(authOptions)
 
   const space = await prisma.space.findUnique({
     where: { slug },
@@ -43,24 +42,24 @@ export default async function SpacePage({ params }: { params: Promise<{ slug: st
       <Header />
       
       <header className="sticky top-16 z-40 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href={`/unidade/${space.unit.slug}`} className="group flex items-center gap-2 rounded-lg border border-transparent px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-secondary">
-            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2 sm:px-6 lg:px-8">
+          <Link href={`/unidade/${space.unit.slug}`} className="group inline-flex items-center gap-2 rounded-lg border border-transparent px-2.5 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-secondary sm:px-3">
+            <ArrowLeft size={15} className="transition-transform group-hover:-translate-x-1" />
             <span className="hidden sm:inline">Voltar para {space.unit.name}</span>
             <span className="sm:hidden">Voltar</span>
           </Link>
-          
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Video size={16} />
+
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <Video size={15} />
             </div>
-            <h2 className="text-sm font-semibold tracking-tight text-foreground">{space.name}</h2>
+            <h2 className="max-w-[120px] truncate text-sm font-semibold tracking-tight text-foreground sm:max-w-none">{space.name}</h2>
           </div>
 
-          <div className="flex items-center gap-4">
-             <CalendarExport bookings={space.bookings as any} spaceName={space.name} />
-             <div className="h-8 w-px bg-slate-100 mx-2 hidden sm:block" />
-             <QRCodeDisplay slug={space.slug} spaceName={space.name} />
+          <div className="flex w-full items-center justify-end gap-2 sm:w-auto sm:gap-3">
+            <CalendarExport bookings={space.bookings as any} spaceName={space.name} />
+            <div className="mx-1 hidden h-8 w-px bg-slate-100 sm:block" />
+            <QRCodeDisplay slug={space.slug} spaceName={space.name} />
           </div>
         </div>
       </header>
@@ -124,7 +123,7 @@ export default async function SpacePage({ params }: { params: Promise<{ slug: st
 
           <div className="order-1 space-y-6 lg:col-span-8 lg:order-2">
             <div className="overflow-hidden rounded-2xl border border-border bg-card">
-              <div className="flex items-center justify-between border-b border-border bg-card p-4 sm:p-5">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card p-4 sm:p-5">
                 <div className="flex items-center gap-4">
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <MapPin size={20} />
@@ -134,8 +133,9 @@ export default async function SpacePage({ params }: { params: Promise<{ slug: st
                     <p className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase">{space.unit.name}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-[9px] font-medium tracking-wide text-muted-foreground uppercase">
-                  <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> Sincronizado
+                <div className="flex items-center gap-2 rounded-full bg-secondary px-2.5 py-1 text-[9px] font-medium tracking-wide text-muted-foreground uppercase sm:px-3">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                  Sincronizado
                 </div>
               </div>
               <CalendarView bookings={space.bookings as any} />

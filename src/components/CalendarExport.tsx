@@ -1,6 +1,6 @@
 'use client'
 
-import { Download, Calendar, FileSpreadsheet } from 'lucide-react'
+import { Calendar, FileSpreadsheet } from 'lucide-react'
 import { createEvents, EventAttributes } from 'ics'
 import { Parser } from 'json2csv'
 
@@ -90,20 +90,22 @@ export default function CalendarExport({ bookings, spaceName }: CalendarExportPr
   }
 
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
       <button
         onClick={exportToICS}
-        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-black text-[#003399] uppercase tracking-widest hover:bg-blue-50 transition-all shadow-sm"
+        className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-2.5 py-2 text-[10px] font-black text-[#003399] uppercase tracking-wide transition-all hover:bg-blue-50 sm:px-4 sm:text-xs sm:tracking-widest"
+        title="Exportar para Outlook/iCal"
       >
         <Calendar size={14} className="text-[#FFCC00]" />
-        Exportar Outlook/iCal
+        <span className="hidden sm:inline">Exportar Outlook/iCal</span>
       </button>
       <button
         onClick={exportToCSV}
-        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-black text-[#003399] uppercase tracking-widest hover:bg-green-50 transition-all shadow-sm"
+        className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-2.5 py-2 text-[10px] font-black text-[#003399] uppercase tracking-wide transition-all hover:bg-green-50 sm:px-4 sm:text-xs sm:tracking-widest"
+        title="Exportar para CSV/Excel"
       >
         <FileSpreadsheet size={14} className="text-green-600" />
-        Exportar CSV/Excel
+        <span className="hidden sm:inline">Exportar CSV/Excel</span>
       </button>
     </div>
   )
