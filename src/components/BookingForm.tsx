@@ -491,7 +491,7 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
 
                 {/* Recorrência */}
                 <div className="space-y-4 pt-4 border-t border-slate-100">
-                  <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Frequência</Label>
+                  <Label className="ml-1 text-[10px] font-semibold tracking-wide text-primary uppercase">Frequência</Label>
                   <Select 
                     value={formData.type} 
                     onValueChange={val => setFormData({ 
@@ -500,8 +500,10 @@ export default function BookingForm({ spaceId, spaceName }: BookingFormProps) {
                       daysOfWeek: val === 'FIXED' && formData.date ? [formData.date.getDay()] : formData.daysOfWeek
                     })}
                   >
-                    <SelectTrigger className="h-12 rounded-lg border-border bg-secondary/40 font-medium focus:ring-primary">
-                      <SelectValue placeholder="Selecione a frequência" />
+                    <SelectTrigger className="h-12 rounded-lg border-border bg-secondary/40 font-medium text-foreground focus:ring-primary">
+                      <SelectValue placeholder="Selecione a frequência">
+                        {formData.type === 'FIXED' ? 'Horário Fixo (Recorrente)' : 'Evento Único'}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="rounded-lg border-border shadow-lg">
                       <SelectItem value="ONE_OFF" className="py-2.5 font-medium">Evento Único</SelectItem>
